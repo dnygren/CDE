@@ -1,0 +1,28 @@
+DATA_ATTRIBUTES REDX
+{
+        ACTIONS     Open
+        ICON		redx.xpm
+	    DESCRIPTION	This file contains: \ 
+                    dsmd.dstop (DSMD domain stop viewable in redx), \
+                    dsmd.rstop (DSMD record stop viewable in redx), \
+                    or dsmd.hwconfig  (DSMD hardware configuration viewable with redx). \
+        TYPE_LABEL  REDX
+}
+
+DATA_CRITERIA REDX
+{
+	DATA_ATTRIBUTES_NAME REDX
+    MODE            f
+	NAME_PATTERN	dsmd.[drh]*.*
+}
+
+ACTION Open
+{
+        LABEL           Open
+        ARG_TYPE        REDX
+        TYPE            COMMAND
+    	WINDOW_TYPE     TERMINAL
+    	EXEC_STRING     /net/mcst.central/nfs/sw/tools/bin/redxsf "%(File)Arg_1%"
+
+}
+

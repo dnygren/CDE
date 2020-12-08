@@ -1,0 +1,40 @@
+DATA_ATTRIBUTES BMP
+{
+        ACTIONS         Open, GIMP
+        ICON            Dtbitmp
+        NAME_TEMPLATE	%s.bmp
+        MIME_TYPE	image/bmp
+        DESCRIPTION     This file contains a graphics image in BMP File Format.
+        TYPE_LABEL      BMP
+}
+DATA_CRITERIA BMP1
+{
+        DATA_ATTRIBUTES_NAME BMP
+        MODE            f
+        NAME_PATTERN    *.[Bb][Mm][Pp]
+}
+ACTION Open
+{
+	LABEL           Open
+    ARG_TYPE        BMP
+	TYPE            COMMAND  
+	WINDOW_TYPE     NO_STDIO
+	#EXEC_STRING     display -font Courier "%(File)Arg_1%"
+	EXEC_STRING     display "%(File)Arg_1%"
+}
+ACTION GIMP
+{
+	LABEL           GIMP
+    ARG_TYPE        BMP
+	TYPE            COMMAND  
+	WINDOW_TYPE     NO_STDIO
+	#EXEC_STRING     display -font Courier "%(File)Arg_1%"
+	EXEC_STRING     gimp --no-splash "%(File)Arg_1%"
+}`
+ACTION Print
+{
+        LABEL       Print
+        ARG_TYPE    BMP
+        TYPE        MAP
+        MAP_ACTION	NoPrint
+}

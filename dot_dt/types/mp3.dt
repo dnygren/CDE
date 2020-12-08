@@ -1,0 +1,84 @@
+######################################################################
+# mp3.dt $Revision$ : dt type file for MP3 files
+# Release $Name$ (Only defined if part of a specified release)
+#
+# by Dan Nygren $Date$
+#
+#	This file gives the default behavior that MP3 files have.
+# See the dtdtsfile. Execute the dttypes command to see current settings.
+#
+# CALLING SEQUENCE	N/A
+#
+# EXAMPLE		N/A
+#
+# TARGET SYSTEM		Solaris 2.7, CDE1.3
+#
+# DEVELOPMENT SYSTEM	Solaris 2.7, CDE1.3
+#
+# CALLS			text.dt, uxstd.dt, Gzip.dt
+#
+# CALLED BY		(List of modules that call this one)
+#
+# INPUTS		(Parameters used but not modified, include global and static data)
+#
+# OUTPUTS		(Parameters modified, include global and static data)
+#
+# RETURNS		(Type and meaning of return value, if any)
+#
+# ERROR HANDLING	(Describe how errors are handled)
+#
+# WARNINGS		Action name in DATA_ATTRIBUTES must match ACTION name
+#
+######################################################################
+######################################################################
+#               REVISIONS
+#
+# $Log$
+######################################################################
+
+###################################################################
+#
+# Data Attributes
+#
+###################################################################
+DATA_ATTRIBUTES MP3FILE
+{
+	# Don't put spaces between action names, as then these spaces 
+	# get put in the pull down menus and look ugly.
+        ACTIONS         Open
+	#Default Icon
+        ICON		mp3.t.xpm
+        #If there is an icon with the same name as the suffix, use it instead
+        INSTANCE_ICON	%suffix%.xpm
+        NAME_TEMPLATE	%s.sp
+        MIME_TYPE	text/plain
+        IS_TEXT		true
+        DESCRIPTION     This file contains text.
+}
+
+###################################################################
+#
+# Data Criteria (.mp3 files)
+#
+###################################################################
+DATA_CRITERIA MP3FILE
+{
+        DATA_ATTRIBUTES_NAME MP3FILE
+        # Mode "f" matches any file
+        MODE            f
+        NAME_PATTERN    *.mp3
+}
+
+###################################################################
+#
+# Actions
+#
+###################################################################
+ACTION Open
+{
+	LABEL		Open
+	ARG_TYPE        MP3FILE
+	TYPE            COMMAND  
+	WINDOW_TYPE     NO_STDIO
+	EXEC_STRING     /opt/csw/bin/xmms "%(File)Arg_1%"
+}

@@ -1,0 +1,95 @@
+######################################################################
+# firefox.dt $Revision$ CDE action file for the Firefox browser
+# Release $Name:  $ (Only defined if part of a specified release)
+#
+# by Dan Nygren $Date$
+#
+#	This CDE action file is meant to replace Firefox
+# with Firefox. It also works with the Firefox front panel file.
+#
+# CALLING SEQUENCE	Install firefox.dt in ~/.dt/types directory
+#
+# EXAMPLE		N/A
+#
+# TARGET SYSTEM		Solaris 9, CDE1.5.7
+#
+# DEVELOPMENT SYSTEM	Solaris 9, CDE1.5.7
+#
+# CALLS		firefox
+#			~/.dt/icons/dynamite.pm
+#			/usr/dt/appconfig/icons/C/SDtwebbr.*.pm
+#
+# CALLED BY	~/.dt/types/firefox.fp
+#
+######################################################################
+######################################################################
+#               REVISIONS
+#
+# $Log$
+######################################################################
+
+# For use with firefox.fp front panel file
+
+ACTION firefoxKill
+{
+	LABEL       Kill Firefox
+    ICON        dynamite
+    TYPE        COMMAND
+	WINDOW_TYPE PERM_TERMINAL
+    EXEC_STRING sh -c ' \
+    echo "Killing Firefox \\n"; \
+	pgrep -U $USER firefox; \
+	pkill -U $USER firefox; \
+	pkill -9 -U $USER firefox; \
+	echo "\\n*** Select Close or Exit from the window menu to close this window ***"'
+}
+
+# The default web browser for Common Desktop Environment (CDE) is (allegedly) SDtWebClient.
+# Mapping this to WebBrowser for historical purposes.
+ACTION SDtWebClient
+{
+	LABEL		SDt Web Client
+	ICON		SDtwebbr
+	ARG_COUNT	0
+	TYPE		MAP
+	MAP_ACTION	WebBrowser
+}
+
+ACTION WebBrowser
+{
+    LABEL           Web Browser
+	TYPE            COMMAND  
+	WINDOW_TYPE     NO_STDIO
+	#EXEC_STRING     firefox "%(File)Arg_1%"
+	#EXEC_STRING     /pkg/isv/packages/firefox-2.0/firefox "%(File)Arg_1%"
+	#EXEC_STRING     /usr/dist/exe/firefox3.6 "%(File)Arg_1%"
+	#EXEC_STRING     /usr/dist/exe/firefox "%(File)Arg_1%"
+	EXEC_STRING     /usr/sfw/bin/mozilla "%(File)Arg_1%"
+	#EXEC_STRING     /pkg/isv/bin/firefox "%(File)Arg_1%"
+}
+
+ACTION WebBrowser
+{
+	LABEL		Web Browser
+	ICON		SDtwebbr
+	ARG_TYPE	WEB_URL,FILE_URL,MAILTO_URL,RLOGIN_URL,WSMENU_SunSolve_Online,WSMENU_Find_Web_Page,WSMENU_Solaris_Support
+	ARG_COUNT	1
+	TYPE		COMMAND
+	WINDOW_TYPE	NO_STDIO
+    EXEC_STRING     sh -c '\
+	        		URL=`/bin/head -1 "%Arg_1%"` ; \
+			        /usr/dist/exe/firefox3.6 "\$URL" || \{ \
+			        $sdtwebclient_patherr ; \
+			        \}'
+	DESCRIPTION	The WebClient action invokes a WebBrowser on a Uniform Resource Location (URL) file. 
+}
+
+ACTION SelfHelpUtilities
+{
+	LABEL		Self Help
+    ICON		toolbox
+    TYPE            COMMAND
+	WINDOW_TYPE     NO_STDIO
+    EXEC_STRING    	dtfile -dir ~/bin/jds-sunray
+}
+

@@ -1,0 +1,9 @@
+SWITCH	_ezSwitch_4
+{
+   CONTAINER_NAME	Top
+   POSITION_HINTS	5
+   NUMBER_OF_ROWS	2
+   DELETE	false
+   HELP_VOLUME	FPanel
+   HELP_TOPIC	FPOnItemSwitch
+}

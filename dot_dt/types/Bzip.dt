@@ -1,0 +1,24 @@
+# Bzip and Bunzip  - Dan Nygren 
+
+ACTION Bzip
+{
+     LABEL         Bzip2 Compress
+     TYPE          COMMAND
+     EXEC_STRING   /pkg/local/bin/bzip2 -9 %Arg_1"Filename:"%
+     ICON          gziped
+     WINDOW_TYPE   NO_STDIO
+     DESCRIPTION   Compress a given file with bzip2.  This action \
+     accepts files via drag and drop.  If double-clicked, will ask \
+     for a filename to compress.
+}
+
+ACTION Bunzip
+{
+     LABEL         Bzip2 Uncompress
+     TYPE          COMMAND
+     EXEC_STRING   /pkg/local/bin/bzip2 -d %Arg_1"Filename:"%
+     ICON          gziped
+     WINDOW_TYPE   NO_STDIO
+     DESCRIPTION   This action will uncompress a file using the \
+     bunzip utility.
+}

@@ -1,0 +1,143 @@
+######################################################################
+# html.dt $Revision$ : dt type file to override default HTML behavior
+# Release $Name$ (Only defined if part of a specified release)
+#
+# by Dan Nygren $Date$
+#
+#	This file overides the default dtpad editor HTML file behavior that 
+# is in /usr/dt/appconfig/types/C/datatypes.dt "HTML". See the dtdtsfile 
+# manpage. Execute the dttypes command to see current settings.
+#
+# CALLING SEQUENCE	(Example with explanation of call parameters)
+#
+# EXAMPLE		(Example of a call)
+#
+# TARGET SYSTEM		Solaris 2.7, CDE1.3
+#
+# DEVELOPMENT SYSTEM	Solaris 2.7, CDE1.3
+#
+# CALLS			(List of modules this routine calls)
+#
+# CALLED BY		(List of modules that call this one)
+#
+# INPUTS		(Parameters used but not modified, include global and static data)
+#
+# OUTPUTS		(Parameters modified, include global and static data)
+#
+# RETURNS		(Type and meaning of return value, if any)
+#
+# ERROR HANDLING	(Describe how errors are handled)
+#
+# WARNINGS		(Describe anything a maintainer should be aware of)
+#
+######################################################################
+######################################################################
+#               REVISIONS
+#
+# $Log$
+######################################################################
+
+###################################################################
+#
+# Data Attributes
+#
+###################################################################
+DATA_ATTRIBUTES HTML
+{
+        ACTIONS         Open,Edit,Print_Source_One_Up,Print_Source_Two_Up,TGZ
+        ICON            SDthtml
+
+        IS_TEXT         true
+        NAME_TEMPLATE   %s.html
+        MIME_TYPE       text/html
+        DESCRIPTION     This file is a text file containing Hyper-Text \
+                        Markup Language from the World Wide Web.  Its data \
+                        type is named HTML.  HTML files have names ending \
+                        with '.html' or '.htm' , or contain the characters "<HTML>" \
+                        or "<html>".  
+        TYPE_LABEL      HTML
+}
+DATA_CRITERIA HTML1
+{
+        DATA_ATTRIBUTES_NAME    HTML
+        MODE                    f
+        NAME_PATTERN            *.html
+}
+DATA_CRITERIA HTML2
+{
+        DATA_ATTRIBUTES_NAME    HTML
+        MODE                    f
+        NAME_PATTERN            *.HTML
+}
+DATA_CRITERIA HTML3
+{
+        DATA_ATTRIBUTES_NAME    HTML
+        MODE                    f
+        NAME_PATTERN            *.htm
+}
+DATA_CRITERIA HTML4
+{
+        DATA_ATTRIBUTES_NAME    HTML
+        MODE                    f
+        NAME_PATTERN            *.HTM
+}
+DATA_CRITERIA HTML5
+{
+        DATA_ATTRIBUTES_NAME    HTML
+        MODE                    f
+        CONTENT                 0 string <!DOCTYPE HTML | \
+                    0 string <!doctype html |0 string <HTML>| 0 string <html>|\
+        			0 string <TITLE>| 0 string <title>
+}
+###################################################################
+#
+# Actions
+#
+###################################################################
+ACTION Open
+{
+	ARG_TYPE	HTML
+	TYPE            MAP
+	MAP_ACTION   WebBrowser     
+
+}
+ACTION Edit
+{
+	LABEL		Edit
+        ARG_TYPE        HTML
+        TYPE            COMMAND  
+        WINDOW_TYPE     NO_STDIO
+        # gvim is a GUI version of Vim (Vi improved)
+	EXEC_STRING     gvim -geom 132x40+100+50 "%(File)Arg_1%"
+}
+ACTION Print_Source_One_Up
+{
+	# Optional Left Click (Button 3) Label
+	LABEL		Print Source 1up
+        ARG_TYPE        HTML
+        TYPE            COMMAND  
+        WINDOW_TYPE     NO_STDIO
+	EXEC_STRING	enscript -G --pretty-print=html --header='$NAME' "%(File)Arg_1%"
+	
+}
+ACTION Print_Source_Two_Up
+{
+	# Optional Left Click (Button 3) Label
+	LABEL		Print Source 2up
+	ARG_TYPE        HTML
+        TYPE            COMMAND  
+        WINDOW_TYPE     NO_STDIO
+        #twopage is a GNU enscript alias in my .kshrc.user
+	#I don't think this works because I'm not reading the .kshrc.user
+	#EXEC_STRING    /bin/ksh -c 'twopage %(File)Arg_1%'
+	EXEC_STRING     enscript -2rlG --pretty-print=html --header='$NAME' "%(File)Arg_1%"
+}
+ACTION TGZ
+{
+	LABEL		Tar & Gzip Directory
+	ARG_TYPE        HTML
+	TYPE            COMMAND  
+	WINDOW_TYPE     PERM_TERMINAL
+	EXEC_STRING     dtksh -c 'tar cvf $(/bin/basename $(pwd)).tar . ; gzip $(/bin/basename $(pwd)).tar; echo " *** Select Close or Exit from the window menu to close this window ***' 
+}
+########################################################

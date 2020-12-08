@@ -1,0 +1,176 @@
+######################################################################
+# ps.dt $Revision$ : dt type file to override default *.ps behavior
+# Release $Name$ (Only defined if part of a specified release)
+#
+# by Dan Nygren $Date$
+#
+#	This file overides the default dtpad editor .ps file behavior that 
+# is in /usr/dt/appconfig/types/C/datatypes.dt "POSTSCRIPT". See the dtdtsfile 
+# manpage. Execute the dttypes command to see current settings.
+#
+# CALLING SEQUENCE	(Example with explanation of call parameters)
+#
+# EXAMPLE		(Example of a call)
+#
+# TARGET SYSTEM		Solaris 2.7, CDE1.3
+#
+# DEVELOPMENT SYSTEM	Solaris 2.7, CDE1.3
+#
+# CALLS			(List of modules this routine calls)
+#
+# CALLED BY		(List of modules that call this one)
+#
+# INPUTS		(Parameters used but not modified, include global and static data)
+#
+# OUTPUTS		(Parameters modified, include global and static data)
+#
+# RETURNS		(Type and meaning of return value, if any)
+#
+# ERROR HANDLING	(Describe how errors are handled)
+#
+# WARNINGS		(Describe anything a maintainer should be aware of)
+#
+######################################################################
+######################################################################
+#               REVISIONS
+#
+# $Log$
+######################################################################
+
+###################################################################
+#
+# Data Attributes
+#
+###################################################################
+DATA_ATTRIBUTES POSTSCRIPT
+{
+        ACTIONS         Run,Open,Edit,Gzip,PS2PDF,Print_One_Up,Print_Two_Up,Print_Source_One_Up,Print_Source_Two_Up
+        ICON		    Dtps
+        NAME_TEMPLATE	%s.ps
+        MIME_TYPE	application/postscript
+        SUNV3_TYPE	postscript-file
+        DESCRIPTION     This file contains postscript data. Its data type \
+                        is named PS.  PS file have names ending with '.ps' \
+                        or '.PS', or contain the characters "%!".
+        TYPE_LABEL      POSTSCRIPT
+}
+DATA_CRITERIA POSTSCRIPT1
+{
+        DATA_ATTRIBUTES_NAME POSTSCRIPT
+        MODE            f
+        NAME_PATTERN    *.ps
+}
+DATA_CRITERIA POSTSCRIPT2
+{
+        DATA_ATTRIBUTES_NAME POSTSCRIPT
+        MODE            f
+        NAME_PATTERN    *.PS
+}
+DATA_CRITERIA POSTSCRIPT3
+{
+        DATA_ATTRIBUTES_NAME    POSTSCRIPT
+        CONTENT 	0 string %!
+        MODE            f
+}
+DATA_CRITERIA POSTSCRIPT4
+{
+        DATA_ATTRIBUTES_NAME POSTSCRIPT
+        MODE            f
+        NAME_PATTERN    *.eps
+}
+DATA_CRITERIA POSTSCRIPT5
+{
+        DATA_ATTRIBUTES_NAME POSTSCRIPT
+        MODE            f
+        NAME_PATTERN    *.EPS
+}
+
+###################################################################
+#
+# Actions
+#
+###################################################################
+ACTION Run
+{
+	LABEL		    Run
+    ARG_TYPE        POSTSCRIPT
+    TYPE            COMMAND  
+    WINDOW_TYPE     NO_STDIO
+    # gv is a GUI PostScript file viewer
+	# EXEC_STRING     gv "%(File)Arg_1%"
+	# EXEC_STRING     sdtimage "%(File)Arg_1%"
+	# EXEC_STRING     ggv "%(File)Arg_1%"
+	EXEC_STRING     /pkg/gnu/bin/gs "%(File)Arg_1%"
+}
+ACTION Open
+{
+	LABEL		    Open
+    ARG_TYPE        POSTSCRIPT
+    TYPE            COMMAND  
+    WINDOW_TYPE     NO_STDIO
+    # gvim is a GUI version of Vim (Vi improved)
+	EXEC_STRING     gvim -R -geom 132x40+100+50 "%(File)Arg_1%"
+}
+ACTION Edit
+{
+	LABEL		    Edit
+    ARG_TYPE        POSTSCRIPT
+    TYPE            COMMAND  
+    WINDOW_TYPE     NO_STDIO
+    # gvim is a GUI version of Vim (Vi improved)
+	EXEC_STRING     gvim -geom 132x40+100+50 "%(File)Arg_1%"
+}
+ACTION PS2PDF
+{
+	# Optional Left Click (Button 3) Label
+	LABEL		    PS2PDF
+    ARG_TYPE        POSTSCRIPT
+    TYPE            COMMAND  
+    # WINDOW_TYPE     TERMINAL
+    WINDOW_TYPE     NO_STDIO
+    #EXEC_STRING     /tools/sparc/bin/distill -quiet  "%(File)Arg_1%"
+	EXEC_STRING     /RAID/pkg/gnu/bin/ps2pdf "%(File)Arg_1%"
+	
+}
+ACTION Print_One_Up
+{
+	# Optional Left Click (Button 3) Label
+	LABEL		Print One Column
+    ARG_TYPE        POSTSCRIPT
+    TYPE            COMMAND  
+    WINDOW_TYPE     NO_STDIO
+    EXEC_STRING     lp -c "%(File)Arg_1%" 	
+	
+}
+ACTION Print_Two_Up
+{
+	# Optional Left Click (Button 3) Label
+	LABEL		Print Two Columns
+	ARG_TYPE        POSTSCRIPT
+    TYPE            COMMAND  
+    WINDOW_TYPE     NO_STDIO
+	# This execution string requires shell piping and accepts a file argument
+	EXEC_STRING     /bin/sh -c 'psnup -n 2 %(File)Arg_1% | lp -c'
+}
+ACTION Print_Source_One_Up
+{
+	# Optional Left Click (Button 3) Label
+	LABEL		Print Source 1up
+    ARG_TYPE        POSTSCRIPT
+    TYPE            COMMAND  
+    WINDOW_TYPE     NO_STDIO
+	EXEC_STRING     /RAID/pkg/gnu/bin/enscript -G --pretty-print=postscript --font=Courier9 --header='$NAME' "%(File)Arg_1%"
+	
+}
+ACTION Print_Source_Two_Up
+{
+	# Optional Left Click (Button 3) Label
+	LABEL		Print Source 2up
+	ARG_TYPE        POSTSCRIPT
+    TYPE            COMMAND  
+    WINDOW_TYPE     NO_STDIO
+    #twopage is a GNU enscript alias in my .kshrc.user
+	#I don't think this works because I'm not reading the .kshrc.user
+	#EXEC_STRING    /bin/ksh -c 'twopage %(File)Arg_1%'
+	EXEC_STRING     /RAID/pkg/gnu/bin/enscript -2rlG --pretty-print=postscript --header='$NAME' "%(File)Arg_1%"
+}

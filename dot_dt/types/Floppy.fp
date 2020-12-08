@@ -1,0 +1,13 @@
+CONTROL OpenFloppy
+{
+  TYPE			icon
+  CONTAINER_NAME	Switch
+  CONTAINER_TYPE	SWITCH
+  POSITION_HINTS	3
+  ICON			35disk
+  LABEL			Open Floppy
+  PUSH_ACTION		OpenFloppy
+  HELP_TOPIC		FPOnItemHome
+  HELP_VOLUME		FPanel
+}
+

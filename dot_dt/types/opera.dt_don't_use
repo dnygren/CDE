@@ -1,0 +1,65 @@
+######################################################################
+# opera.dt $Revision$ : dt action file to run opera
+# Release $Name$ (Only defined if part of a specified release)
+#
+# by Dan Nygren $Date$
+#
+#	This dt action file is for running the Opera web browser. 
+#
+# CALLING SEQUENCE	(drag-n-drop), (double click)
+#
+# EXAMPLE		N/A
+#
+# TARGET SYSTEM		Solaris 2.8, CDE1.4
+#
+# DEVELOPMENT SYSTEM	Solaris 2.8, CDE1.4
+#
+# CALLS			enscript
+#
+# CALLED BY		CDE
+#
+# INPUTS		N/A
+#
+# OUTPUTS		N/A
+#
+# RETURNS		N/A
+#
+# ERROR HANDLING	None
+#
+# WARNINGS		Execute permission must be set on empty file
+#
+######################################################################
+######################################################################
+#               REVISIONS
+#
+# $Log$
+######################################################################
+
+###################################################################
+#
+# Actions
+#
+###################################################################
+
+# Double-click functionality
+ACTION Opera
+{
+	TYPE            COMMAND  
+	WINDOW_TYPE     NO_STDIO
+	ICON		opera.xpm
+	EXEC_STRING	/usr/bin/opera
+#	EXEC_HOST       sfeng.west.sun.com
+	DESCRIPTION     Runs browser when double clicked
+}
+
+# Drap n' Drop functionality
+ACTION Netscape
+{
+	TYPE            COMMAND  
+	WINDOW_TYPE     NO_STDIO
+	ICON		opera.xpm
+	EXEC_STRING	/usr/bin/opera "%Arg_1%"
+#	EXEC_HOST       sfeng.west.sun.com
+	DESCRIPTION     Runs browser when HTML file dropped on it
+}
+

@@ -1,0 +1,67 @@
+###############################################################################
+#
+#     png.dt
+#
+#     Action and DataType definitions for the Common Desktop Environment
+#     (CDE) DT components.
+#
+###############################################################################
+
+########################################################
+
+DATA_ATTRIBUTES PNG
+{
+        ACTIONS         Open, GIMP
+        ICON  png.xpm
+        NAME_TEMPLATE %s.png
+        MIME_TYPE image/png
+        DESCRIPTION This file contains a graphics image in PNG format. \
+                        Its data type is named PNG.  PNG files have \
+                        names ending with .png or .png, or contain the characters \
+      (decimal)              137  80  78  71  13  10  26  10
+      (hexadecimal)           89  50  4e  47  0d  0a  1a  0a
+      (ASCII C notation)    \211   P   N   G  \r  \n \032 \n
+
+        TYPE_LABEL     PNG 
+}
+DATA_CRITERIA PNG1
+{
+        DATA_ATTRIBUTES_NAME PNG
+        MODE            f
+        NAME_PATTERN *.[Pp][Nn][Gg]
+}
+DATA_CRITERIA PNG3
+{
+        DATA_ATTRIBUTES_NAME PNG
+        CONTENT  0 long 0x89504e47
+#        CONTENT  1 string PNG
+        MODE            f
+}
+ACTION Open
+{
+    LABEL           Open
+    ARG_TYPE        PNG
+    TYPE            COMMAND  
+    WINDOW_TYPE     NO_STDIO
+    #EXEC_STRING     display -font Courier "%(File)Arg_1%"
+    EXEC_STRING     display "%(File)Arg_1%"
+    #EXEC_STRING     gimp --no-splash "%(File)Arg_1%"
+    # Eye of Gnome dumps core  sometimes
+    #EXEC_STRING     eog "%(File)Arg_1%"
+}
+ACTION GIMP
+{
+    LABEL           GIMP
+    ARG_TYPE        PNG
+    TYPE            COMMAND  
+    WINDOW_TYPE     NO_STDIO
+    EXEC_STRING     gimp --no-splash "%(File)Arg_1%"
+}
+ACTION Print
+{
+        LABEL           Print
+        ARG_TYPE        PNG
+        TYPE            MAP
+        MAP_ACTION      NoPrint
+}
+########################################################

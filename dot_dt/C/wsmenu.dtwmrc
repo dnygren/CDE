@@ -1,0 +1,120 @@
+####################################################################
+#
+#
+#    The Resource Description File for the CDE Window Manager dtwm
+#
+#    (c) Copyright 1993, 1998 Sun Microsystems, Inc.
+#
+####################################################################
+
+###
+#
+#  Please Don't edit this file. It is created programatically
+#
+###
+
+###
+#
+# Customized Workspace Menu
+#
+###
+
+
+
+Menu ApplicationsMenu
+{
+    "Applications"		f.title
+
+    "Application Manager"		f.action Dtappmgr
+    "Audio"		f.action SDTaudio
+    "Calculator"		f.action Dtcalc
+    "Calendar"		f.action Dtcm
+    "Icon Editor"		f.action Dticon
+    "Image Viewer"		f.action SDTimage
+    "OWclock"		f.action Run "/home/dnygren/.dt/wsmenu/Applications/OWclock"
+    "Snapshot"		f.action SDTsnapshot
+    "Text Editor"		f.action TextEditor
+    "Text Note"		f.action Note
+    "Voice Note"		f.action Record
+}
+
+Menu CardsMenu
+{
+    "Cards"		f.title
+
+    "Address Manager"		f.action SDtName
+}
+
+Menu FilesMenu
+{
+    "Files"		f.title
+
+    "File Manager"		f.action Dtfile
+    "Find File"		f.action SDtFind
+    "Properties..."		f.action FileProperties
+}
+
+Menu FoldersMenu
+{
+    "Folders"		f.title
+
+    "Empty Trash Can"		f.action DtEmptyTrash
+    "File Manager - Home"		f.action DtfileHome
+    "Open CD-ROM"		f.action OpenCD-ROM
+    "Open Floppy"		f.action OpenFloppy
+    "Trash Can"		f.action Dttrash
+}
+
+Menu HelpMenu
+{
+    "Help"		f.title
+
+    "AnswerBook2"		f.action SDTab2
+    "Desktop Introduction"		f.action OpenDtIntro
+    "Front Panel Help"		f.action FPHelp
+    "Help Viewer"		f.action Dthelpview
+    "Solaris Support"		f.action Open "/home/dnygren/.dt/wsmenu/Help/Solaris_Support"
+    "SunSolve Online"		f.action Open "/home/dnygren/.dt/wsmenu/Help/SunSolve_Online"
+}
+
+Menu HostsMenu
+{
+    "Hosts"		f.title
+
+    "Find Host..."		f.action HOST_Find
+    "Performance Meter"		f.action SDtPerfmeter
+    "Terminal Console"		f.action DttermConsole
+    "This Host"		f.action Terminal "/home/dnygren/.dt/wsmenu/Hosts/This_Host"
+    "Workstation Info"		f.action SDtWsinfo
+}
+
+Menu LinksMenu
+{
+    "Links"		f.title
+
+    "Find Web Page"		f.action Open "/home/dnygren/.dt/wsmenu/Links/Find_Web_Page"
+    "Web Browser"		f.action WebBrowser
+}
+
+Menu MailMenu
+{
+    "Mail"		f.title
+
+    "Mailer"		f.action Dtmail
+    "Suggestion Box"		f.action MailTo "/home/dnygren/.dt/wsmenu/Mail/Suggestion_Box"
+}
+
+Menu ToolsMenu
+{
+    "Tools"		f.title
+
+    "Create Action"		f.action Dtcreate
+    "Power Manager"		f.action SDTpowermgr
+    "Print Manager"		f.action DtPrintManager
+    "Process Manager"		f.action SDtProcess
+    "SDTadmintool"		f.action Run "/home/dnygren/.dt/wsmenu/Tools/SDTadmintool"
+    "Style Manager"		f.action Dtstyle
+    "Terminal"		f.action Terminal
+    "Watch Errors"		f.action DttermErrorlog
+}
+

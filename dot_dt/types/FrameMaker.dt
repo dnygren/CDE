@@ -1,0 +1,138 @@
+############################################################################### #
+#                        CUE (Common User Environment)
+#
+#                              ------------- 
+#                              FrameMaker.dt   
+#                              ------------- 
+# 
+# Description:   
+# 
+#       This is the ENS Standard CDE action/data type definition file 
+#       for FrameMaker
+# 
+# 
+# Last Updated : 
+# 
+#        USER             DATE          DESCRIPTION
+#       -----------     --------       -------------------------------- 
+#       Chris Bradshaw  11/9/96        First Version 
+# 
+###############################################################################  
+DATA_ATTRIBUTES FrameMakerDoc
+{
+	ACTIONS 		FrameOpen,FrameNew,Print
+	ICON 			FrameMaker
+	NAME_TEMPLATE 		%s.frm
+	MIME_TYPE 		application/octet-stream
+	SUNV3_TYPE 		framemaker-document
+	DESCRIPTION This file contains a FrameMaker document or book. \
+	Its data type is named FrameMakerDoc.
+}
+
+DATA_CRITERIA FrameMakerDoc1
+{
+	DATA_ATTRIBUTES_NAME 	FrameMakerDoc
+	CONTENT 		0 string <Maker
+	MODE 			f
+}
+
+DATA_CRITERIA FrameMakerDoc2
+{
+	DATA_ATTRIBUTES_NAME 	FrameMakerDoc
+	CONTENT 		0 string <Book
+	MODE 			f
+}
+
+DATA_CRITERIA FrameMakerDoc3
+{
+	DATA_ATTRIBUTES_NAME 	FrameMakerDoc
+	CONTENT 		0 string <BOOK
+	MODE 			f
+}
+
+ACTION FrameOpen
+{
+	LABEL 			FrameOpen
+	ARG_TYPE 		FrameMakerDoc
+	TYPE 			MAP
+	MAP_ACTION 		FrameMaker_Open
+}
+
+ACTION FrameNew
+{
+	LABEL 			FrameNew
+	ARG_TYPE 		FrameMakerDoc
+	TYPE 			MAP
+	MAP_ACTION 		FrameMaker_New
+}
+
+ACTION Print
+{
+	LABEL 			Print
+	ARG_TYPE 		FrameMakerDoc
+	TYPE 			MAP
+	MAP_ACTION 		FrameMaker_Print
+}
+
+######################################################################
+#
+# FrameMaker command Actions
+#
+######################################################################
+
+ACTION FrameMaker
+{
+	LABEL 			FrameMaker
+	ICON 			FrameMaker
+	TYPE 			COMMAND
+	WINDOW_TYPE 		TERMINAL
+	EXEC_STRING 		/usr/dist/share/framemaker,v6.0/bin/maker
+	DESCRIPTION The FrameMaker action starts the \
+	FrameMaker document editor (maker).
+}
+
+ACTION FrameViewer
+{
+	LABEL 			FrameViewer
+	ICON 			FrameMaker
+	TYPE 			COMMAND
+	WINDOW_TYPE 		NO_STDIO
+	EXEC_STRING 		viewer
+	DESCRIPTION The FrameViewer action starts the \
+	FrameMaker document viewer (viewer).
+}
+
+ACTION FrameMaker_Open
+{
+	LABEL 			Frame Open
+	ICON 			FrameMaker
+	TYPE 			COMMAND
+	WINDOW_TYPE 		NO_STDIO
+	EXEC_STRING 		/usr/dist/share/framemaker,v6.0/bin/fmclient -f "%(File)Arg_1"Frame file to open:"%"
+	DESCRIPTION The Frame Open (FrameMaker_Open) action opens a \
+	FrameMaker document file for viewing or editing.
+}
+
+ACTION FrameMaker_New
+{
+	LABEL 			Frame New
+	ICON 			FrameMaker
+	TYPE 			COMMAND
+	WINDOW_TYPE 		NO_STDIO
+	EXEC_STRING 		/usr/dist/share/framemaker,v6.0/bin/fmclient -n "%(File)Arg_1"Frame template file:"%"
+	DESCRIPTION The Frame Open (FrameMaker_Open) action creates a \
+	new FrameMaker document file called NoName using the \
+	provided FrameMaker document file as a template.
+}
+
+ACTION FrameMaker_Print
+{
+	LABEL 			Frame Print
+	ICON 			FrameMaker
+	TYPE 			COMMAND
+	WINDOW_TYPE 		PERM_TERMINAL
+	EXEC_STRING 		/usr/dist/share/framemaker,v6.0/bin/fmprint "%(File)Arg_1"Frame file to print:"%"
+	DESCRIPTION The Frame Open (FrameMaker_Open) action opens a \
+	FrameMaker document file for viewing or editing.
+}
+

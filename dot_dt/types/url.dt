@@ -1,0 +1,61 @@
+######################################################################
+# url.dt $Revision: 1.2 $ : dt action file to create a URL from a file
+# Release $Name:  $ (Only defined if part of a specified release)
+#
+# by Dan Nygren $Date: 2003/03/20 23:19:59 $
+#
+#       This dt action file is for creating a URL. An empty file called
+# "FileURL" is created with execute permission set. A file you want to
+# "attach" to an e-mail as a URL can then be dragged and dropped on this
+# action file, or the action file can be doubleclicked and a prompt for
+# the file to be "attached" is given. 
+#       The PurgeURL action can be optionally selected to remove all
+# files from the 
+#
+# CALLING SEQUENCE      (drag-n-drop), or (double click), or
+#                       dtaction url /path/to/attachment_file
+#
+# EXAMPLE               % dtaction url linpack.tar.gz
+#
+# TARGET SYSTEM         Solaris 2.8, CDE 1.4
+#
+# DEVELOPMENT SYSTEM    Solaris 2.8, CDE 1.4
+#
+# CALLS                 url.ksh
+#
+# CALLED BY             CDE
+#
+# INPUTS                attachment_file
+#
+# OUTPUTS               URL file, copy of attachment_file in ~/public_html/tmp
+#
+# RETURNS               N/A
+#
+# ERROR HANDLING        Error listed in ~/.dt/errorlog
+#
+# WARNINGS              Periodically use PurgeURLs to conserve disk space.       
+#
+######################################################################
+######################################################################
+#               REVISIONS
+#
+# $Log: url.dt,v $
+# Revision 1.2  2003/03/20 23:19:59  nygren
+# Drag n' Drop + Doubleclick functionality in just one action.
+#
+# Revision 1.1  2003/02/24 23:18:41  nygren
+# Initial revision
+#
+######################################################################
+
+# Drag n' Drop and Double-click functionality
+ACTION FileURL
+{
+	LABEL Create URL
+	ARG_CLASS	FILE
+        TYPE            COMMAND  
+        WINDOW_TYPE     NO_STDIO
+        ICON            url.xpm
+        EXEC_STRING     $HOME/.dt/bin/url.ksh %(File)Arg_1"File Name"%
+        DESCRIPTION     Runs url.ksh when a file is dropped on it or icon is doubleclicked
+}

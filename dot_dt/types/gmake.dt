@@ -1,0 +1,169 @@
+######################################################################
+# gmake.dt $Revision: 1.1 $ : dt type file for a Cadence Concept GNU Makefile
+# Release $Name:  $ (Only defined if part of a specified release)
+#
+# by Dan Nygren $Date: 2001/03/26 23:57:21 $
+#
+# 	This .dt action runs GNU Make instead of Solaris make on
+# GNUmakefiles. Name your file "Makefile" or "makefile" to use Solaris
+# make instead. This dt file supports a GNUmakefile specifically
+# designed to ease Cadence Concept schematic maintenance.
+#
+# CALLING SEQUENCE	N/A
+#
+# EXAMPLE		N/A
+#
+# TARGET SYSTEM		Solaris 2.7, CDE1.3
+#
+# DEVELOPMENT SYSTEM	Solaris 2.7, CDE1.3
+#
+# CALLS			GNUmakefile, Print & Open dtactions
+#
+# CALLED BY		CDE
+#
+# INPUTS		From CDE
+#
+# OUTPUTS		CDE Actions
+#
+# RETURNS		N/A
+#
+# ERROR HANDLING	Errors recorded in CDE error log
+#
+# WARNINGS		1) Action name in DATA_ATTRIBUTES must exactly match ACTION name
+#
+######################################################################
+######################################################################
+#               REVISIONS
+#
+# $Log: gmake.dt,v $
+# Revision 1.1  2001/03/26 23:57:21  nygren
+# Initial revision
+#
+######################################################################
+
+###################################################################
+#
+# Data Attributes
+#
+###################################################################
+DATA_ATTRIBUTES GNUMAKEFILE
+{
+        #ACTIONS         Make,MakeHardLocs,MakeCref,MakeTitleBlock,MakePrint,MakeClean,MakeArch,Open,Print
+        ACTIONS         Make,MakeCref,MakePrint,MakeClean,MakeArch,MakeLock,Open,Print
+	#Default Icon
+        ICON		gmake.xpm
+        NAME_TEMPLATE	GNUmakefile
+        MIME_TYPE	text
+        IS_TEXT		true
+        DESCRIPTION     A GNU Makefile
+}
+
+###################################################################
+#
+# Data Criteria (Makefiles)
+#
+###################################################################
+DATA_CRITERIA GNUMAKEFILE
+{
+        DATA_ATTRIBUTES_NAME GNUMAKEFILE
+        # Mode "f" matches any file
+        MODE            f
+        NAME_PATTERN	GNUmakefile
+}
+
+###################################################################
+#
+# Actions
+#
+###################################################################
+
+ACTION Make
+{
+	LABEL		Make
+	ARG_TYPE    GNUMAKEFILE
+	TYPE        COMMAND 
+	EXEC_STRING sh -c 'gmake 2>&1 ; echo " *** Select Close or Exit from the window menu to close this window ***"'
+	WINDOW_TYPE	PERM_TERMINAL
+}
+
+# Obsolete Concept SCALD script call
+#ACTION MakeHardLocs
+#{
+#	LABEL		MakeHardLocs
+#	ARG_TYPE        GNUMAKEFILE
+#	TYPE            COMMAND 
+#	EXEC_STRING     sh -c 'gmake hardlocs 2>&1 ; echo " *** Select Close or Exit from the window menu to close this window ***"'
+#	WINDOW_TYPE	PERM_TERMINAL
+#}
+
+ACTION MakeCref
+{
+	LABEL		MakeCref
+	ARG_TYPE    GNUMAKEFILE
+	TYPE        COMMAND 
+	EXEC_STRING sh -c 'gmake cref 2>&1 ; echo " *** Select Close or Exit from the window menu to close this window ***"'
+	WINDOW_TYPE	PERM_TERMINAL
+}
+
+# Obsolete Concept SCALD script call
+#ACTION MakeTitleBlock
+#{
+#	LABEL		MakeTitleBlock
+#	ARG_TYPE	GNUMAKEFILE
+#	TYPE		COMMAND
+#	EXEC_STRING	sh -c 'gmake titleblock PART_NUMBER=%"PART_NUMBER="% REV=%"REV="% \
+#             		2>&1 ; echo " *** Select Close or Exit from the window menu to close this window ***"'
+#	WINDOW_TYPE	PERM_TERMINAL
+#}
+
+## A different way to prompt for MakeTitleBlock
+#ACTION MakeTitleBlock
+#{
+#	LABEL		MakeTitleBlock
+#	ARG_TYPE	GNUMAKEFILE
+#	TYPE		COMMAND
+#	EXEC_STRING	sh -c 'gmake titleblock %(File)"\"PART_NUMBER=XXX-YYYY-ZZ\""% \
+#             		%(File)"\"REV=AA\""% \
+#             		2>&1 ; echo " *** Select Close or Exit from the window menu to close this window ***"'
+#	WINDOW_TYPE	PERM_TERMINAL
+#}
+
+ACTION MakePrint
+{
+	LABEL		MakePrint
+	ARG_TYPE    GNUMAKEFILE
+	TYPE        COMMAND 
+	EXEC_STRING sh -c 'gmake print 2>&1 ; echo " *** Select Close or Exit from the window menu to close this window ***"'
+	WINDOW_TYPE	PERM_TERMINAL
+    #TERM_OPTS   -geometry 100x50+50+100
+    #TERM_OPTS   -title "Window title:"
+}
+
+
+ACTION MakeClean
+{
+	LABEL		MakeClean
+	ARG_TYPE    GNUMAKEFILE
+	TYPE        COMMAND 
+	EXEC_STRING sh -c 'gmake clean 2>&1 ; echo " *** Select Close or Exit from the window menu to close this window ***"'
+	WINDOW_TYPE	PERM_TERMINAL
+}
+
+ACTION MakeArch
+{
+	LABEL		MakeArch
+	ARG_TYPE    GNUMAKEFILE
+	TYPE        COMMAND 
+	EXEC_STRING sh -c 'gmake arch 2>&1 ; echo " *** Select Close or Exit from the window menu to close this window ***"'
+	WINDOW_TYPE	PERM_TERMINAL
+}
+
+ACTION MakeLock
+{
+	LABEL		MakeLock
+	ARG_TYPE    GNUMAKEFILE
+	TYPE        COMMAND 
+	EXEC_STRING sh -c 'gmake lock 2>&1 ; echo " *** Select Close or Exit from the window menu to close this window ***"'
+	WINDOW_TYPE	PERM_TERMINAL
+}
+

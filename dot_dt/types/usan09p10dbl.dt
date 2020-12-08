@@ -1,0 +1,33 @@
+################################################################
+
+#   Actions and Datatypes for Printer "usan09p10dbl"
+
+#   Common Desktop Environment 1.0
+
+#   This file was created by the "dtprintinfo" program.
+
+#   Date of creation: Mon Jun 18 18:13:06 2007
+
+################################################################
+
+ACTION usan09p10dbl_Print
+{
+        ARG_TYPE                *
+        LABEL                   usan09p10dbl
+        ICON                    Fpprnt
+        TYPE                    COMMAND
+        WINDOW_TYPE             NO_STDIO
+        EXEC_STRING             env LPDEST=usan09p10dbl \
+				/usr/dt/bin/dtaction Print %(File)Arg_1%
+        DESCRIPTION             Printer usan09p10dbl: Xerox N2125
+ 
+
+}
+
+ACTION usan09p10dbl_Print
+{
+        ARG_COUNT               0
+        TYPE                    COMMAND
+        WINDOW_TYPE             NO_STDIO
+        EXEC_STRING             /usr/dt/bin/dtaction Dtprintinfo usan09p10dbl
+}

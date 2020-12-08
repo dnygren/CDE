@@ -1,0 +1,17 @@
+CONTROL	_ezDate_3
+{
+   TYPE	date
+   CONTAINER_TYPE	BOX
+   CONTAINER_NAME	Top
+   POSITION_HINTS	1
+   ICON	FpCM
+   LABEL	Calendar
+   PUSH_ACTION	Dtcm
+   DROP_ACTION	DtcmInsert
+   PUSH_RECALL	true
+   CLIENT_NAME	dtcm
+   DATE_FORMAT	%b%n%e
+   DELETE	false
+   HELP_VOLUME	FPanel
+   HELP_TOPIC	FPOnItemDate
+}

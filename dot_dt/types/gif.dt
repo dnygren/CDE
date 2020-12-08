@@ -1,0 +1,58 @@
+########################################################
+
+DATA_ATTRIBUTES GIF
+{
+        ACTIONS         Open, GIMP
+        ICON		Dtgif
+        NAME_TEMPLATE	%s.gif
+        MIME_TYPE	image/gif
+        SUNV3_TYPE	gif-file
+	DESCRIPTION	This file contains a graphics image in GIF format. \
+                        Its data type is named GIF.  GIF files have \
+                        names ending with .gif or .GIF, or contain the \
+                        characters "GIF87a" or "GIF89a".
+        TYPE_LABEL      GIF
+}
+DATA_CRITERIA GIF1
+{
+	DATA_ATTRIBUTES_NAME GIF
+        MODE            f
+	NAME_PATTERN	*.[Gg][Ii][Ff]
+}
+DATA_CRITERIA GIF3
+{
+	DATA_ATTRIBUTES_NAME GIF
+        CONTENT		0 string GIF87a|0 string GIF89a
+        MODE            f
+}
+ACTION Open
+{
+        LABEL           Open
+        ARG_TYPE        GIF
+        TYPE            COMMAND
+	WINDOW_TYPE     NO_STDIO
+	EXEC_STRING     display "%(File)Arg_1%"
+	#EXEC_STRING     gimp --no-splash "%(File)Arg_1%"
+	#EXEC_STRING     xv "%(File)Arg_1%"
+
+}
+ACTION GIMP
+{
+        LABEL           GIMP
+        ARG_TYPE        GIF
+        TYPE            COMMAND
+	WINDOW_TYPE     NO_STDIO
+	#EXEC_STRING     display "%(File)Arg_1%"
+	EXEC_STRING     gimp --no-splash "%(File)Arg_1%"
+	#EXEC_STRING     xv "%(File)Arg_1%"
+
+}
+ACTION Print
+{
+        LABEL           Print
+        ARG_TYPE        GIF
+        TYPE            MAP
+        MAP_ACTION	NoPrint
+}
+
+

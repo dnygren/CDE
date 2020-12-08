@@ -1,0 +1,59 @@
+ACTION Landscape5
+{
+     LABEL         Landscape Size 5
+     ARG_TYPE      *
+     TYPE          COMMAND
+     EXEC_STRING   /bin/sh -c '/usr/lib/lp/postscript/postprint -fCourier -s 5 -p land %(File)Arg_1% | dtlp -s'
+     ICON          Fpprnt
+     WINDOW_TYPE   NO_STDIO
+     DESCRIPTION   Print any textfile in Courier 5 Landscape. \
+     This icon also accepts Mails for printing via drag and drop.
+}
+
+ACTION Landscape6
+{
+     LABEL         Landscape Size 6
+     ARG_TYPE      *
+     TYPE          COMMAND
+     EXEC_STRING   /bin/sh -c '/usr/lib/lp/postscript/postprint -fCourier -s 6 -p land %(File)Arg_1% | dtlp -s'
+     ICON          Fpprnt
+     WINDOW_TYPE   NO_STDIO
+     DESCRIPTION   Print any textfile in Courier 6 Landscape. \
+     This icon also accepts Mails for printing via drag and drop.
+}
+
+ACTION Landscape7
+{
+     LABEL         Landscape Size 7
+     ARG_TYPE      *
+     TYPE          COMMAND
+     EXEC_STRING   /bin/sh -c '/usr/lib/lp/postscript/postprint -fCourier -s 7 -p land %(File)Arg_1% | dtlp -s'
+     ICON          Fpprnt
+     WINDOW_TYPE   NO_STDIO
+     DESCRIPTION   Print any textfile in Courier 7 Landscape. \
+     This icon also accepts Mails for printing via drag and drop.
+}
+
+ACTION Landscape8
+{
+     LABEL         Landscape Size 8
+     ARG_TYPE      *
+     TYPE          COMMAND
+     EXEC_STRING   /bin/sh -c '/usr/lib/lp/postscript/postprint -fCourier -s 8 -p land %(File)Arg_1% | dtlp -s'
+     ICON          Fpprnt
+     WINDOW_TYPE   NO_STDIO
+     DESCRIPTION   Print any textfile in Courier 8 Landscape. \
+     This icon also accepts Mails for printing via drag and drop.
+}
+
+ACTION Portrait8
+{
+     LABEL         Portrait Size 8
+     ARG_TYPE      *
+     TYPE          COMMAND
+     EXEC_STRING   /bin/sh -c '/usr/lib/lp/postscript/postprint -fCourier -s 8 -p p %(File)Arg_1% | dtlp -s'
+     ICON          Fpprnt
+     WINDOW_TYPE   NO_STDIO
+     DESCRIPTION   Print any textfile in Courier 8 Portrait. \
+     This icon also accepts Mails for printing via drag and drop.
+}

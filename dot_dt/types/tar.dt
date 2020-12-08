@@ -1,0 +1,108 @@
+###########################################################
+
+DATA_ATTRIBUTES TAR
+{
+    ACTIONS         Open,TarUnpack,TarUpdate,Compress,Gzip,Bzip,Xz,TarList,Truncate,Print
+	COPY_TO_ACTION	TarUpdate
+	MOVE_TO_ACTION	TarUpdate
+	LINK_TO_ACTION	TarUnpack
+    ICON		tar.xpm
+    NAME_TEMPLATE	%s.tar
+    NAME_TEMPLATE	%s.gtar
+    MIME_TYPE	application/octet-stream
+	DESCRIPTION	This file is an archive file that contains \
+                        a number of individual files.  Its data type is \
+                        named TAR.  TAR files have names ending with '.tar'.
+        TYPE_LABEL      TAR
+}
+DATA_CRITERIA TAR1
+{
+	DATA_ATTRIBUTES_NAME TAR
+    MODE            f
+	NAME_PATTERN	*.tar
+}
+DATA_CRITERIA TAR2
+{
+	DATA_ATTRIBUTES_NAME	TAR
+	MODE			f
+	CONTENT			257 string ustar
+}
+DATA_CRITERIA TAR3
+{
+	DATA_ATTRIBUTES_NAME	TAR
+	MODE			f
+	NAME_PATTERN	*.gtar
+}
+ACTION Open
+{
+        LABEL           Open
+        ARG_TYPE        TAR
+        TYPE            MAP
+        MAP_ACTION      TarList
+}
+ACTION Print
+{
+        LABEL           Print
+        ARG_TYPE        TAR
+        TYPE            MAP
+        MAP_ACTION      PrintTarList
+}
+ACTION TarList
+{
+	LABEL		List Contents
+        ICON		Dtmagtp
+        TYPE            COMMAND
+        WINDOW_TYPE     PERM_TERMINAL
+        EXEC_STRING     sh -c ' \
+                        /pkg/gnu/bin/tar -tvf "%(File)Arg_1"Archive to List:"%" 2>&1 | \${PAGER:-more}; \
+	    echo "\\n*** Select Close or Exit from the window menu to close this window ***"'
+	DESCRIPTION	The Archive List Contents (TarList) action lists \
+                        the files contained in a TAR archive file.
+}
+ACTION PrintTarList
+{
+	LABEL		PrintTarList
+        TYPE            COMMAND
+        WINDOW_TYPE     NO_STDIO
+        EXEC_STRING     sh -c ' \
+                        /pkg/gnu/bin/tar -tvf "%(File)Arg_1%" | \ 
+                           /usr/dt/bin/dtlp -u "Archive List Contents"'
+	DESCRIPTION	The PrintTarList action prints out a list of the \
+                        files contained in a TAR archive file on the \
+                        default printer. 
+}
+ACTION TarUnpack
+{
+	LABEL		Archive Unpack
+    ICON		Dtmagtp
+	ARG_COUNT	<2
+    TYPE            COMMAND
+    WINDOW_TYPE     PERM_TERMINAL
+    EXEC_STRING     sh -c ' \
+	                /pkg/gnu/bin/tar -xvf "%(File)Arg_1"Archive to Unpack:"%" \
+                           2>&1 ; \
+	    echo "\\n*** Select Close or Exit from the window menu to close this window ***"'
+	DESCRIPTION	The Archive Unpack (TarUnpack) action accepts \
+                        a TAR file as argument and separates out the \
+                        archived files into separate files in the folder \
+			containing the TAR file.  Or, drag-link a folder \
+			onto the TAR file to unpack the archive there.
+}
+ACTION TarUnpack
+{
+	LABEL		Archive Unpack
+	ARG_COUNT	2
+    ICON		Dtmagtp
+    TYPE            COMMAND
+    WINDOW_TYPE     PERM_TERMINAL
+    EXEC_STRING     sh -c ' \
+			cd "%Arg_2%"; \
+                	/pkg/gnu/bin/tar -xvf "%(File)Arg_1%" 2>&1 \
+			| \${PAGER:-more}; \
+	echo "\\n*** Select Close or Exit from the window menu to close this window ***"'
+	DESCRIPTION	The Archive Unpack (TarUnpack) action accepts \
+                        a TAR file as argument and separates out the \
+                        archived files into separate files in the folder \
+			containing the TAR file.  Or, drag-link a folder \
+			onto the TAR file to unpack the archive there.
+}

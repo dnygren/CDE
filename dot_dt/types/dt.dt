@@ -1,0 +1,1004 @@
+##############################################################################m
+#
+#     dt.dt
+#
+#     Action and DataType definitions for the Common Desktop Environment
+#     (CDE) DT components.
+#
+#    (c) Copyright 1993, 1994, 1995 Hewlett-Packard Company
+#    (c) Copyright 1993, 1994, 1995 International Business Machines Corp.
+#    (c) Copyright 1993, 1994, 1995 Sun Microsystems, Inc.
+#    (c) Copyright 1993, 1994, 1995 Novell, Inc.
+#
+#    $XConsortium: dt.dt.src /main/cde1_maint/7 1995/10/31 11:31:19 rcs $
+#
+###############################################################################
+set DtDbVersion=1.0
+
+###############################################################################
+#
+# WARNING:  This file may be overwritten in subsequent installations of
+#     the Common Desktop Environment (CDE).  Consequently, any system wide
+#     changes should be made to an equivalent database file in
+#     /etc/dt/appconfig/types/<locale> and not in this file.
+#
+###############################################################################
+
+###################################################################
+#
+# Data Attributes
+#
+###################################################################
+DATA_ATTRIBUTES DT
+{
+        ACTIONS         Open,ReloadActions,Print
+        ICON		Dtdt
+        IS_TEXT		true
+        NAME_TEMPLATE	%s.dt
+        MIME_TYPE	text/plain
+        DESCRIPTION     This is a desktop database file containing action \
+                        and datatype definitions.  Its data type is \
+                        named DT.  DT files have names ending with '.dt'.
+        TYPE_LABEL      DT
+}
+DATA_CRITERIA DT1
+{
+	DATA_ATTRIBUTES_NAME DT
+        MODE            f
+        NAME_PATTERN    *.dt
+}
+ACTION ReloadActionsNotice
+{
+        TYPE            TT_MSG
+        TT_CLASS	TT_NOTICE
+        TT_SCOPE	TT_SESSION
+        TT_OPERATION	DtTypes_Reloaded
+#        DESCRIPTION     The ReloadActionsNotice action notifies \
+#			applications of a rebuilt cache file database.
+}
+
+ACTION BuildDataBaseRequest
+{
+        TYPE            TT_MSG
+        TT_CLASS	TT_REQUEST
+        TT_SCOPE	TT_SESSION
+        TT_OPERATION	DtDtsCache
+#        DESCRIPTION     The BuildDataBaseRequest action rebuilds the \
+#			cache file database \
+#                        of action, data type and front panel definitions.
+}
+ACTION ReloadActions
+{
+        LABEL           Reload Actions
+        TYPE            COMMAND
+	WINDOW_TYPE	NO_STDIO
+	EXEC_STRING	sh -c 'dtaction BuildDataBaseRequest ;\
+			dtaction ReloadActionsNotice'
+        DESCRIPTION     The Reload Actions action reloads the database \
+                        of action, data type and front panel definitions.
+}
+
+#######################################################
+
+DATA_ATTRIBUTES FP
+{
+        ACTIONS         Open,Print
+        ICON		Dtfpcfg
+        IS_TEXT		true
+        NAME_TEMPLATE	%s.fp
+        MIME_TYPE	text/plain
+        DESCRIPTION     This is a desktop database file containing definitions \
+                        for the Front Panel configuration.  Its data type \
+                        is named FP. FP files have names ending with '.fp'.
+        TYPE_LABEL      FP
+}
+DATA_CRITERIA FP1
+{
+	DATA_ATTRIBUTES_NAME FP
+        MODE            f
+        NAME_PATTERN    *.fp
+}
+
+#######################################################
+
+DATA_ATTRIBUTES DTFILE_FILE
+{
+        PROPERTIES      invisible
+        ACTIONS         Open,Print
+        IS_TEXT         true
+        MIME_TYPE	text/plain
+        DESCRIPTION     This is a hidden file used by File Manager to hold \
+                        certain configuration information.  Its data type \
+                        is named DTFILE_FILE.
+        TYPE_LABEL      DTFILE_FILE
+}
+DATA_CRITERIA DTFILE_FILE1
+{
+        DATA_ATTRIBUTES_NAME DTFILE_FILE
+        MODE            f
+        NAME_PATTERN    .\!*
+}
+
+#######################################################
+
+DATA_ATTRIBUTES DTKSH_SCRIPT
+{
+        ACTIONS         Run,Open,Print,RunWithOptions
+        ICON            Dtdtksh
+        IS_EXECUTABLE	true
+        COPY_TO_ACTION  ExecuteNoOptions
+        NAME_TEMPLATE	%s.ds
+        MIME_TYPE	text/plain
+        DESCRIPTION     This is an executable file containing a 'dtksh' \
+                        script.  Its data type is named DTKSH_SCRIPT.
+        TYPE_LABEL      DTKSH_SCRIPT
+}
+DATA_CRITERIA DTKSH_SCRIPT1
+{
+        DATA_ATTRIBUTES_NAME DTKSH_SCRIPT
+	MODE		f&x
+        NAME_PATTERN    *.ds
+}
+DATA_CRITERIA DTKSH_SCRIPT2
+{
+        DATA_ATTRIBUTES_NAME DTKSH_SCRIPT
+	MODE		f&x
+        CONTENT		0 string #!/usr/dt/bin/dtksh|0 string #! /usr/dt/bin/dtksh
+}
+ACTION Run
+{
+        LABEL           Run
+        ARG_TYPE        DTKSH_SCRIPT
+        TYPE            MAP
+        MAP_ACTION      ExecuteNoOptions
+}
+ACTION RunWithOptions
+{
+        LABEL           RunWithOptions
+        ARG_TYPE        DTKSH_SCRIPT
+        TYPE            MAP
+        MAP_ACTION      Execute
+}
+
+#######################################################
+
+DATA_ATTRIBUTES DTKSH_CONV
+{
+        ACTIONS         Open,Print
+        ICON            Dtdtksh
+        NAME_TEMPLATE	%s.dtsh
+        MIME_TYPE	text/plain
+        DESCRIPTION     This file contains convenience functions that \
+                        can be used by 'dtksh' scripts. Its data type is \
+                        named  DTKSH_CONV.
+        TYPE_LABEL      DTKSH_CONV
+}
+DATA_CRITERIA DTKSH_CONV1
+{
+        DATA_ATTRIBUTES_NAME DTKSH_CONV
+        MODE            f
+        NAME_PATTERN    *.dtsh
+}
+
+###################################################################
+###################################################################
+#
+# Actions
+#
+###################################################################
+ACTION Dtstyle
+{
+	LABEL		Style Manager
+        ARG_COUNT       0
+        ICON		Fpstyle
+        TYPE            COMMAND
+        WINDOW_TYPE     NO_STDIO
+        EXEC_STRING     /usr/dt/bin/dtstyle
+        DESCRIPTION     The Style Manager (Dtstyle) action starts \
+                        the desktop Style Manager.
+}
+
+ACTION SetDtColor
+{
+	LABEL		Color Style Manager
+	ARG_COUNT	0
+	ICON		DtColor
+	TYPE		COMMAND
+	WINDOW_TYPE	NO_STDIO
+	EXEC_STRING	/usr/dt/bin/dtstyle -color
+	DESCRIPTION	The Color Style Manager (DtstyleColor) action starts the\
+			desktop Style Manager and the Color component.
+}
+
+ACTION SetDtFont
+{
+	LABEL		Font Style Manager
+	ARG_COUNT	0
+	ICON		DtFont
+	TYPE		COMMAND
+	WINDOW_TYPE	NO_STDIO
+	EXEC_STRING	/usr/dt/bin/dtstyle -font
+	DESCRIPTION	The Font Style Manager (DtstyleFont) action starts the\
+			desktop Style Manager and the Font component.
+}
+
+ACTION SetDtBackdrop
+{
+	LABEL		Backdrop Style Manager
+	ARG_COUNT	0
+	ICON		DtBkdrp
+	TYPE		COMMAND
+	WINDOW_TYPE	NO_STDIO
+	EXEC_STRING	/usr/dt/bin/dtstyle -backdrop
+	DESCRIPTION	The Backdrop Style Manager (DtstyleBackdrop) action starts the\
+			desktop Style Manager and the Backdrop component.
+}
+
+ACTION SetDtKeyboard
+{
+	LABEL		Keyboard Style Manager
+	ARG_COUNT	0
+	ICON		DtKeybd
+	TYPE		COMMAND
+	WINDOW_TYPE	NO_STDIO
+	EXEC_STRING	/usr/dt/bin/dtstyle -keyboard
+	DESCRIPTION	The Keyboard Style Manager (DtstyleKeyboard) action starts the\
+			desktop Style Manager and the Keyboard component.
+}
+
+ACTION SetDtMouse
+{
+	LABEL		Mouse Style Manager
+	ARG_COUNT	0
+	ICON		DtMouse
+	TYPE		COMMAND
+	WINDOW_TYPE	NO_STDIO
+	EXEC_STRING	/usr/dt/bin/dtstyle -mouse
+	DESCRIPTION	The Mouse Style Manager (DtstyleMouse) action starts the\
+			desktop Style Manager and the Mouse component.
+}
+
+ACTION SetDtBeep
+{
+	LABEL		Beep Style Manager
+	ARG_COUNT	0
+	ICON		DtBeep
+	TYPE		COMMAND
+	WINDOW_TYPE	NO_STDIO
+	EXEC_STRING	/usr/dt/bin/dtstyle -beep
+	DESCRIPTION	The Beep Style Manager (DtstyleBeep) action starts the\
+			desktop Style Manager and the Beep component.
+}
+
+ACTION SetDtScreen
+{
+	LABEL		Screen Style Manager
+	ARG_COUNT	0
+	ICON		DtScrn
+	TYPE		COMMAND
+	WINDOW_TYPE	NO_STDIO
+	EXEC_STRING	/usr/dt/bin/dtstyle -screen
+	DESCRIPTION	The Screen Style Manager (DtstyleScreen) action starts the\
+			desktop Style Manager and the Screen component.
+}
+
+ACTION SetDtWindow
+{
+	LABEL		Window Style Manager
+	ARG_COUNT	0
+	ICON		DtDtwm
+	TYPE		COMMAND
+	WINDOW_TYPE	NO_STDIO
+	EXEC_STRING	/usr/dt/bin/dtstyle -window
+	DESCRIPTION	The Window Style Manager (DtstyleWindow) action starts the\
+			desktop Style Manager and the Window component.
+}
+
+ACTION SetDtStartup
+{
+	LABEL		Startup Style Manager
+	ARG_COUNT	0
+	ICON		DtStart
+	TYPE		COMMAND
+	WINDOW_TYPE	NO_STDIO
+	EXEC_STRING	/usr/dt/bin/dtstyle -startup
+	DESCRIPTION	The Startup Style Manager (DtstyleStartup) action starts the\
+			desktop Style Manager and the Startup component.
+}
+
+#######
+
+ACTION OpenDtIntro
+{
+	LABEL		Desktop Introduction
+        ARG_COUNT       0
+	ICON		Fphelp
+        TYPE            COMMAND
+        WINDOW_TYPE     NO_STDIO
+        EXEC_STRING     /usr/dt/bin/dthelpview -helpVolume Intromgr
+        DESCRIPTION     The Desktop Introduction action displays the help volume \
+                        containing introductory and basic skills \
+                        information about the desktop. 
+}
+
+#######
+
+ACTION FPHelp
+{
+	LABEL		Front Panel Help
+        ARG_COUNT       0
+	ICON		Fphelp
+        TYPE            COMMAND
+        WINDOW_TYPE     NO_STDIO
+        EXEC_STRING     /usr/dt/bin/dthelpview -helpVolume FPanel
+        DESCRIPTION     The FPHELP action icon displays the Front \
+                        Panel help volume.
+}
+
+#######
+
+ACTION LockDisplay
+{
+	LABEL		LockDisplay
+        TYPE            TT_MSG
+	ICON		Fplock
+        TT_CLASS	TT_REQUEST
+        TT_SCOPE	TT_SESSION
+        TT_OPERATION	Display_Lock
+        DESCRIPTION     The LockDisplay action locks the workstation. \
+                        You must know the user's or root password to \
+                        unlock the workstation.
+}
+
+#######
+
+ACTION ExitSession
+{
+	LABEL		ExitSession
+	ICON		Fpexit
+        ARG_COUNT      	0
+        TYPE            TT_MSG
+        TT_CLASS	TT_REQUEST
+        TT_SCOPE	TT_SESSION
+        TT_OPERATION	XSession_Exit
+        DESCRIPTION     The ExitSession action ends the user's \
+                        desktop session and displays the Login screen. \
+                        To begin another session, the user must log in.
+}
+
+#######
+
+ACTION ReloadResources
+{
+        LABEL           Reload Resources
+        ARG_COUNT       0
+        TYPE            TT_MSG
+        TT_CLASS	TT_REQUEST
+        TT_SCOPE	TT_SESSION
+        TT_OPERATION	Resources_Reload
+        DESCRIPTION     The Reload Resources action reloads your \
+                        X resources database with the desktop resources \
+                        files, incorporating any changes that may have \
+                        occurred to them since you logged in.
+}
+
+#######
+
+ACTION ReloadApps
+{
+	LABEL		Reload Applications
+        ARG_COUNT       0
+        TYPE            COMMAND
+        WINDOW_TYPE     NO_STDIO
+        EXEC_STRING     /bin/sh -c '/usr/dt/bin/dtaction ReloadActions; \
+                           /usr/dt/bin/dtappgather -r; \
+			   /usr/dt/bin/dthelpgen -dir $HOME/.dt/help '
+        DESCRIPTION     The Reload Applications action reloads the \
+                        database of action, data type and front panel \
+                        definitions.
+}
+
+#######
+
+ACTION Dtcreate
+{
+	LABEL		Create Action
+        ICON		Dtrunpn
+        TYPE            COMMAND
+        WINDOW_TYPE     NO_STDIO
+        EXEC_STRING     /bin/sh -c 'ARGS="%Arg_1%"; \
+                          '/usr/dt'/bin/dtcreate ${ARGS:+"$ARGS"}'
+        DESCRIPTION     The Create Action (Dtcreate) action runs the Create \
+                        Action application.  Use Create Action to create \
+                        action and data type definitions for applications.
+}
+
+#######
+
+ACTION RestoreDtwmrc
+{
+	LABEL		Restore Dtwmrc
+        ICON            Fppenpd
+        TYPE            COMMAND
+        WINDOW_TYPE     NO_STDIO
+        EXEC_STRING     sh -c 'if [ ! -d $HOME/.dt/$LANG ] ; then \
+                                 mkdir -p $HOME/.dt/$LANG; \
+                                 chmod u+wx $HOME/.dt/$LANG; \
+                               fi; \
+                               if [ -f $HOME/.dt/$LANG/dtwmrc ] ; then \
+                                 chmod u+w $HOME/.dt/$LANG/dtwmrc; \
+                               fi; \
+                               if [ -f /etc/dt/config/sys.dtwmrc ] ; then \
+                                 cp /etc/dt/config/sys.dtwmrc \
+                                                         $HOME/.dt/$LANG/dtwmrc; \
+                               elif [ -f /usr/dt/config/$LANG/sys.dtwmrc ] ; then \
+                                 cp /usr/dt/config/$LANG/sys.dtwmrc \
+                                                         $HOME/.dt/$LANG/dtwmrc; \
+                               else \
+                                 cp /usr/dt/config/C/sys.dtwmrc \
+                                                         $HOME/.dt/$LANG/dtwmrc; \
+                               fi; \
+                               chmod u+w $HOME/.dt/$LANG/dtwmrc;'
+        DESCRIPTION     The Restore Dtwmrc (RestoreDtwmrc) action restores \
+     $HOME/.dt/dtwmrc to its default state.
+}
+
+
+#######
+
+ACTION RestoreWsmenuDir
+{
+	LABEL		Restore Wsmenu Dir
+        ICON            Fppenpd
+        TYPE            COMMAND
+        WINDOW_TYPE     NO_STDIO
+        EXEC_STRING     sh -c 'if [ -d $HOME/.dt/wsmenu ] ; then \
+                                 rm -rf $HOME/.dt/wsmenu ; \
+                               fi ; \
+                               if [ ! -d $HOME/.dt/$LANG ] ; then \
+                                 mkdir $HOME/.dt/$LANG ; \
+                               fi ; \
+                               mkdir $HOME/.dt/wsmenu ; \
+                               chmod u+wx $HOME/.dt/wsmenu ; \
+                               if [ -d /usr/dt/config/$LANG/wsmenu ] ; then \
+                                 (cd /usr/dt/config/$LANG/wsmenu ; \
+                                 > /dev/null ; tar cf - . ) | \
+                                 (cd $HOME/.dt/wsmenu >/dev/null ; tar xfBp - )\
+                               elif [ -d /usr/dt/config/C/wsmenu ] ; then \
+                                 (cd /usr/dt/config/C/wsmenu ; \
+                                 > /dev/null ; tar cf - . ) | \
+                                 (cd $HOME/.dt/wsmenu >/dev/null ; tar xfBp - )\
+                               fi ;'
+        DESCRIPTION     The Restore Wsmenu Dir (RestoreWsmenuDir) action restores the \
+     wsmenu directory to its initial default state.
+}
+
+
+#######
+
+ACTION RestoreWorkspaceMenu
+{
+	LABEL		Restore Workspace Menu
+	ICON		SDtWsMenu
+        TYPE            COMMAND
+        WINDOW_TYPE     NO_STDIO
+        EXEC_STRING     sh -c 'dtaction RestoreDtwmrc; \
+			       dtaction RestoreWsmenuDir; \
+			       dtaction BuildDtwmrcFromWsmenuDir'
+        DESCRIPTION     The Restore Workspace Menu (RestoreWorkspaceMenu) action restores the \
+     workspace menu to its default state.
+}
+
+
+#######
+
+ACTION UndoCustomizeWorkspaceMenu
+{
+	LABEL		Restore WorkspaceMenu
+	ICON		SDtWsMenu
+        TYPE            COMMAND
+        WINDOW_TYPE     NO_STDIO
+        EXEC_STRING     sh -c 'rm -f $HOME/.dt/$LANG/dtwmrc; \
+			   rm -rf $HOME/.dt/wsmenu; \
+			   rm -f $HOME/.dt/$LANG/wsmenu.dtwmrc; \
+			   rm -f $HOME/.dt/$LANG/.showMeAgain; \
+			   dtaction RegenerateWorkspaceMenu'
+        DESCRIPTION     The Restore WorkspaceMenu (UndoCustomizeWorkspaceMenu) action restores \
+     the workspace menu to its original state prior to customization SDE style.
+}
+
+
+#######
+
+ACTION CustomizeWorkspaceMenu
+{
+	LABEL		Customize Workspace Menu
+	ICON		SDtWsMenu
+	ARG_COUNT	0
+        TYPE            COMMAND
+	WINDOW_TYPE	NO_STDIO
+
+	EXEC_STRING	dtksh -c '( \
+                                okCB() { if [ ! -d $HOME/.dt/wsmenu ] ; then \
+                                 dtaction RestoreWsmenuDir; \
+                                fi ; \
+                                if [ ! -f $HOME/.dt/$LANG/dtwmrc ] ; then \
+                                 dtaction RestoreDtwmrc; \
+                                fi ; \
+                                touch $HOME/.dt/$LANG/.showMeAgain ; \
+                                dtaction UpdateWorkspaceMenu; \
+                                dtaction ShowWorkspaceMenuFolder \
+                                $HOME/.dt/wsmenu; exit 0; }; \
+				cancelCB() { exit 1; }; \
+                                if [ -f $HOME/.dt/$LANG/.showMeAgain ] ; then \
+                                  dtaction ShowWorkspaceMenuFolder $HOME/.dt/wsmenu ; \
+                                  exit 0 ; \
+                                fi ; \
+				XtInitialize TOP dtWarning DtWarning; \
+				XmCreateWarningDialog DIALOG \$TOP "Warning" \
+                                  dialogTitle:"$0" \
+                                  messageString:"$1";\
+				XmMessageBoxGetChild HELP \$DIALOG \
+					DIALOG_HELP_BUTTON; \
+				XtUnmanageChild \$HELP; \
+				XtAddCallback \$DIALOG okCallback "okCB"; \
+				XtAddCallback \$DIALOG cancelCallback "cancelCB"; \
+				XtManageChild \$DIALOG; \
+				XtMainLoop & )' "Customize Workspace Menu - Reminder" "Make sure to issue \\"Update Workspace Menu\\" from the File Manager Menu \\n\
+to reflect your changes in the Workspace Menu."
+
+        DESCRIPTION     The Customize Workspace Menu (CustomizeWorkspaceMenu) action \
+     invokes sdtcustommenu which is a dialog that asks the user to \
+     to proceed with customizing the workspace menu or not.
+}
+
+#######
+
+ACTION AddItemToMenu
+{
+	LABEL		Add Item To Menu
+	ICON		SDtWsMenu
+        TYPE            COMMAND
+        WINDOW_TYPE     NO_STDIO
+        EXEC_STRING     /usr/dt/bin/sdtwsmenu
+        DESCRIPTION     The Add Item To Menu (AddItemToMenu) action invokes sdtwsmenu \
+     which allows the user to add items to the Workspace Menu hierarchy.
+}
+
+
+#######
+
+ACTION RegenerateWorkspaceMenu
+{
+	LABEL		Regenerate Workspace Menu
+	ICON		SDtWsMenu
+        TYPE            TT_MSG
+        TT_CLASS	TT_NOTICE
+        TT_SCOPE	TT_SESSION
+        TT_OPERATION	Saved
+        TT_FILE		$HOME/.dt/$LANG/dtwmrc
+        TT_ARG0_VTYPE	File
+        TT_ARG0_MODE	TT_IN
+        DESCRIPTION     The restores Workspace Menu (RegenerateWorkspaceMenu) action tells \
+     dtwm to update its view of the work space menu structure \
+     reflected in the new dtwmrc file.
+}
+
+
+#######
+ACTION BuildDtwmrcFromWsmenuDir
+{
+	LABEL		Build Dtwmrc From Wsmenu Dir
+        ICON            Dtactn
+        TYPE            COMMAND
+        WINDOW_TYPE     NO_STDIO
+        EXEC_STRING     sh -c 'if [ ! -d $HOME/.dt/wsmenu ] ; then \
+                                 dtaction RestoreWsmenuDir; \
+                                fi ; \
+                                if [ ! -f $HOME/.dt/$LANG/dtwmrc ] ; then \
+                                 dtaction RestoreDtwmrc ; \
+                                fi ; \
+                                sdtdir2dtwmrc -o $HOME/.dt/$LANG/wsmenu.dtwmrc \
+                                $HOME/.dt/wsmenu;'
+        DESCRIPTION     The Build Dtwmrc From Wsmenu Dir (BuildDtwmrcFromWsmenuDir) action builds \
+     $HOME/.dt/dtwmrc file from the $HOME/.dt/wsmenu dir structure.
+}
+
+#######
+
+ACTION BuildWorkspaceMenuFromWsmenuDir
+{
+        ICON            Dtactn
+        TYPE            COMMAND
+        WINDOW_TYPE     NO_STDIO
+        EXEC_STRING     sh -c 'dtaction BuildDtwmrcFromWsmenuDir; \
+                               dtaction RegenerateWorkspaceMenu'
+}
+
+#######
+
+ACTION UpdateWorkspaceMenu
+{
+        LABEL           Update Workspace Menu
+	ICON		SDtWsMenu
+        TYPE            MAP
+        MAP_ACTION      BuildWorkspaceMenuFromWsmenuDir
+        DESCRIPTION     The Update Workspace Menu (UpdateWorkspaceMenu) action \
+     builds $HOME/.dt/dtwmrc from $HOME/.dt/wsmenu and asks \
+     the window manager to reload the workspace menu from $HOME/.dt/dtwmrc.
+}
+
+#######
+
+ACTION ShowWorkspaceMenuFolder
+{
+     LABEL                   Show Workspace Menu Folder
+     ICON		SDtWsMenu
+     ARG_COUNT		     1
+     TYPE            	     TT_MSG
+     TT_CLASS		     TT_REQUEST
+     TT_SCOPE		     TT_SESSION
+     TT_OPERATION	     DtFolder_Show
+     TT_FILE		     %Arg_1%
+
+     TT_ARG0_MODE            TT_IN
+     TT_ARG0_VTYPE           -restricted
+
+     TT_ARG1_MODE            TT_IN
+     TT_ARG1_VTYPE           -reuse
+
+     TT_ARG2_MODE            TT_IN
+     TT_ARG2_VTYPE           -tree
+     TT_ARG2_VALUE           on
+
+     TT_ARG3_MODE            TT_IN
+     TT_ARG3_VTYPE           -tree_files
+     TT_ARG3_VALUE           choose
+
+     TT_ARG4_MODE            TT_IN
+     TT_ARG4_VTYPE           -order
+     TT_ARG4_VALUE           alphabetical
+
+     TT_ARG5_MODE            TT_IN
+     TT_ARG5_VTYPE           -direction
+     TT_ARG5_VALUE           ascending
+
+     DESCRIPTION     The Show Workspace Menu Folder (ShowWorkspaceMenuFolder) action invokes \
+     dtfile on the folder containing the Workspace Menu items. The user can \
+     add items and move them around within that folder.
+}
+
+#######
+
+ACTION DtwmrcEdit
+{
+	LABEL		Edit Dtwmrc
+        ICON            Fppenpd
+        TYPE            COMMAND
+        WINDOW_TYPE     NO_STDIO
+        EXEC_STRING     sh -c 'if [ ! -f $HOME/.dt/$LANG/dtwmrc ] ; then \
+                                  dtaction RestoreDtwmrc; \
+                               fi; \
+                               exec dtaction Open $HOME/.dt/$LANG/dtwmrc'
+        DESCRIPTION     The Edit Dtwmrc (DtwmrcEdit) action opens a \
+                        copy of $HOME/.dt/dtwmrc in your system editor \
+                        (the editor specified by the EDITOR environment \
+                        variable).  If $HOME/.dt/dtwmrc doesn't exist, the \
+                        action creates the file by copying \
+                        /usr/dt/config/<language>/sys.dtwmrc.  When you \
+                        save the file and exit the editor, you must \
+                        restart the Workspace Manager by choosing Restart \
+                        Workspace Manager from the Workspace Menu.
+}
+
+#######
+
+ACTION RestorePanel
+{
+	LABEL		Restore Front Panel
+        TYPE            TT_MSG
+	ICON		Dtfpcfg
+        TT_CLASS	TT_REQUEST
+        TT_SCOPE	TT_SESSION
+        TT_OPERATION	DtPanel_Restore
+        DESCRIPTION     The Restore Front Panel action restores the \
+     front panel to its default state.
+}
+
+#######
+
+ACTION Dtmail
+{
+	LABEL		Mailer
+        ICON		DtMail
+        TYPE            COMMAND
+        WINDOW_TYPE     NO_STDIO
+        EXEC_STRING     /usr/dt/bin/dtmail
+        DESCRIPTION     The Mailer (Dtmail) action runs the desktop \
+                        Mailer application.
+}
+
+#######
+
+ACTION Dtcalc
+{
+	LABEL		Calculator
+        ICON            Dtcalc
+        ARG_COUNT       0
+        TYPE            COMMAND
+        WINDOW_TYPE     NO_STDIO
+        EXEC_STRING     /usr/dt/bin/dtcalc
+        DESCRIPTION     The Calculator (Dtcalc) action runs the desktop \
+                        Calculator application.
+}
+
+#######
+
+ACTION Dtterm
+{
+	LABEL		Terminal
+        ARG_COUNT       0
+        ICON            Dtterm
+        TYPE            COMMAND
+        WINDOW_TYPE     NO_STDIO
+        #EXEC_STRING     /usr/dt/bin/dtterm
+        EXEC_STRING /usr/dt/bin/dtterm -sb -sl 262144 -geometry =100x50+50+100
+}
+
+ACTION SDtTerminal_New
+{
+	LABEL		Terminal
+        ARG_COUNT       0
+        ICON            Dtterm
+        TYPE            TT_MSG
+        TT_CLASS        TT_REQUEST
+        TT_SCOPE        TT_SESSION
+        TT_OPERATION    SDtTerminal_New
+        TT_ARG0_MODE    TT_IN
+        TT_ARG0_VTYPE   -display
+        TT_ARG0_REP_TYPE        TT_REP_STRING
+        TT_ARG0_VALUE   $DISPLAY
+        TT_ARG1_MODE    TT_IN
+        TT_ARG1_VTYPE   -display
+        TT_ARG1_REP_TYPE        TT_REP_STRING
+        TT_ARG1_VALUE   $DISPLAY
+        DESCRIPTION     The Terminal (Dtterm) action runs the desktop Terminal \
+                        Emulator application.
+}
+
+ACTION Dtterm
+{
+	LABEL		Terminal
+        ARG_COUNT       1
+        ICON            Dtterm
+	TYPE		COMMAND
+	WINDOW_TYPE	NO_STDIO
+	EXEC_STRING	sh -c '\
+			if [ -d "%Arg_1%" ]; then \
+				cd "%Arg_1%"; \
+			else \
+				cd "`dirname \\"%Arg_1%\\"`"; \
+			fi; \
+			#exec /usr/dt/bin/dtterm'
+			exec /usr/dt/bin/dtterm -sb -sl 262144 -geometry =100x50+50+100'
+	DESCRIPTION	The Open Terminal (TerminalCWD) action runs the desktop Terminal \
+                        Emulator application.
+}
+
+#######
+
+ACTION Dticon
+{
+	LABEL		Icon Editor
+        ICON		Dtpaint
+        ARG_COUNT       0
+        TYPE            COMMAND
+        WINDOW_TYPE     NO_STDIO
+        EXEC_STRING     /usr/dt/bin/dticon
+        DESCRIPTION     The Icon Editor (Dticon) action runs the desktop Icon \
+                        Editor. Use the Icon Editor to create and edit \
+                        bitmap and pixmap image files.
+}
+ACTION Dticon
+{
+	LABEL		Icon Editor
+        ICON		Dtpaint
+        TYPE            COMMAND
+        WINDOW_TYPE     NO_STDIO
+        EXEC_STRING     /usr/dt/bin/dticon -file \
+                          "%(File)Arg_1"Icon File To Edit:"%"
+        DESCRIPTION     The Icon Editor (Dticon) action runs the desktop Icon \
+                        Editor. Use the Icon Editor to create and edit \
+                        bitmap and pixmap image files.
+}
+
+#######
+
+ACTION (None)
+{
+	LABEL		(None)
+        TYPE            COMMAND
+        WINDOW_TYPE     NO_STDIO
+        EXEC_STRING     /usr/dt/bin/dterror.ds \
+                       "There are no actions available \\n for this type of file." \
+                       "No Actions" \
+                       "OK"
+        DESCRIPTION     The (None) action is a special action used to \
+                        report that no actions are available for a \
+                        particular data type.
+}
+
+#######
+
+ACTION DttermErrorlog
+{
+	LABEL		Watch Errors
+	ICON		SDtErrors
+        ARG_COUNT       0
+        TYPE            COMMAND
+        WINDOW_TYPE     NO_STDIO
+        EXEC_STRING     sh -c 'touch $HOME/.dt/errorlog; \
+                             '/usr/dt'/bin/dtterm -map -title \
+			         "Watch Errors" \
+                                 -e tail -f $HOME/.dt/errorlog'
+        DESCRIPTION     The Watch Errors action opens a terminal window \
+                        that continuously displays the contents of the \
+                        error log file $HOME/.dt/errorlog file.  If the \
+                        window is minimized, it will automatically \
+                        normalize when an error is received.
+}
+
+#######
+
+ACTION Dttypes
+{
+        LABEL           Types and Actions
+        ARG_COUNT       0
+        TYPE            COMMAND
+        WINDOW_TYPE     PERM_TERMINAL
+        EXEC_STRING     sh -c ' \
+                        /usr/dt/bin/dttypes | \${PAGER:-more}; \
+            echo "\\n*** Select Close or Exit from the window menu to close this window ***"'
+        DESCRIPTION     The Types and Actions (Dttypes) action runs the \
+                        'dttypes' utility, which provides trouble-shooting \
+                        information for the actions and data types database.
+}
+ACTION Dttypes
+{
+        LABEL           Types and Actions
+        TYPE            COMMAND
+        WINDOW_TYPE     PERM_TERMINAL
+        EXEC_STRING     sh -c '/usr/dt/bin/dttypes -type "%(File)Arg_1%"; \
+                 echo "\\n*** Select Close or Exit from the window menu to close this window ***"'
+        DESCRIPTION     The Types and Actions (Dttypes) action runs the \
+                        'dttypes' utility, which provides trouble-shooting \
+                        information for the actions and data types database.
+}
+
+##########################################################################
+#
+#  This is the Default 'NoPrint' action.
+#
+##########################################################################
+ACTION NoPrint
+{
+	LABEL		NoPrint
+        TYPE            COMMAND
+        WINDOW_TYPE     NO_STDIO
+        EXEC_STRING     /usr/dt/bin/dterror.ds \
+                       "There is no print capability for this datatype." \
+                       "Unable To Print" \
+                       "OK"
+        DESCRIPTION    The NoPrint action brings up an Error dialog \
+                       indicating that the file the user is trying \
+                       to print is of a datatype that doesn't have a \
+                       'Print' action defined for it.
+}
+
+##########################################################################
+#
+#  This is the Default 'Open' action.
+#
+##########################################################################
+ACTION Open
+{
+        LABEL           Open
+        TYPE            MAP
+        MAP_ACTION      TextEditor
+}
+
+##########################################################################
+#
+#  This is the Default 'Edit' action.
+#
+##########################################################################
+ACTION Edit
+{
+        LABEL           Edit
+        TYPE            MAP
+        MAP_ACTION      Open
+}
+
+##########################################################################
+#
+#
+##########################################################################
+ACTION DtTTMediaOpen
+{
+	ARG_COUNT	0
+
+	ICON		Fppenpd
+	TYPE		TT_MSG
+	TT_CLASS	TT_REQUEST
+	TT_SCOPE	TT_SESSION
+	TT_OPERATION	Instantiate
+
+	TT_ARG0_MODE	TT_IN
+	TT_ARG0_VTYPE	C_STRING
+	TT_ARG0_REP_TYPE TT_REP_STRING
+}
+
+ACTION DtTTMediaOpen
+{
+	ARG_CLASS	BUFFER
+	ARG_MODE	w
+	ARG_COUNT	>0
+
+	ICON		Fppenpd
+	TYPE		TT_MSG
+	TT_CLASS	TT_REQUEST
+	TT_SCOPE	TT_SESSION
+	TT_OPERATION	Edit
+
+	TT_ARG0_MODE	TT_INOUT
+	TT_ARG0_VTYPE	%Arg_1%
+	TT_ARG0_VALUE	%Arg_1%
+	TT_ARG0_REP_TYPE TT_REP_BUFFER
+
+	TT_ARG1_MODE	TT_IN
+	TT_ARG1_VTYPE	title
+	TT_ARG1_VALUE	%Arg_1%
+	TT_ARG1_REP_TYPE TT_REP_STRING
+}
+
+ACTION DtTTMediaOpen
+{
+	ARG_CLASS	BUFFER
+	ARG_MODE	!w
+	ARG_COUNT	>0
+
+	ICON		Fppenpd
+	TYPE		TT_MSG
+	TT_CLASS	TT_REQUEST
+	TT_SCOPE	TT_SESSION
+	TT_OPERATION	Display
+
+	TT_ARG0_MODE	TT_IN
+	TT_ARG0_VTYPE	%Arg_1%
+	TT_ARG0_VALUE	%Arg_1%
+	TT_ARG0_REP_TYPE TT_REP_BUFFER
+
+	TT_ARG1_MODE	TT_IN
+	TT_ARG1_VTYPE	title
+	TT_ARG1_VALUE	%Arg_1%
+	TT_ARG1_REP_TYPE TT_REP_STRING
+}
+
+ACTION DtTTMediaOpen
+{
+	ARG_CLASS	FILE
+	ARG_COUNT	>0
+
+	ICON		Fppenpd
+	TYPE		TT_MSG
+	TT_CLASS	TT_REQUEST
+	TT_SCOPE	TT_SESSION
+	TT_OPERATION	Edit
+	TT_FILE		%Arg_1%
+
+	TT_ARG0_MODE	TT_INOUT
+	TT_ARG0_VTYPE	%Arg_1%
+	TT_ARG0_REP_TYPE TT_REP_STRING
+}
+
+########################### EOF ##############################################

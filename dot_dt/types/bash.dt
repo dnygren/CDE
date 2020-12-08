@@ -1,0 +1,57 @@
+###############################################################################
+#
+# Data Attributes
+# 
+###############################################################################
+DATA_ATTRIBUTES BASHSHELL
+{
+        ACTIONS         Run,Open,Print,RunWithOptions
+        ICON            bash.xpm
+        IS_EXECUTABLE   true
+        COPY_TO_ACTION  ExecuteNoOptions
+        NAME_TEMPLATE	%s.bash
+
+
+
+
+        MIME_TYPE	application/x-sun-shell-script
+
+
+
+
+        DESCRIPTION     This file contains an executable script \
+                        written using the BASH-SHELL scripting language.  \
+                        Its data type is named KSHELL.  KSHELL file have \
+                        names ending with '.bash', or contain the \
+                        characters "#!/bin/bash" or "#! /bin/bash".
+        TYPE_LABEL      BASHSHELL
+}
+DATA_CRITERIA BASHSHELL1
+{
+        DATA_ATTRIBUTES_NAME BASHSHELL
+        MODE            f&x
+        NAME_PATTERN    *.bash
+}
+DATA_CRITERIA BASHSHELL2
+{
+        DATA_ATTRIBUTES_NAME BASHSHELL
+        CONTENT		0 string #!/usr/bin/bash|0 string #! /usr/bin/bash
+        MODE            f&x
+}
+ACTION Run
+{
+        LABEL           Run
+        ARG_TYPE        BASHSHELL
+        TYPE            MAP
+        MAP_ACTION      ExecuteNoOptions
+}
+
+ACTION RunWithOptions
+{
+        LABEL           RunWithOptions
+        ARG_TYPE        BASHSHELL
+        TYPE            MAP
+        MAP_ACTION      Execute
+}
+
+########################### EOF ##############################################

@@ -1,0 +1,76 @@
+######################################################################
+# lgrind.dt $Revision$ : dt action file for lgrind
+# Release $Name$ (Only defined if part of a specified release)
+#
+# by Dan Nygren $Date$
+#
+#	This dt action file is for running lgrind on source code files
+# to create files suitable for inclusion in a LaTeX document. An empty
+# file called "Lgrind" is created with execute permission set. Source
+# code files can then be dragged and dropped on this action file, or
+# the Lgrind action file can be doubleclicked and a prompt for the source
+# file to be operated on is given.
+#
+# CALLING SEQUENCE	(drag-n-drop), (double click), % dtaction Lgrind source_code_filename
+#
+# EXAMPLE		% dtaction Lgrind graphpaper.ps
+#
+# TARGET SYSTEM		Solaris 2.7, CDE1.3
+#
+# DEVELOPMENT SYSTEM	Solaris 2.7, CDE1.3
+#
+# CALLS			lgrind, lgrindef
+#
+# CALLED BY		CDE
+#
+# INPUTS		source_code_filename
+#
+# OUTPUTS		source_code_filename.tex
+#
+# RETURNS		N/A
+#
+# ERROR HANDLING	None
+#
+# WARNINGS		N/A	
+#
+######################################################################
+######################################################################
+#               REVISIONS
+#
+# $Log$
+######################################################################
+
+###################################################################
+#
+# Actions
+#
+###################################################################
+
+# Drop functionality
+ACTION Lgrind
+{
+	TYPE            COMMAND  
+	WINDOW_TYPE     NO_STDIO
+	ICON		lgrind.xpm
+	EXEC_STRING     lgrind -i -c -d /home/nygren/teTeX/bin/lgrindef  -o "%Arg_1%".tex "%Arg_1%"
+#############
+# You can specify a host to execute the action at
+#	EXEC_HOST       nygren.west.sun.com
+#############
+	DESCRIPTION     Runs LaTeX lgrind when double clicked and prompts for a filename
+}
+
+# Double-click functionality
+ACTION Lgrind
+{
+	TYPE      COMMAND
+	ARG_COUNT    0
+	WINDOW_TYPE     NO_STDIO
+	ICON		lgrind.xpm
+	EXEC_STRING     lgrind -i -c -d /home/nygren/teTeX/bin/lgrindef -o %Arg_1%.tex %Arg_1"FILE_NAME="% 
+#############
+# You can specify a host to execute the action at
+#	EXEC_HOST       nygren.west.sun.com
+#############
+	DESCRIPTION     Runs LaTeX lgrind when a file is dropped on it
+}

@@ -1,0 +1,37 @@
+ACTION Imagemagick
+{
+   LABEL                Image Viewer
+   ARG_COUNT            1
+   ARG_CLASS            FILE
+   TYPE                 TT_MSG
+   TT_CLASS             TT_REQUEST
+   TT_SCOPE             TT_SESSION
+   TT_OPERATION         Display
+   TT_FILE              %Arg_1%
+   TT_ARG0_MODE         TT_IN
+   TT_ARG0_VTYPE       	%Arg_1%
+}
+
+ACTION Imagemagick
+{
+   LABEL                Image Viewer
+   ARG_COUNT            1
+   ARG_CLASS            BUFFER
+   TYPE                 TT_MSG
+   TT_CLASS             TT_REQUEST
+   TT_SCOPE             TT_SESSION
+   TT_OPERATION         Display
+   TT_ARG0_MODE         TT_IN
+   TT_ARG0_VTYPE       	%Arg_1%
+   TT_ARG0_VALUE       	%Arg_1%
+}
+
+ACTION Imagemagick
+{
+   LABEL                Image Viewer
+   ICON                 SDtimage
+   ARG_COUNT            0
+   TYPE                 COMMAND
+   WINDOW_TYPE          NO_STDIO
+   EXEC_STRING		/pkg/local/bin/display
+}

@@ -1,0 +1,127 @@
+######################################################################
+# allegro_layout.dt $Revision$ : dt type file for Allegro PCB files
+# Release $Name$ (Only defined if part of a specified release)
+#
+# by Dan Nygren $Date$
+#
+#	This file gives the default behavior that Allegro Layout files have.
+# See the dtdtsfile. Execute the dttypes command to see current settings.
+#
+# CALLING SEQUENCE	N/A
+#
+# EXAMPLE		N/A
+#
+# TARGET SYSTEM		Solaris 2.7, CDE1.3
+#
+# DEVELOPMENT SYSTEM	Solaris 2.7, CDE1.3
+#
+# CALLS			Gzip.dt
+#
+# CALLED BY		(List of modules that call this one)
+#
+# INPUTS		(Parameters used but not modified, include global and static data)
+#
+# OUTPUTS		(Parameters modified, include global and static data)
+#
+# RETURNS		(Type and meaning of return value, if any)
+#
+# ERROR HANDLING	(Describe how errors are handled)
+#
+# WARNINGS		Action name in DATA_ATTRIBUTES must exactly match ACTION name
+#
+######################################################################
+######################################################################
+#               REVISIONS
+#
+# $Log$
+######################################################################
+
+###################################################################
+#
+# Data Attributes
+#
+###################################################################
+DATA_ATTRIBUTES ALLEGRO_LAYOUTFILE
+{
+	# Don't put spaces between action names, as then these spaces 
+	# get put in the pull down menus and look ugly.
+        ACTIONS         Allegro,Editprops,Fet2a,A2fet,Uprev,Allegro_Layout,Gzip,Bzip
+	#Default Icon
+        ICON		brd.xpm
+        #If there is an icon with the same name as the suffix, use it instead
+        INSTANCE_ICON	%suffix%.xpm
+        NAME_TEMPLATE	%s.brd
+        MIME_TYPE	application/octet-stream
+        IS_TEXT		false
+        DESCRIPTION     A Cadence PCB data file.
+}
+
+###################################################################
+#
+# Data Criteria (.brd files)
+#
+###################################################################
+DATA_CRITERIA ALLEGRO_LAYOUTFILE
+{
+        DATA_ATTRIBUTES_NAME ALLEGRO_LAYOUTFILE
+        # Mode "f" matches any file
+        MODE            f
+        NAME_PATTERN    *.brd
+}
+
+###################################################################
+#
+# Actions
+#
+###################################################################
+ACTION Allegro
+{
+	LABEL		Allegro
+	ARG_TYPE        ALLEGRO_LAYOUTFILE
+	TYPE            COMMAND  
+	WINDOW_TYPE     NO_STDIO
+	EXEC_STRING     allegro "%(File)Arg_1%"
+}
+ACTION Allegro_Layout
+{
+	LABEL		Allegro_Layout
+	ARG_TYPE        ALLEGRO_LAYOUTFILE
+	TYPE            COMMAND  
+	WINDOW_TYPE     NO_STDIO
+	EXEC_STRING     allegro_layout "%(File)Arg_1%"
+}
+ACTION Fet2a
+{
+	LABEL		Fet2a
+	ARG_TYPE        ALLEGRO_LAYOUTFILE
+	TYPE            COMMAND
+	WINDOW_TYPE     NO_STDIO 
+	EXEC_STRING     fet2a "%(File)Arg_1%"
+	
+}
+ACTION A2fet
+{
+	LABEL		A2fet
+	ARG_TYPE        ALLEGRO_LAYOUTFILE
+	TYPE            COMMAND
+	WINDOW_TYPE     NO_STDIO 
+	EXEC_STRING     a2fet "%(File)Arg_1%"
+}
+ACTION Uprev
+{
+	LABEL		Uprev
+	ARG_TYPE        ALLEGRO_LAYOUTFILE
+	TYPE            COMMAND 
+	EXEC_STRING	sh -c 'uprev %(File)Arg_1% uprev.brd; echo " *** Select Close or Exit from the window menu to close this window ***"'
+	WINDOW_TYPE	PERM_TERMINAL
+}
+ACTION Editprops
+{
+	LABEL		Editprops
+	ARG_TYPE        ALLEGRO_LAYOUTFILE
+	TYPE            COMMAND 
+	EXEC_STRING     editprops "%(File)Arg_1%"
+	WINDOW_TYPE	PERM_TERMINAL
+}
+
+# Gzip is already defined for in Gzip.dt

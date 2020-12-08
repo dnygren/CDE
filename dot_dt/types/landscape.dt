@@ -1,0 +1,76 @@
+######################################################################
+# landscape.dt $Revision$ : dt action file for text to landscape PostScript file
+# Release $Name$ (Only defined if part of a specified release)
+#
+# by Dan Nygren $Date$
+#
+#	This dt action file is for running enscript on bugtraq text files
+# to create files suitable for inclusion in a LaTeX document. An empty
+# file called "Landscape" is created with execute permission set. Source
+# code files can then be dragged and dropped on this action file, or
+# the Lgrind action file can be doubleclicked and a prompt for the source
+# file to be operated on is given.
+#
+# CALLING SEQUENCE	(drag-n-drop), (double click), % dtaction Landscape source_code_filename
+#
+# EXAMPLE		% dtaction Landscape graphpaper.ps
+#
+# TARGET SYSTEM		Solaris 2.8, CDE1.4
+#
+# DEVELOPMENT SYSTEM	Solaris 2.8, CDE1.4
+#
+# CALLS			enscript
+#
+# CALLED BY		CDE
+#
+# INPUTS		source_code_filename
+#
+# OUTPUTS		source_code_filename.ps
+#
+# RETURNS		N/A
+#
+# ERROR HANDLING	None
+#
+# WARNINGS		Execute permission must be set on empty file
+#
+######################################################################
+######################################################################
+#               REVISIONS
+#
+# $Log$
+######################################################################
+
+###################################################################
+#
+# Actions
+#
+###################################################################
+
+# Drop functionality
+ACTION Landscape
+{
+	TYPE            COMMAND  
+	WINDOW_TYPE     NO_STDIO
+	ICON		landscape.xpm
+	EXEC_STRING     /pkg/gnu/bin/enscript -G --pretty-print --font=Courier8 --landscape --header=StarfireBugTraq -o"%Arg_1%".ps "%Arg_1%"
+#############
+# You can specify a host to execute the action at
+#	EXEC_HOST       nygren.west.sun.com
+#############
+	DESCRIPTION     Runs enscript when a file is dropped on it
+}
+
+# Double-click functionality
+ACTION Landscape
+{
+	TYPE      COMMAND
+	ARG_COUNT    0
+	WINDOW_TYPE     NO_STDIO
+	ICON		landscape.xpm
+	EXEC_STRING     /pkg/gnu/bin/enscript -G --pretty-print --font=Courier8 --landscape --header=StarfireBugTraq -o"%Arg_1%".ps %Arg_1"FILE_NAME="% 
+#############
+# You can specify a host to execute the action at
+#	EXEC_HOST       nygren.west.sun.com
+#############
+	DESCRIPTION     Runs enscript when double clicked and prompts for a filename
+}

@@ -1,0 +1,64 @@
+######################################################################
+# seamonkey.fp $Revision$ : CDE front panel file for Seamonkey browser
+# Release $Name:  $ (Only defined if part of a specified release)
+#
+# by Dan Nygren $Date$
+#
+#	This front panel CDE file is meant to replace the Netscape
+# "Globe" that is standard internal issue to employees that use CDE.
+# In an e-mail dated 30 August 2004, the Sun Desktop Initiative 
+# stated that "... the globe icon on the CDE toolbar ... is universally
+# set to launch Netscape 4.79 by default, and there are no plans for 
+# upgrading it to Mozilla 1.4." This file and the associated files
+# it calls rectifies this situation.
+#
+# CALLING SEQUENCE	Install seamonkey.fp in ~/.dt/types directory
+#
+# EXAMPLE		N/A
+#
+# TARGET SYSTEM		Solaris 9, CDE1.5.7
+#
+# DEVELOPMENT SYSTEM	Solaris 9, CDE1.5.7
+#
+# CALLS			~/.dt/types/seamonkey.dt
+#			~/.dt/icons/seamonkey.pm
+#			~/.dt/icons/dynamite.pm
+#
+######################################################################
+######################################################################
+#               REVISIONS
+#
+# $Log$
+######################################################################
+
+CONTROL Seamonkey
+{
+  TYPE			clock
+  CONTAINER_NAME	Top
+  CONTAINER_TYPE	BOX
+  POSITION_HINTS	0
+  ICON			seamonkey
+  LABEL			Mail/Browser
+  PUSH_ACTION		MailBrowser
+  DROP_ACTION		MailBrowser
+  DELETE		false
+  HELP_VOLUME		FPanel
+  HELP_TOPIC		FPOnItemClock
+}
+
+SUBPANEL Seamonkey
+{
+  CONTAINER_NAME	Seamonkey
+  TITLE			Commands
+}
+
+CONTROL KillSeamonkey
+{
+	TYPE		icon
+	CONTAINER_NAME	Seamonkey
+	CONTAINER_TYPE	SUBPANEL
+	POSITION_HINTS  1
+	ICON		dynamite
+	LABEL		Kill Seamonkey
+	PUSH_ACTION	seamonkeyKill
+}

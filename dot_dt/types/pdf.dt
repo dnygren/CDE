@@ -1,0 +1,97 @@
+###############################################################################
+#
+# pdf.dt
+#
+#     Action and DataType Definitions for Adobe Acrobat files
+#
+# This file is under develpoment and subject to change. 
+#
+# At present the only actions supported are opening and printing PDF files.
+# via the acroread utility.  Support for the distiller will come later.
+#
+# PDF files are recognized in one of the following ways:
+#   1. They have a mime type of application/pdf
+#   2. They have a filename extension of .pdf or .PDF
+#   3. They have %PDF as their first four characters
+#
+###############################################################################
+
+###################################################################
+#
+# Data Attributes
+#
+###################################################################
+
+
+DATA_ATTRIBUTES PDF
+{
+    ACTIONS         Open,Open5,Print,TwoPostScript
+    ICON            pdf.xpm
+    NAME_TEMPLATE   %s.pdf
+    MIME_TYPE       application/pdf
+    DESCRIPTION     This file contains pdf data. Its data type \
+                    is named PDF.  PDF file have names ending with '.pdf' \
+                    or '.PDF', or start with the characters "%PDF".
+    TYPE_LABEL      PDF
+}
+
+###################################################################
+#
+# Data Criteria
+#
+###################################################################
+
+DATA_CRITERIA PDF1
+{
+    DATA_ATTRIBUTES_NAME PDF
+    MODE            f
+    NAME_PATTERN    *.pdf
+}
+DATA_CRITERIA PDF2
+{
+    DATA_ATTRIBUTES_NAME PDF
+    MODE            f
+    NAME_PATTERN    *.PDF
+}
+DATA_CRITERIA PDF3
+{
+    DATA_ATTRIBUTES_NAME    PDF
+    CONTENT 	0 string %PDF
+    MODE            f
+}
+
+
+###################################################################
+#
+# Actions
+#
+###################################################################
+
+ACTION Open
+{
+    LABEL		    Open
+    ARG_TYPE        PDF
+    TYPE            COMMAND  
+    WINDOW_TYPE     NO_STDIO
+    #EXEC_HOST %"Host containing application:"%
+    #EXEC_HOST       sr1-usan-01.West.Sun.COM , %DatabaseHost%
+    #EXEC_HOST       tangela-a.us.oracle.com, %DatabaseHost%
+    #EXEC_STRING     acroread '%(File)Arg_1%'
+    EXEC_STRING     /opt/csw/bin/xpdf %(File)Arg_1%
+}
+#ACTION Print
+#{
+#    LABEL           Print
+#    ARG_TYPE        PDF
+#    TYPE            COMMAND
+#    WINDOW_TYPE     NO_STDIO
+#    #EXEC_STRING	sh -c 'acroread -toPostScript <%(File)Arg_1% | lp'
+#}
+#ACTION TwoPostScript
+#{
+#    LABEL           TwoPostScript
+#    ARG_TYPE        PDF
+#    TYPE            COMMAND
+#    WINDOW_TYPE     NO_STDIO
+#    EXEC_STRING	ksh -c '. ~/.functions; twopostscript %(File)Arg_1%'
+#}

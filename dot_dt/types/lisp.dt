@@ -1,0 +1,163 @@
+######################################################################
+# lisp.dt $Revision$ : dt type file for lisp files
+# Release $Name$ (Only defined if part of a specified release)
+#
+# by Dan Nygren $Date$
+#
+#	This dt file is for lisp files.
+#
+# CALLING SEQUENCE	N/A
+#
+# EXAMPLE		N/A
+#
+# TARGET SYSTEM		Solaris 2.7, CDE1.3
+#
+# DEVELOPMENT SYSTEM	Solaris 2.7, CDE1.3
+#
+# CALLS			None
+#
+# CALLED BY		(List of modules that call this one)
+#
+# INPUTS		(Parameters used but not modified, include global and static data)
+#
+# OUTPUTS		(Parameters modified, include global and static data)
+#
+# RETURNS		(Type and meaning of return value, if any)
+#
+# ERROR HANDLING	(Describe how errors are handled)
+#
+# WARNINGS		Action name in DATA_ATTRIBUTES must match ACTION name
+#
+######################################################################
+######################################################################
+#               REVISIONS
+#
+# $Log$
+######################################################################
+
+###################################################################
+#
+# Data Attributes
+#
+###################################################################
+DATA_ATTRIBUTES LISPFILE
+{
+	# Don't put spaces between action names, as then these spaces 
+	# get put in the pull down menus and look ugly.
+    ACTIONS         Open,Edit,Spell,Gzip,Print_One_Up,Print_Two_Up,Print_Landscape
+	#Default Icon
+    ICON		    lisp.xpm
+    #If there is an icon with the same name as the suffix, use it instead
+    INSTANCE_ICON	%suffix%.xpm
+    NAME_TEMPLATE	%s.lsp
+    MIME_TYPE	    text/plain
+    IS_TEXT		    true
+    DESCRIPTION     This file contains text.
+}
+
+###################################################################
+#
+# Data Criteria 
+#
+###################################################################
+DATA_CRITERIA LISPFILE
+{
+    DATA_ATTRIBUTES_NAME LISPFILE
+    # Mode "f" matches any file
+    MODE            f
+    NAME_PATTERN    *.lsp
+}
+
+###################################################################
+#
+# Actions
+#
+###################################################################
+ACTION Open
+{
+	LABEL		Open
+	ARG_TYPE        LISPFILE
+	TYPE            COMMAND  
+	WINDOW_TYPE     NO_STDIO
+	# gvim -R is a readonly GUI version of Vim (Vi improved)
+	# The :w! command forces a write. No swap file is created.
+	EXEC_STRING     gvim -R -geom 90x40+100+50 "%(File)Arg_1%"
+}
+
+#ACTION Open
+#{
+#	# An example of how to use vi. Note the Window type; vi
+#	# needs this since it doesn't have its own window
+#	LABEL		Open
+#	ARG_TYPE        TEXTFILE
+#	TYPE            COMMAND  
+#	WINDOW_TYPE     TERMINAL
+#	EXEC_STRING     vi "%(File)Arg_1%"
+#}
+
+ACTION Edit
+{
+	LABEL		    Edit
+	ARG_TYPE        LISPFILE
+	TYPE            COMMAND  
+	WINDOW_TYPE     NO_STDIO
+	# gvim is a GUI version of Vim (Vi improved)
+	EXEC_STRING     gvim -geom 90x40+100+50 "%(File)Arg_1%"
+}
+
+
+## Spell is already defined in uxstd.dt
+#ACTION Spell
+#{
+#	LABEL		Spell
+#	ARG_TYPE        TEXTFILE
+#	TYPE            COMMAND  
+#	WINDOW_TYPE     TERMINAL
+#	EXEC_STRING     spell "%(File)Arg_1%"
+#}
+
+## Gzip is already defined for in Gzip.dt
+#ACTION Gzip
+#{
+#	LABEL         Gzip
+#	ARG_TYPE      TEXTFILE
+#	TYPE          COMMAND
+#	WINDOW_TYPE   NO_STDIO
+#	EXEC_STRING   gzip -9 "%(File)Arg_1%"
+#}
+
+ACTION Print_One_Up
+{
+	# Optional Left Click (Button 3) Label
+	LABEL		Print One Column
+    ARG_TYPE        LISPFILE
+    TYPE            COMMAND  
+    WINDOW_TYPE     NO_STDIO
+    #EXEC_STRING     lp -c "%(File)Arg_1%" 	
+	#onepage is a GNU enscript alias in my .kshrc-user
+	#EXEC_STRING    onepage "%(File)Arg_1%" #Alias doesn't work
+	EXEC_STRING    enscript -G --pretty-print --font=Courier9 --header='$NAME' "%(File)Arg_1%"
+	
+}
+
+ACTION Print_Two_Up
+{
+	# Optional Left Click (Button 3) Label
+	LABEL		Print Two Columns
+	ARG_TYPE        LISPFILE
+    TYPE            COMMAND  
+    WINDOW_TYPE     NO_STDIO
+    #twopage is a GNU enscript alias in my .kshrc-user
+	#EXEC_STRING    twopage "%(File)Arg_1%" #Alias doesn't work
+	EXEC_STRING     enscript -2rlG --pretty-print --header='$NAME' "%(File)Arg_1%"
+}
+
+ACTION Print_Landscape
+{
+	# Optional Left Click (Button 3) Label
+	LABEL		Print Landscape
+    ARG_TYPE        LISPFILE
+    TYPE            COMMAND  
+    WINDOW_TYPE     NO_STDIO
+    EXEC_STRING     enscript -G --pretty-print --font=Courier7 --landscape --header='$NAME' "%(File)Arg_1%"	
+}

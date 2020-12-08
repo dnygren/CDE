@@ -1,0 +1,26 @@
+# Gzip and Gunzip - Originally by Stefan Hinker (stefan.hinker@germany)
+
+ACTION Gzip
+{
+     LABEL         Gnu Compress
+     TYPE          COMMAND
+     EXEC_STRING   /usr/bin/gzip -n --best "%(File)Arg_1%"
+     ICON          gziped
+     WINDOW_TYPE   NO_STDIO
+     DESCRIPTION   Compress a given file with gzip.  This action \
+     accepts files via drag and drop.  If double-clicked, will ask \
+     for a filename to compress.
+}
+
+ACTION Gunzip
+{
+     LABEL         Gnu Uncompress
+     TYPE          COMMAND
+     EXEC_STRING   /usr/bin/gunzip "%(File)Arg_1%"
+     ICON          gziped
+     WINDOW_TYPE   NO_STDIO
+     DESCRIPTION   This action will uncompress a file using the \
+     gunzip utility.  It accepts files compressed with compress, \
+     zip or gzip (*.Z, *.zip or *.gz).  It will accept files \
+     via drag and drop or prompt for a filename if double-clicked.
+}

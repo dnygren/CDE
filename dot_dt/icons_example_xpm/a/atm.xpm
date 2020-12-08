@@ -1,0 +1,25 @@
+/* XPM */
+static char * atm_xpm[] = {
+"41 17 4 1",
+"  c #000000",
+". c #0000AA",
+"X c #AA0000",
+"o c #AAAAAA",
+"oooooooooooo oooooooooooooooooooooooooooo",
+"oooooooooo   oooooooooooooooooooooooooooo",
+"oooooooooo   oooooooooooooooooooooooooooo",
+"ooooooooo    oooooooooooooXXooXXXoooXXXoo",
+"oooooooo     oooooooooooXXXXXXXXXXXXXXXoo",
+"oooooooo o   ooooooooooooXXXoooXXXoooXXXo",
+"ooooooo oo   ooo..oooooooXXXoooXXXoooXXXo",
+"oooooo  oo   ooo..oooooooXXXoooXXXoooXXXo",
+"ooooo  ooo   oo........ooXXXoooXXXoooXXXo",
+"ooooo        oo........ooXXXoooXXXoooXXXo",
+"oooo  oooo   ooo..oooooooXXXoooXXXoooXXXo",
+"ooo  ooooo   ooo..ooooooXXXXXoXXXXXoXXXXX",
+"ooo oooooo   ooo..ooooooooooooooooooooooo",
+"oo  oooooo   ooo..ooooooooooooooooooooooo",
+"     ooo      oo..ooo..oooooooooooooooooo",
+"oooooooooooooooo........ooooooooooooooooo",
+"ooooooooooooooooo.....ooooooooooooooooooo"
+} ;

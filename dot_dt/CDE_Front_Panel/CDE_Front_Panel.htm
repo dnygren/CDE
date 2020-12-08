@@ -1,0 +1,266 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+"http://www.w3.org/TR/html4/strict.dtd">
+
+<!-- !!!!! Do not change this HTML file !!!!!				-->
+<!-- This file is under RCS revision control and is pre-processed by 	-->
+<!-- the m4 macro processor with a Makefile. If you need to edit this	-->
+<!-- file, you must:							-->
+<!-- 1) Check out and lock the latest version of the source file from 	-->
+<!-- RCS. The source file will have the same prefix as the HTML file 	-->
+<!-- and the suffix ".src" . So for a HTML file called "file.htm"	-->
+<!-- 	Example: co -l file.src						-->
+<!-- 2) Edit the file with your favorite editor				-->
+<!-- 	Example: vi file.src						-->
+<!-- 3) Run "gmake" on the file to run the m4 macro processor		-->
+<!-- 	Example: gmake							-->
+<!-- 4) Look at the HTML file to see if it is what you wanted		-->
+<!-- 	Example: hotjava file.htm					-->
+<!-- 5) Repeat steps 2) - 4) until satisfied with the HTML file		-->
+<!--	then check the file back into RCS				-->
+<!-- 	Example: ci file.src						-->
+<!-- !!!!! Do not change this HTML file !!!!!				-->
+
+<!----------------------------------------------------------------------------------------
+- mozilla.src $Revision: 1.3 $: Internal Mozilla Users Page
+- Release $Name:  $ (Only defined if part of a specified release)
+-
+- by Dan Nygren $Date: 2004/09/10 15:35:25 $
+-
+- A webpage primarily for using Mozilla on CDE.
+-
+- CALLING SEQUENCE      gmake
+-
+- EXAMPLE               gmake
+-
+- TARGET SYSTEM		Web Browsers (Netscape, HotJava, etc.)
+-
+- DEVELOPMENT SYSTEM    Solaris 9, SPARC Ultra 10, vim
+-
+- CALLS                 None
+-
+- CALLED BY             Webpages that are in children of this page
+-
+- INPUTS                $WEB_TREE_ROOT/Include/macro.m4
+-
+- OUTPUTS               A .htm file
+-
+- RETURNS               None
+-
+- ERROR HANDLING        Handled by make
+-
+- WARNINGS		The .src file must first be run through the m4 macro processor
+-
+----------------------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------------------
+-               REVISIONS
+-
+- $Log: mozilla.src,v $
+- Revision 1.3  2004/09/10 15:35:25  nygren
+- Changed front panel directory removal from mandatory to an optional rename.
+-
+- Revision 1.2  2004/09/02 14:53:41  nygren
+- Made main image an image of the new front panel.
+-
+- Revision 1.1  2004/09/01 20:56:47  nygren
+- Initial revision
+-
+-
+----------------------------------------------------------------------------------------->
+<HTML>
+
+<!--****Title of page***************************************-->
+<TITLE>Mozilla & CDE</TITLE>
+<HEAD>
+<META NAME="keywords" CONTENT="mozilla, CDE, Common Desktop Environment, front panel">
+<META NAME="description" CONTENT="Mozilla & CDE web page.">
+<META NAME="name" CONTENT="Dan Nygren">
+</HEAD>
+
+<!--****Shows Logo******************************************-->
+	<H3><IMG SRC="./Images/sun_logo.gif" WIDTH=144 HEIGHT=63 TITLE="Sun Microsystems Logo" ALIGN=MIDDLE> Sun Microsystems, San Diego CA</H3>
+
+<!--****Document name which states the project name*********-->
+<H1 ALIGN=CENTER>Mozilla & CDE</H1>
+<HR>
+
+<!--****START BODY HERE*************************************-->
+<BODY bgcolor=white>
+<RIGHT>
+	<IMG SRC="./Images/fp_commands.png" TITLE="Mozilla action icon drawer commands" ></A>
+</RIGHT>
+
+<CENTER>
+	<IMG SRC="./Images/front_panel.png" TITLE="My front panel with Mozilla clock and action icon" ></A>
+</CENTER>
+
+<H2 ALIGN=CENTER>Mozilla CDE Front Panel Action & Icon</H2> 
+
+
+<P> 
+
+When Netscape 4.79 went end-of-life (EOL), I moved to Mozilla as my browser,
+but missed being able to invoke it from the CDE front panel. So I wrote my own
+front panel based on the Netscape globe front panel including the clock and an
+action to kill Mozilla when it acts up on me.  Recently I received an
+<A HREF="./Include/e-mail.txt">email</A> indicating among other things, the CDE
+Netscape globe front panel would not be changed to Mozilla. Because of that, I
+decided to share my Mozilla front panel script.  This is what I did to install
+the Mozilla front panel. <STRONG> Use at your own risk </STRONG>.
+
+<P> 
+
+<UL>
+	<LI> Save <A HREF="./Include/mozilla.fp">mozilla.fp</A> and <A HREF="./Include/mozilla.dt">mozilla.dt</A> to your ~/.dt/types directory and make sure you have read permission for these files.
+	<LI> Save <A HREF="./Include/mozicon50.pm">mozicon50.pm</A> and <A HREF="./Include/dynamite.pm">dynamite.pm</A> to your ~/.dt/icons directory and make sure you have read permission for these files.
+	<LI> Do a button 3 mouse click on the CDE desktop background and select "Restart Workspace Manager".
+	<LI> Some screen dumps of what I did, and where I have my files, is below:
+	</LI>
+</UL>
+
+<P>
+<tt>
+<PRE>
+
+<!--
+$ pwd
+/home/nygren/.dt/types
+$ ls -lad fp_dyna*
+drwx--x--x   2 nygren   staff       3584 Aug 31 10:13 fp_dynamic/
+drwx--x--x   2 nygren   staff        512 Aug 31 10:12 fp_dynamic1/
+$ /bin/rm -rf fp_dyna*
+-->
+
+$ pwd
+/home/nygren/.dt/types
+nygren:types 301 $ ls -la moz*
+-r--------   1 nygren   staff        411 Aug 31 08:47 mozilla.dt
+-r--------   1 nygren   staff       1795 Aug 31 08:57 mozilla.fp
+
+$ pwd
+/home/nygren/.dt/icons
+$ ls -la moz*
+-r--------   1 nygren   staff       3303 Jun 14 15:29 mozicon50.pm
+$ ls -la dy* 
+-r--------   1 nygren   staff       1337 Jun 18 09:44 dynamite.pm
+
+</PRE>
+</tt>
+</P>
+
+<HR>
+<H2 ALIGN=CENTER>Troubleshooting</H2> 
+
+I have seen problems where CDE doesn't want to allow you to add a new front
+panel if you've deleted it once before. If you run into problems, you can start
+your front panel over with default values by doing the following:
+
+<UL>
+	<LI> Rename the current dynamic front panel directories 
+<P>
+<tt>
+<PRE>
+
+$ pwd
+/home/nygren/.dt/types
+$ ls -lad fp_dyna*
+drwx--x--x   2 nygren   staff       3584 Aug 31 10:13 fp_dynamic/
+drwx--x--x   2 nygren   staff        512 Aug 31 10:12 fp_dynamic1/
+$ mv fp_dynamic fp_dynamic_old
+$ mv fp_dynamic1 fp_dynamic1_old
+
+</PRE>
+</tt>
+</P>
+	<LI> Do a button 3 mouse click on the CDE desktop background and select "Restart Workspace Manager".
+	<LI> The new mozilla icon should come up along with a lot of old stuff you may have previously deleted. Just re-delete the icons you don't want and do another "Restart Workspace Manager" after everything looks close to the way you want it.
+</UL>
+
+
+
+<HR>
+<H2 ALIGN=CENTER>Why I still use CDE</H2>
+<P> 
+
+I haven't made the change from the Common Desktop Environment (CDE) to the
+Gnome GUI yet, because I haven't had any real problems with CDE, have a lot
+invested in custom CDE actions, think Gnome is slower than CDE, and I haven't
+figured out how to do the following in Gnome yet:
+
+<UL>
+	<LI> Bring up a shell terminal window at the directory Nautilus is currently displaying.
+	<LI> Easily show hidden files in Nautilus. (Seems like this is a multi-step process.)
+	<LI> Show my floppy disk drive without invoking CDE.
+	</LI>
+</UL>
+
+If someone has some good ways to do the above, I'd like to know.
+
+</BODY>
+<!--****END BODY HERE******************************************-->
+
+<HR>
+
+<!--****BEGIN SEND INQUIRIES TO********************************-->
+	
+<CENTER>
+<TABLE><TR><TD ROWSPAN=4 ALIGN=LEFT>
+	Dan Nygren<BR>
+	Sun Microsystems<BR>
+	Data Center Systems<BR>
+	9525 Towne Centre Dr.<BR>
+San Diego, CA 92121<BR><BR>
+	(858) 626-3921<BR>
+	(858) 625-0690 (Fax)<BR>
+</TD></TR></TABLE>	
+</CENTER>	
+<CENTER>
+	<ADDRESS>E-mail:<A HREF="mailto:Dan.Nygren@sun.com">Dan.Nygren@sun.com</A></ADDRESS><BR>
+</CENTER>
+<!--****END SEND INQUIRIES TO**********************************-->
+
+<HR>
+
+<!--****BEGIN SHOW USER WHEN THIS PAGE WAS LAST UPDATED **********
+*The substr m4 macro is put in it show when this page was last updated.
+*Whenever the .src file is checked in with new revision using RCS, the 
+*date when it is checked in is stored.
+***************************************************************-->	
+<CENTER><H5>
+        Last Updated: 2004/09/10 <BR>
+</H5></CENTER>
+<!--****END SHOW USER WHEN THIS PAGE WAS LAST UPDATED**********-->
+
+<!--****BEGIN ORGANIZATIONAL INFO******************************-->
+	
+<CENTER>
+<TABLE><TR><TD ROWSPAN=4 ALIGN=LEFT>
+	Sun Microsystems<BR>
+	Data Center Systems<BR>
+	9525 Towne Centre Dr.<BR>
+San Diego, CA 92121<BR><BR>
+	(858) 625-0500<BR>
+	(858) 625-0691 (Fax)<BR>
+</TD></TR></TABLE>	
+</CENTER>	
+<CENTER>
+	<ADDRESS>Division Homepage:<A HREF="http://esp.west/">http://esp.west/</A></ADDRESS><BR>
+</CENTER>
+<!--****END ORGANIZATIONAL INFO********************************-->
+
+<HR>
+
+<!--****BEGIN RETURN LINK**************************************
+*Each web page, except the root page, is required to have a link back to its parent page.
+*This is because a search engine may index this page, and a user may jump into
+*this page without having been to any other pages. In this case, the "back" button on the
+*browser is useless. Without a link back to the parent of this page, user cannot browse
+*any additional pages of interest.
+-->	
+<CENTER>
+	<A HREF="../index.htm">
+	<IMG SRC="./Images/back.gif" WIDTH=30 HEIGHT=30 TITLE="BACK"><BR>[BACK]</A>
+</CENTER>
+<!--****END RETURN LINK****************************************-->
+
+
+</HTML>

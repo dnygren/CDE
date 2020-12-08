@@ -1,0 +1,66 @@
+# For use with workspace.fp front panel actions
+# Remove fp_dynamic folders to reset front panel
+
+#ACTION fileHome
+#{
+#	LABEL		Home
+#    ICON		Dthome
+#    TYPE            COMMAND
+#    WINDOW_TYPE     NO_STDIO
+#    EXEC_STRING    	dtfile -dir /home/nygren
+#}
+
+ACTION fileWorkspace
+{
+	LABEL		Workspace Home
+    ICON		folders
+    TYPE            COMMAND
+	WINDOW_TYPE     NO_STDIO
+    EXEC_STRING    	dtfile -dir /workspace/dnygren
+}
+
+ACTION fileStarcat
+{
+	LABEL		Starcat Home
+    ICON		cat
+    TYPE            COMMAND
+	WINDOW_TYPE     NO_STDIO
+    EXEC_STRING    	dtfile -dir /home/starcat
+}
+
+
+ACTION fileStarfire
+{
+	LABEL		Starfire Home
+    ICON		xfire
+    TYPE            COMMAND
+	WINDOW_TYPE     NO_STDIO
+    EXEC_STRING    	dtfile -dir /home/xfire
+}
+
+ACTION filePublicHTML
+{
+	LABEL		PublicHTML Home
+    ICON		http
+    TYPE            COMMAND
+	WINDOW_TYPE     NO_STDIO
+    EXEC_STRING    	dtfile -dir /home/dnygren/public_html/index
+}
+
+ACTION fileSpace
+{
+	LABEL		Space Home
+    ICON		spaceship
+    TYPE            COMMAND
+	WINDOW_TYPE     NO_STDIO
+    EXEC_STRING    	dtfile -dir /RAID/dnygren
+}
+
+ACTION fileSW
+{
+	LABEL		SW Home
+    ICON		sw_525_floppy
+    TYPE            COMMAND
+	WINDOW_TYPE     NO_STDIO
+    EXEC_STRING    	dtfile -dir /workspace/dnygren/SW
+}

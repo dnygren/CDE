@@ -1,0 +1,13 @@
+CONTROL	_ezLock_5
+{
+   TYPE	icon
+   CONTAINER_TYPE	SWITCH
+   CONTAINER_NAME	_ezSwitch_10
+   POSITION_HINTS	1
+   ICON	Fplock
+   LABEL	Lock
+   PUSH_ACTION	LockDisplay
+   DELETE	false
+   HELP_VOLUME	FPanel
+   HELP_TOPIC	FPOnItemLock
+}

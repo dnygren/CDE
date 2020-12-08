@@ -1,0 +1,226 @@
+######################################################################
+# soffice.dt $Revision$ : dt type file for StarOffice8
+# Release $Name$ (Only defined if part of a specified release)
+#
+# by Dan Nygren $Date$
+#
+# CALLING SEQUENCE	N/A
+#
+# EXAMPLE		N/A
+#
+# TARGET SYSTEM		Solaris 2.9, CDE1.5
+#
+# DEVELOPMENT SYSTEM	Solaris 2.9, CDE1.5
+#
+# CALLS			None
+#
+# CALLED BY		(List of modules that call this one)
+#
+# INPUTS		(Parameters used but not modified, include global and static data)
+#
+# OUTPUTS		(Parameters modified, include global and static data)
+#
+# RETURNS		(Type and meaning of return value, if any)
+#
+# ERROR HANDLING	(Describe how errors are handled)
+#
+# WARNINGS		Action name in DATA_ATTRIBUTES must match ACTION name
+#
+######################################################################
+######################################################################
+#               REVISIONS
+#
+# $Log$
+######################################################################
+
+###################################################################
+#
+# Data Attributes
+#
+###################################################################
+DATA_ATTRIBUTES SOFFICE_FILE
+{
+	# Don't put spaces between action names, as then these spaces 
+	# get put in the pull down menus and look ugly.
+        ACTIONS         Edit
+	#Default Icon
+        ICON		staroffice.pm
+        #If there is an icon with the same name as the suffix, use it instead
+        INSTANCE_ICON	%suffix%.xpm
+        NAME_TEMPLATE	%s.sxc
+        MIME_TYPE	application/soffice
+}
+
+###################################################################
+#
+# Data Criteria (doc swx sdw sdc sdd sda ppt pps pot xls rtf xlt odg odp ods odt ott pptx)
+#
+###################################################################
+DATA_CRITERIA SOFFICE_FILE
+{
+        DATA_ATTRIBUTES_NAME SOFFICE_FILE
+        # Mode "f" matches any file
+        MODE            f
+        NAME_PATTERN    *.doc*
+}
+
+DATA_CRITERIA SOFFICE_FILE1
+{
+        DATA_ATTRIBUTES_NAME SOFFICE_FILE
+        # Mode "f" matches any file
+        MODE            f
+        NAME_PATTERN    *.swx
+}
+
+DATA_CRITERIA SOFFICE_FILE2
+{
+        DATA_ATTRIBUTES_NAME SOFFICE_FILE
+        # Mode "f" matches any file
+        MODE            f
+        NAME_PATTERN    *.sdw
+}
+
+DATA_CRITERIA SOFFICE_FILE3
+{
+        DATA_ATTRIBUTES_NAME SOFFICE_FILE
+        # Mode "f" matches any file
+        MODE            f
+        NAME_PATTERN    *.sxc
+}
+
+DATA_CRITERIA SOFFICE_FILE4
+{
+        DATA_ATTRIBUTES_NAME SOFFICE_FILE
+        # Mode "f" matches any file
+        MODE            f
+        NAME_PATTERN    *.sdc
+}
+
+DATA_CRITERIA SOFFICE_FILE5
+{
+        DATA_ATTRIBUTES_NAME SOFFICE_FILE
+        # Mode "f" matches any file
+        MODE            f
+        NAME_PATTERN    *.sdd
+}
+
+DATA_CRITERIA SOFFICE_FILE6
+{
+        DATA_ATTRIBUTES_NAME SOFFICE_FILE
+        # Mode "f" matches any file
+        MODE            f
+        NAME_PATTERN    *.sda
+}
+
+DATA_CRITERIA SOFFICE_FILE7
+{
+        DATA_ATTRIBUTES_NAME SOFFICE_FILE
+        # Mode "f" matches any file
+        MODE            f
+        NAME_PATTERN    *.xls*
+}
+
+DATA_CRITERIA SOFFICE_FILE8
+{
+        DATA_ATTRIBUTES_NAME SOFFICE_FILE
+        # Mode "f" matches any file
+        MODE            f
+        NAME_PATTERN    *.rtf
+}
+
+# For dtmail to identify the system textfile data attribute
+#DATA_CRITERIA SOFFICE_FILE9
+#{
+#        DATA_ATTRIBUTES_NAME SOFFICE_FILE
+#        MODE            f
+#        NAME_PATTERN    *.csv
+#}
+
+DATA_CRITERIA SOFFICE_FILE10
+{
+        DATA_ATTRIBUTES_NAME SOFFICE_FILE
+        # Mode for "files and not executable"
+        MODE            f
+        NAME_PATTERN    *.ppt
+}
+DATA_CRITERIA SOFFICE_FILE11
+{
+        DATA_ATTRIBUTES_NAME SOFFICE_FILE
+        # Mode for "files and not executable"
+        MODE            f
+        NAME_PATTERN    *.odg
+}
+DATA_CRITERIA SOFFICE_FILE12
+{
+        DATA_ATTRIBUTES_NAME SOFFICE_FILE
+        # Mode for "files and not executable"
+        MODE            f
+        NAME_PATTERN    *.odp
+}
+DATA_CRITERIA SOFFICE_FILE13
+{
+        DATA_ATTRIBUTES_NAME SOFFICE_FILE
+        # Mode for "files and not executable"
+        MODE            f
+        NAME_PATTERN    *.ods
+}
+DATA_CRITERIA SOFFICE_FILE14
+{
+        DATA_ATTRIBUTES_NAME SOFFICE_FILE
+        # Mode for "files and not executable"
+        MODE            f
+        NAME_PATTERN    *.odt
+}
+DATA_CRITERIA SOFFICE_FILE15
+{
+        DATA_ATTRIBUTES_NAME SOFFICE_FILE
+        # Mode for "files and not executable"
+        MODE            f
+        NAME_PATTERN    *.sxi
+}
+DATA_CRITERIA SOFFICE_FILE16
+{
+        DATA_ATTRIBUTES_NAME SOFFICE_FILE
+        # Mode for "files and not executable"
+        MODE            f
+        NAME_PATTERN    *.sxw
+}
+DATA_CRITERIA SOFFICE_FILE17
+{
+        DATA_ATTRIBUTES_NAME SOFFICE_FILE
+        # Mode for "files and not executable"
+        MODE            f
+        NAME_PATTERN    *.ott
+}
+DATA_CRITERIA SOFFICE_FILE18
+{
+        DATA_ATTRIBUTES_NAME SOFFICE_FILE
+        # Mode for "files and not executable"
+        MODE            f
+        NAME_PATTERN    *.pptx
+}
+###################################################################
+#
+# Actions
+#
+###################################################################
+
+ACTION Edit
+{
+	LABEL		    Edit
+	ARG_TYPE        SOFFICE_FILE
+	TYPE            COMMAND  
+	WINDOW_TYPE     NO_STDIO
+
+    # I used to use the below invocation string, but soffice seemed to be
+    # producing some output on stdout or stderr and it wouldn't run because of
+    # that. However it would run with the window type set to TERMINAL or
+    # PERM_TERMINAL So I changed the exec string to dump stdout and stderr to
+    # /dev/null to get it to run with NO_STDIO.
+
+    #EXEC_STRING     /usr/dist/exe/soffice "%(File)Arg_1%"  
+
+	# EXEC_STRING     /bin/sh -c '/usr/dist/exe/soffice %Arg_1% > /dev/null 2>&1 '
+    # Added quotes so file names with spaces could be opened
+	EXEC_STRING     /bin/sh -c '/usr/dist/exe/soffice "%Arg_1%" > /dev/null 2>&1 '
+}

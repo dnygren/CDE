@@ -1,0 +1,14 @@
+CONTROL	_ezFindCard_3
+{
+   TYPE	icon
+   CONTAINER_TYPE	SUBPANEL
+   CONTAINER_NAME	_ezCards_3
+   POSITION_HINTS	last
+   ICON	SDtFindCard
+   LABEL	Find Card
+   PUSH_ACTION	ADDRESS_CARD_Find
+   DROP_ACTION	ADDRESS_CARD_Find
+   DELETE	false
+   HELP_VOLUME	FPanel
+   HELP_TOPIC	TourSubpanels
+}

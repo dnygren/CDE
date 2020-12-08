@@ -1,0 +1,109 @@
+######################################################################
+# verilog.dt $Revision$ : dt type file for Verilog files
+#
+# by Dan Nygren $Date$
+#
+# CALLING SEQUENCE	(Example with explanation of call parameters)
+#
+# EXAMPLE		(Example of a call)
+#
+# TARGET SYSTEM		Solaris, CDE
+#
+# DEVELOPMENT SYSTEM	Solaris, CDE
+#
+# CALLS			(List of modules this routine calls)
+#
+# CALLED BY		(List of modules that call this one)
+#
+# INPUTS		(Parameters used but not modified, include global and static data)
+#
+# OUTPUTS		(Parameters modified, include global and static data)
+#
+# RETURNS		(Type and meaning of return value, if any)
+#
+# ERROR HANDLING	(Describe how errors are handled)
+#
+# WARNINGS		(Describe anything a maintainer should be aware of)
+#
+######################################################################
+######################################################################
+#               REVISIONS
+#
+# $Log$
+######################################################################
+
+###################################################################
+#
+# Data Attributes
+#
+###################################################################
+DATA_ATTRIBUTES VERILOG
+{
+        ACTIONS         Run,Open,Edit,Gzip,Print_Source_One_Up,Print_Source_Two_Up
+        ICON		    verilog.xpm
+        NAME_TEMPLATE	%s.v
+        MIME_TYPE	    application/verilog
+        SUNV3_TYPE	    verilog-file
+        DESCRIPTION     This file contains Verilog hardware description language source code.
+        TYPE_LABEL      VERILOG
+}
+DATA_CRITERIA VERILOG1
+{
+        DATA_ATTRIBUTES_NAME VERILOG
+        MODE            f
+        NAME_PATTERN    *.v
+}
+
+###################################################################
+#
+# Actions
+#
+###################################################################
+ACTION Run
+{
+	LABEL	    	Run
+    ARG_TYPE        VERILOG
+    TYPE            COMMAND  
+    WINDOW_TYPE     TERMINAL
+	EXEC_STRING     vcs -R "%(File)Arg_1%"
+}
+ACTION Open
+{
+	LABEL	    	Edit
+    ARG_TYPE        VERILOG
+    TYPE            COMMAND  
+    WINDOW_TYPE     NO_STDIO
+    # gvim is a GUI version of Vim (Vi improved)
+	EXEC_STRING     gvim -R -geom 132x40+100+50 "%(File)Arg_1%"
+}
+ACTION Edit
+{
+	LABEL	    	Edit
+    ARG_TYPE        VERILOG
+    TYPE            COMMAND  
+    WINDOW_TYPE     NO_STDIO
+    # gvim is a GUI version of Vim (Vi improved)
+	EXEC_STRING     gvim -geom 132x40+100+50 "%(File)Arg_1%"
+}
+ACTION Print_Source_One_Up
+{
+	# Optional Left Click (Button 3) Label
+	LABEL		Print Source 1up
+    ARG_TYPE        VERILOG
+    TYPE            COMMAND  
+    WINDOW_TYPE     NO_STDIO
+	EXEC_STRING     enscript -G --pretty-print=verilog --header='$NAME' "%(File)Arg_1%"
+	
+}
+ACTION Print_Source_Two_Up
+{
+	# Optional Left Click (Button 3) Label
+	LABEL		Print Source 2up
+	ARG_TYPE        VERILOG
+    TYPE            COMMAND  
+    WINDOW_TYPE     NO_STDIO
+    #twopage is a GNU enscript alias in my .kshrc.user
+	#I don't think this works because I'm not reading the .kshrc.user
+	#EXEC_STRING    /bin/ksh -c 'twopage %(File)Arg_1%'
+	EXEC_STRING     enscript -2rlG --pretty-print=verilog --header='$NAME' "%(File)Arg_1%"
+}

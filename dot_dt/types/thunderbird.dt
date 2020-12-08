@@ -1,0 +1,54 @@
+######################################################################
+# thunderbird.dt $Revision$ CDE action file for the Thunderbird browser
+# Release $Name:  $ (Only defined if part of a specified release)
+#
+# by Dan Nygren $Date$
+#
+#	This CDE action file is meant to replace invoking Netscape 4.79
+# with Thunderbird. It also works with the Thunderbird front panel file.
+#
+# CALLING SEQUENCE	Install thunderbird.dt in ~/.dt/types directory
+#
+# EXAMPLE		N/A
+#
+# TARGET SYSTEM         Solaris 9, CDE1.5.7
+#
+# DEVELOPMENT SYSTEM	Solaris 9, CDE1.5.7
+#
+# CALLS			~/.dt/icons/dynamite.pm
+#
+# CALLED BY		~/.dt/types/thunderbird.fp
+#
+######################################################################
+######################################################################
+#               REVISIONS
+#
+# $Log$
+######################################################################
+
+# For use with thunderbird.fp front panel file
+
+ACTION thunderbirdKill
+{
+	LABEL		Kill Thunderbird
+    ICON		dynamite
+    TYPE            COMMAND
+	WINDOW_TYPE     PERM_TERMINAL
+    EXEC_STRING    	sh -c ' \
+                    echo "Killing Thunderbird \\n"; \
+			        pgrep -U $USER thunderbird; \
+			        pkill -U $USER thunderbird; \
+			        pkill -9 -U $USER thunderbird; \
+			        echo "\\n*** Select Close or Exit from the window menu to close this window ***"'
+}
+
+
+ACTION Thunderbird
+{
+    LABEL           Thunderbird
+    ICON            thunderbird
+	TYPE            COMMAND  
+	WINDOW_TYPE     NO_STDIO
+#	EXEC_STRING     /usr/dist/exe/thunderbird
+	EXEC_STRING     /pkg/isv/bin/thunderbird
+}

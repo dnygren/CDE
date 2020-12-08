@@ -1,0 +1,31 @@
+################################################################
+
+#   Actions and Datatypes for Printer "lx4l"
+
+#   Common Desktop Environment 1.0
+
+#   This file was created by the "dtprintinfo" program.
+
+#   Date of creation: Fri Oct 26 11:57:34 2001
+
+################################################################
+
+ACTION lx4l_Print
+{
+        ARG_TYPE                *
+        LABEL                   lx4l
+        ICON                    Fpprnt
+        TYPE                    COMMAND
+        WINDOW_TYPE             NO_STDIO
+        EXEC_STRING             env LPDEST=lx4l \
+				/usr/dt/bin/dtaction Print %(File)Arg_1%
+        DESCRIPTION             This is the lx4l printer queue.
+}
+
+ACTION lx4l_Print
+{
+        ARG_COUNT               0
+        TYPE                    COMMAND
+        WINDOW_TYPE             NO_STDIO
+        EXEC_STRING             /usr/dt/bin/dtaction Dtprintinfo lx4l
+}

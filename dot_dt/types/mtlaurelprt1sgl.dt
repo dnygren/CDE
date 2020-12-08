@@ -1,0 +1,31 @@
+################################################################
+
+#   Actions and Datatypes for Printer "mtlaurelprt1sgl"
+
+#   Common Desktop Environment 1.0
+
+#   This file was created by the "dtprintinfo" program.
+
+#   Date of creation: Fri Aug  2 11:37:58 2013
+
+################################################################
+
+ACTION mtlaurelprt1sgl_Print
+{
+        ARG_TYPE                *
+        LABEL                   mtlaurelprt1sgl
+        ICON                    Fpprnt
+        TYPE                    COMMAND
+        WINDOW_TYPE             NO_STDIO
+        EXEC_STRING             env LPDEST=mtlaurelprt1sgl \
+				/usr/dt/bin/dtaction Print %(File)Arg_1%
+        DESCRIPTION             This is the mtlaurelprt1sgl printer queue.
+}
+
+ACTION mtlaurelprt1sgl_Print
+{
+        ARG_COUNT               0
+        TYPE                    COMMAND
+        WINDOW_TYPE             NO_STDIO
+        EXEC_STRING             /usr/dt/bin/dtaction Dtprintinfo mtlaurelprt1sgl
+}

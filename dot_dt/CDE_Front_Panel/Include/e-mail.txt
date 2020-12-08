@@ -1,0 +1,31 @@
+Subject: ATTENTION -- CDE USERS
+From: Sun Desktop Initiative <desktop@sunit.Central.sun.com>
+Date: Mon, 30 Aug 2004 17:43:09 -0600 (MDT)
+To: AllCDEusers@sun.com
+CC: nsatt@sun.com
+
+                  ***ATTENTION CDE USERS***
+                  =========================
+
+If you are a CDE user and have recently experienced difficulty
+opening links and/or HTML documents, please be advised that the
+problem is now resolved.
+
+Specifically, CDE users attempting to open links and/or HTML files
+out of either DT mail or DT file manager were seeing a pop-up
+window related to the deactivation of Netscape 4.79. These items
+would not open unless the user followed special instructions. A
+newly installed patch automatically fixes the problem by launching
+Mozilla 1.4 in place of Netscape 4.79.
+
+However, please note that the patch does not cover the "globe" icon
+on the CDE toolbar. It is universally set to launch Netscape 4.79
+by default, and there are no plans for upgrading it to Mozilla 1.4.
+ 
+We regret any inconveniences caused. Should your problems persist,
+please immediately notify mozilla_interest@central.
+
+Thank you,
+Desktop Initiative
+IT Productivity Tools & Services
+

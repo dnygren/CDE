@@ -1,0 +1,91 @@
+######################################################################
+# mozilla.dt $Revision: 1.1 $ CDE action file for the Mozilla browser
+# Release $Name:  $ (Only defined if part of a specified release)
+#
+# by Dan Nygren $Date: 2004/09/01 23:00:00 $
+#
+#	This CDE action file is meant to replace invoking Netscape 4.79
+# with Mozilla. It also works with the Mozilla front panel file.
+#
+# CALLING SEQUENCE	Install mozilla.dt in ~/.dt/types directory
+#
+# EXAMPLE		N/A
+#
+# TARGET SYSTEM		Solaris 9, CDE1.5.7
+#
+# DEVELOPMENT SYSTEM	Solaris 9, CDE1.5.7
+#
+# CALLS			mozilla
+#			~/.dt/icons/dynamite.pm
+#			/usr/dt/appconfig/icons/C/SDtwebbr.*.pm
+#
+# CALLED BY		~/.dt/types/mozilla.fp
+#
+######################################################################
+######################################################################
+#               REVISIONS
+#
+# $Log: mozilla.dt,v $
+# Revision 1.1  2004/09/01 23:00:00  nygren
+# Initial revision
+#
+######################################################################
+
+# For use with mozilla.fp front panel file
+
+ACTION mozillaKill
+{
+	LABEL		Kill Mozilla
+        ICON		dynamite
+        TYPE            COMMAND
+	WINDOW_TYPE     PERM_TERMINAL
+        EXEC_STRING    	sh -c ' \
+                        echo "Killing Mozilla \\n"; \
+			pgrep mozilla; \
+			pkill mozilla; \
+			pkill -9 mozilla; \
+			echo "\\n*** Select Close or Exit from the window menu to close this window ***"'
+}
+
+
+# The default web browser for Common Desktop Environment (CDE) is SDWebClient.
+# Make Mozilla the default by overriding /usr/dt/appconfig/types/C/user-prefs.dt
+
+#ACTION WebBrowser
+#{
+#       LABEL           Web Browser
+#       ICON		SDtwebbr
+#	TYPE		MAP
+#	MAP_ACTION	SDtWebClient
+#       DESCRIPTION	The WebBrowser action runs the user preferred \
+#web browser client.
+#}
+
+set sdtwebclient_patherr=dterror.ds "Web Browser unavailable.\\n\\nNo web browser command found in your PATH.\\nLooked for mozilla commands" "Web Client: Path Error" "OK"
+
+ACTION WebBrowser
+{
+        LABEL           Web Browser
+        ICON		SDtwebbr
+	TYPE            COMMAND  
+	WINDOW_TYPE     NO_STDIO
+	EXEC_STRING     mozilla "%(File)Arg_1%"
+	#EXEC_STRING     /pkg/isv/bin/mozilla-1.7 "%(File)Arg_1%"
+}
+
+ACTION WebBrowser
+{
+	LABEL		Web Browser
+	ICON		SDtwebbr
+	ARG_TYPE	WEB_URL,FILE_URL,MAILTO_URL,RLOGIN_URL,WSMENU_SunSolve_Online,WSMENU_Find_Web_Page,WSMENU_Solaris_Support
+	ARG_COUNT	1
+	TYPE		COMMAND
+	WINDOW_TYPE	NO_STDIO
+        EXEC_STRING     sh -c '\
+			URL=`/bin/head -1 "%Arg_1%"` ; \
+			mozilla "\$URL" || \{ \
+			    $sdtwebclient_patherr ; \
+			\}'
+	DESCRIPTION	The WebClient action invokes a WebBrowser \
+            on a Uniform Resource Location (URL) file. 
+}

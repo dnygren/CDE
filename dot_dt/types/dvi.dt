@@ -1,0 +1,77 @@
+######################################################################
+# dvi.dt $Revision$ : dt type file for LaTeX DVI files
+# Release $Name$ (Only defined if part of a specified release)
+#
+# by Dan Nygren $Date$
+#
+#	This dt action invokes xdvi for dvi files.
+#
+# CALLING SEQUENCE	(Example with explanation of call parameters)
+#
+# EXAMPLE		(Example of a call)
+#
+# TARGET SYSTEM		Solaris 2.7, CDE1.3
+#
+# DEVELOPMENT SYSTEM	Solaris 2.7, CDE1.3
+#
+# CALLS			(List of modules this routine calls)
+#
+# CALLED BY		(List of modules that call this one)
+#
+# INPUTS		(Parameters used but not modified, include global and static data)
+#
+# OUTPUTS		(Parameters modified, include global and static data)
+#
+# RETURNS		(Type and meaning of return value, if any)
+#
+# ERROR HANDLING	(Describe how errors are handled)
+#
+# WARNINGS		(Describe anything a maintainer should be aware of)
+#
+######################################################################
+######################################################################
+#               REVISIONS
+#
+# $Log$
+######################################################################
+
+###################################################################
+#
+# Data Attributes
+#
+###################################################################
+DATA_ATTRIBUTES DVI
+{
+        ACTIONS         Open,Dvips
+        ICON		dvi.xpm
+        NAME_TEMPLATE	%s.dvi
+}
+DATA_CRITERIA DVI
+{
+        DATA_ATTRIBUTES_NAME DVI
+        MODE            f
+        NAME_PATTERN    *.dvi
+}
+###################################################################
+#
+# Actions
+#
+###################################################################
+ACTION Open
+{
+	LABEL		Open
+	ARG_TYPE        DVI
+        TYPE            COMMAND  
+        WINDOW_TYPE     NO_STDIO
+        # gv is a GUI PostScript file viewer
+	EXEC_STRING     xdvi "%(File)Arg_1%"
+}
+ACTION Dvips
+{
+	# Optional Left Click (Button 3) Label
+	LABEL		Dvips
+	ARG_TYPE        DVI
+        TYPE            COMMAND  
+        WINDOW_TYPE     TERMINAL
+	EXEC_STRING     dvips "%(File)Arg_1%" -o
+}

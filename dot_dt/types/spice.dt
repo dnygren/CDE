@@ -1,0 +1,101 @@
+######################################################################
+# spice.dt $Revision$ : dt type file for SPICE files
+# Release $Name$ (Only defined if part of a specified release)
+#
+# by Dan Nygren $Date$
+#
+#	This file gives the default behavior that SPICE files have.
+# See the dtdtsfile. Execute the dttypes command to see current settings.
+#
+# CALLING SEQUENCE	N/A
+#
+# EXAMPLE		N/A
+#
+# TARGET SYSTEM		Solaris 2.7, CDE1.3
+#
+# DEVELOPMENT SYSTEM	Solaris 2.7, CDE1.3
+#
+# CALLS			text.dt, uxstd.dt, Gzip.dt
+#
+# CALLED BY		(List of modules that call this one)
+#
+# INPUTS		(Parameters used but not modified, include global and static data)
+#
+# OUTPUTS		(Parameters modified, include global and static data)
+#
+# RETURNS		(Type and meaning of return value, if any)
+#
+# ERROR HANDLING	(Describe how errors are handled)
+#
+# WARNINGS		Action name in DATA_ATTRIBUTES must match ACTION name
+#
+######################################################################
+######################################################################
+#               REVISIONS
+#
+# $Log$
+######################################################################
+
+###################################################################
+#
+# Data Attributes
+#
+###################################################################
+DATA_ATTRIBUTES SPICEFILE
+{
+	# Don't put spaces between action names, as then these spaces 
+	# get put in the pull down menus and look ugly.
+        ACTIONS         AvanWaves,HSPICE,Edit,Spell,Gzip,Print_One_Up,Print_Two_Up,Print_Landscape
+	#Default Icon
+        ICON		sp.t.pm
+        #If there is an icon with the same name as the suffix, use it instead
+        INSTANCE_ICON	%suffix%.xpm
+#        NAME_TEMPLATE	%s.sp
+        MIME_TYPE	text/plain
+        IS_TEXT		true
+        DESCRIPTION     This file contains text.
+}
+
+###################################################################
+#
+# Data Criteria (.sp files)
+#
+###################################################################
+DATA_CRITERIA SPICEFILE
+{
+        DATA_ATTRIBUTES_NAME SPICEFILE
+        # Mode "f" matches any file
+        MODE            f
+        NAME_PATTERN    *.sp
+}
+###################################################################
+#
+# Actions
+#
+###################################################################
+ACTION AvanWaves
+{
+	LABEL		AvanWaves
+	ARG_TYPE        SPICEFILE
+	TYPE            COMMAND  
+	WINDOW_TYPE     NO_STDIO
+	EXEC_STRING     awaves "%(File)Arg_1%"
+}
+
+ACTION HSPICE
+{
+	# An example of how to use hspice. Note the Window type;
+	# hspice needs this since it doesn't have its own window
+	LABEL		HSPICE
+	ARG_TYPE        SPICEFILE
+	TYPE            COMMAND  
+	WINDOW_TYPE     TERMINAL
+	EXEC_STRING     hspice "%(File)Arg_1%"
+}
+
+# Edit is already defined in text.dt
+# Spell is already defined in uxstd.dt
+# Gzip is already defined for in Gzip.dt
+# Print_One_Up is already defined in text.dt
+# Print_Two_Up is already defined in text.dt
+# Print_Landscape is already defined in text.dt

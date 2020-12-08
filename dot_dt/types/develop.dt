@@ -1,0 +1,503 @@
+###############################################################################
+#
+#     develop.dt
+#
+#     Action and DataType definitions for the Common Desktop Environment
+#     (CDE) components.  This file contains common datatypes for developers.
+#
+#    (c) Copyright 1993, 1994, 1995 Hewlett-Packard Company
+#    (c) Copyright 1993, 1994, 1995 International Business Machines Corp.
+#    (c) Copyright 1993, 1994, 1995 Sun Microsystems, Inc.
+#    (c) Copyright 1993, 1994, 1995 Novell, Inc.
+#
+#    $XConsortium: develop.dt.src /main/cde1_maint/4 1995/10/31 11:18:45 rcs $
+#
+###############################################################################
+set DtDbVersion=1.0
+
+###############################################################################
+#
+# WARNING:  This file may be overwritten in subsequent installations of
+#     the Common Desktop Environment (CDE).  Consequently, any system wide
+#     changes should be made to an equivalent database file in
+#     /etc/dt/appconfig/types/<locale> and not in this file.
+#
+###############################################################################
+
+###################################################################
+#
+# Data Attributes
+#
+###################################################################
+DATA_ATTRIBUTES CORE
+{
+        ACTIONS         File,DbxStack,AdbStack,Workshop,Debug,Rm
+        ICON		Dtcore
+
+
+
+
+        MIME_TYPE	application/x-sun-corefile
+
+
+
+
+        SUNV3_TYPE      corefile
+	MOVE_TO_ACTION	Debug
+	COPY_TO_ACTION	Debug
+	DESCRIPTION	This file contains a core image of a process \
+                        that terminated abnormally.  Its data type is \
+                        named CORE.
+        TYPE_LABEL      CORE
+}
+DATA_CRITERIA CORE1
+{
+	DATA_ATTRIBUTES_NAME CORE
+        MODE            f&!x
+	NAME_PATTERN	core|core.*|*.core
+}
+ACTION Print
+{
+        LABEL           Print
+        ARG_TYPE        CORE
+        TYPE            MAP
+        MAP_ACTION      NoPrint
+}
+
+############################################################
+
+DATA_ATTRIBUTES OBJECT
+{
+        ACTIONS         Open,Edit,Print
+        ICON		Dtbin
+        NAME_TEMPLATE	%s.o
+
+
+
+
+        MIME_TYPE	application/x-sun-o-file
+
+
+
+
+        SUNV3_TYPE      o-file
+	DESCRIPTION	This file contains binary data that a compiler \
+                        has produced from a source file.  Its data type \
+                        is named OBJECT.  OBJECT files have names ending \
+                        with '.o'.
+        TYPE_LABEL      OBJECT
+}
+DATA_CRITERIA OBJECT1
+{
+	DATA_ATTRIBUTES_NAME OBJECT
+        MODE            f
+	NAME_PATTERN	*.o
+}
+ACTION Open
+{
+        LABEL           Open
+        ARG_TYPE        OBJECT
+        TYPE            MAP
+        MAP_ACTION      Nm
+}
+ACTION Edit
+{
+	LABEL		Edit
+	ARG_TYPE        OBJECT
+	TYPE            COMMAND  
+	WINDOW_TYPE     NO_STDIO
+	# gvim is a GUI version of Vim (Vi improved)
+	EXEC_STRING     gvim -geom 132x40+100+10 "%(File)Arg_1%"
+}
+ACTION Print
+{
+        LABEL           Print
+        ARG_TYPE        OBJECT
+        TYPE            MAP
+        MAP_ACTION      PrintNm
+}
+
+############################################################
+
+DATA_ATTRIBUTES ASSEMBLER
+{
+        ACTIONS         Open,Print
+        ICON            Dtbin
+        IS_TEXT		true
+        NAME_TEMPLATE	%s.s
+        MIME_TYPE	text/plain
+        SUNV3_TYPE      text
+	DESCRIPTION	This file contains assembler code for a given \
+                        architecture.  Its data type is named ASSEMBLER. \
+                        ASSEMBLER files have names ending with '.s'. 
+        TYPE_LABEL      ASSEMBLER
+}
+DATA_CRITERIA ASSEMBLER1
+{
+        DATA_ATTRIBUTES_NAME ASSEMBLER
+        MODE            f
+        NAME_PATTERN    *.s
+}
+
+############################################################
+
+DATA_ATTRIBUTES ARCH_LIB
+{
+        ACTIONS         Open,Print
+        ICON		Dtbinml
+        MIME_TYPE	application/octet-stream
+	DESCRIPTION	This file contains an archived libarary of \
+                        object files.  Its data type is named ARCH_LIB. \
+                        ARCH_LIB files have names ending with '.a'.
+        TYPE_LABEL      ARCH_LIB
+}
+DATA_CRITERIA ARCH_LIB1
+{
+	DATA_ATTRIBUTES_NAME ARCH_LIB
+        MODE            f
+	NAME_PATTERN	*.a
+}
+ACTION Open
+{
+        LABEL           Open
+        ARG_TYPE        ARCH_LIB
+        TYPE            MAP
+        MAP_ACTION      Nm
+}
+ACTION Print
+{
+        LABEL           Print
+        ARG_TYPE        ARCH_LIB
+        TYPE            MAP
+        MAP_ACTION      PrintNm
+}
+
+############################################################
+
+DATA_ATTRIBUTES SHARED_LIB
+{
+        ACTIONS         Open,Print
+        ICON		Dtbinml
+        MIME_TYPE	application/octet-stream
+	DESCRIPTION	This files contains a shared library of an \
+                        object file.  Its data type is named SHARED_LIB. \
+                        SHARD_LIB files have names ending with '.sl' or '.so'.
+        TYPE_LABEL      SHARED_LIB
+}
+DATA_CRITERIA SHARED_LIB1
+{
+	DATA_ATTRIBUTES_NAME SHARED_LIB
+        MODE            f
+	NAME_PATTERN	*.sl|*.so|*.so.*
+}
+
+DATA_CRITERIA SDT_ELF_EXECUTABLE
+{
+	DATA_ATTRIBUTES_NAME    EXECUTABLE
+	CONTENT                 0 byte 0177 0105 0114 0106
+	CONTENT                 16 short 2
+}
+DATA_CRITERIA SDT_PURE_EXECUTABLE
+{
+	DATA_ATTRIBUTES_NAME    EXECUTABLE
+	CONTENT                 2 short 0410
+}
+DATA_CRITERIA SDT_IMPURE_EXECUTABLE
+{
+	DATA_ATTRIBUTES_NAME    EXECUTABLE
+	CONTENT                 2 short 0407
+}
+DATA_CRITERIA SDT_DEMAND_PAGED_EXECUTABLE
+{
+	DATA_ATTRIBUTES_NAME    EXECUTABLE
+	CONTENT                 2 short 0413
+}
+
+ACTION Open
+{
+        LABEL           Open
+        ARG_TYPE        SHARED_LIB
+        TYPE            MAP
+        MAP_ACTION      Nm
+}
+ACTION Print
+{
+        LABEL           Print
+        ARG_TYPE        SHARED_LIB
+        TYPE            MAP
+        MAP_ACTION      PrintNm
+}
+
+############################################################
+
+DATA_ATTRIBUTES C_SRC
+{
+        ACTIONS         Open,Edit,Make,Print,Print_One_Up,Print_Two_Up,Check_Spelling,Correct_Spelling
+        ICON		DtdotC
+        IS_TEXT		true
+        NAME_TEMPLATE	%s.c
+        MIME_TYPE	text/x-sun-c-file
+        SUNV3_TYPE      c-file
+	DESCRIPTION	This file is a source file in the C \
+                        programming language.  Its data type is named \
+                        C_SRC.  C_SRC files have names ending with '.c'.
+        TYPE_LABEL      C_SRC
+}
+DATA_CRITERIA C_SRC1
+{
+	DATA_ATTRIBUTES_NAME C_SRC
+        MODE            f
+	NAME_PATTERN	*.c
+}
+ACTION Make
+{
+        LABEL           Make
+        TYPE            COMMAND
+        ARG_TYPE        C_SRC
+        WINDOW_TYPE     PERM_TERMINAL
+        EXEC_STRING     sh -c ' \
+            make `basename "%(File)Arg_1%" .c`.o 2>&1 | \${PAGER:-more}; \
+            echo "\\n*** Select Close or Exit from the window menu to close this window ***"'
+        DESCRIPTION     The Make command for C_SRC files uses the Unix \
+                        'make' command to make the associated object file.
+}
+ACTION Correct_Spelling
+{
+	LABEL		Correct Spelling
+	TYPE            COMMAND  
+	WINDOW_TYPE     TERMINAL
+	EXEC_STRING     ispell "%(File)Arg_1%"
+}
+
+ACTION Check_Spelling
+{
+	LABEL	Check Spelling
+	DESCRIPTION	The Check Spelling (Spell) action checks the spelling of all the words in a file. It uses the 'spell' command.
+	TYPE	COMMAND
+	#EXEC_STRING sh -c ' (echo "Misspelled words \\n================\\n"; spell "%(File)Arg_1"File To Spell Check:"%" %(File)Args%) 2>&1 | ${PAGER:-more}; echo "\\n*** Select Close or Exit from the window menu to close this window ***"'
+	#EXEC_STRING spell "%(File)Arg_1%"
+        EXEC_STRING     sh -c ' \
+            spell "%(File)Arg_1%"; \
+            echo "\\n*** Select Close or Exit from the window menu to close this window ***"'
+	ICON DtRdMe
+	WINDOW_TYPE PERM_TERMINAL
+}
+ACTION Print_One_Up
+{
+	# Optional Left Click (Button 3) Label
+	LABEL		Print One Column
+        TYPE            COMMAND  
+        WINDOW_TYPE     NO_STDIO
+        #EXEC_STRING     lp -c "%(File)Arg_1%" 	
+	#onepage is a GNU enscript alias in my .kshrc-user
+	#EXEC_STRING    onepage "%(File)Arg_1%" #Alias doesn't work
+	EXEC_STRING    /pkg/gnu/bin/enscript -G --pretty-print --font=Courier9 --header='$NAME' "%(File)Arg_1%"
+	
+}
+ACTION Print_Two_Up
+{
+	# Optional Left Click (Button 3) Label
+	LABEL		Print Two Columns
+    TYPE            COMMAND  
+    WINDOW_TYPE     NO_STDIO
+    #twopage is a GNU enscript alias in my .kshrc-user
+	#EXEC_STRING    twopage "%(File)Arg_1%" #Alias doesn't work
+	EXEC_STRING     /pkg/gnu/bin/enscript -2rlG --pretty-print --header='$NAME' "%(File)Arg_1%"
+}
+
+############################################################
+
+DATA_ATTRIBUTES CPLUSPLUS_SRC
+{
+        ACTIONS         Open,Make,Print
+        ICON            DtC++
+        IS_TEXT         true
+        NAME_TEMPLATE	%s.C
+        MIME_TYPE	text/plain
+        DESCRIPTION     This is a a source file in the C++ programming \
+                        language.  Its data type is named CPLUSPLUS_SRC. \
+                        CPLUSPLUS_SRC files have names ending with '.C' \
+                        or '.cc'.
+        TYPE_LABEL      CPLUSPLUS_SRC
+}
+DATA_CRITERIA C_PLUSPLUS1
+{
+        DATA_ATTRIBUTES_NAME CPLUSPLUS_SRC
+        MODE            f
+        NAME_PATTERN    *.C|*.cc
+}
+ACTION Make
+{
+        LABEL           Make
+        TYPE            COMMAND
+        ARG_TYPE        CPLUSPLUS_SRC
+        WINDOW_TYPE     PERM_TERMINAL
+        EXEC_STRING     sh -c ' \
+            if [ -r "%(File)Arg_1%.C" ]; then \
+               make `basename "%(File)Arg_1%" .C`.o 2>&1 | \${PAGER:-more}; \
+            else \
+               make `basename "%(File)Arg_1%" .cc`.o 2>&1 | \${PAGER:-more}; \
+            fi; echo "\\n*** Select Close or Exit from the window menu to close this window ***"'
+        DESCRIPTION     The Make command for CPLUSPLUS_SRC files uses \
+                        the Unix 'make' command to make the associated \
+                        object file.
+}
+
+############################################################
+
+DATA_ATTRIBUTES H_SRC
+{
+        ACTIONS         Open,Edit,Print,Print_One_Up,Print_Two_Up,Check_Spelling,Correct_Spelling
+        ICON		DtdotH
+        IS_TEXT		true
+        NAME_TEMPLATE	%s.h
+        MIME_TYPE	text/x-sun-h-file
+        SUNV3_TYPE      h-file
+		DESCRIPTION	This is a C-language program header file. Its \
+                        data type is named H_SRC.  H_SRC files have names \
+                        ending with *.h.
+        TYPE_LABEL      H_SRC
+}
+DATA_CRITERIA H_SRC1
+{
+	DATA_ATTRIBUTES_NAME H_SRC
+    MODE            f
+	NAME_PATTERN	*.h
+}
+
+############################################################
+
+DATA_ATTRIBUTES MAKEFILE
+{
+        ACTIONS         Open,Make,Print
+        ICON		DtbigM
+        IS_TEXT		true
+        NAME_TEMPLATE	Makefile
+
+
+
+
+#        MIME_TYPE	text/x-sun-Makefile
+        MIME_TYPE	text
+
+
+
+
+        SUNV3_TYPE      Makefile
+	DESCRIPTION	This is a Makefile. A Makefile describes \
+                        how to generate an executable file from a set of \
+                        source files.  It is used by the make command.  \
+                        Its data type is named MAKEFILE.  MAKEFILE files \
+                        must be named Makefile or makefile, or have names \
+                        starting with Makefile or makefile, or have names \
+                        ending with '.mk'.
+        TYPE_LABEL      MAKEFILE
+}
+DATA_CRITERIA MAKEFILE1
+{
+	DATA_ATTRIBUTES_NAME MAKEFILE
+        MODE            f
+        NAME_PATTERN    [Mm]akefile*|*.mk
+}
+ACTION Make
+{
+        LABEL           Make
+        TYPE            COMMAND
+        ARG_TYPE        MAKEFILE
+        WINDOW_TYPE     PERM_TERMINAL
+        EXEC_STRING     sh -c ' \
+            make -f "%(File)Arg_1%" %"Target to Make:"% 2>&1 | \${PAGER:-more}; \
+            echo "\\n*** Select Close or Exit from the window menu to close this window ***"'
+        DESCRIPTION     The Make action for Makefiles prompts for the \
+                        target to make, and then uses the Unix 'make' \
+                        command to make it.  If target is left empty \
+                        the command makes 'all' in the current folder.
+}
+
+
+############################################################
+
+DATA_ATTRIBUTES IMAKEFILE
+{
+        ACTIONS         Open,Make,Print
+        ICON            Dtimake
+        IS_TEXT         true
+        NAME_TEMPLATE	Imakefile
+        MIME_TYPE	text/plain
+        DESCRIPTION     This is an Imakefile. An Imakefile describes \
+                        how to generate an executable file from a set of \
+                        source files.  It is used by the make command.  \
+                        Its data type is named IMAKEFILE.  IMAKEFILE files \
+                        are named imakefile or Imakefile, or have names \
+                        starting with imakefile or Imakefile.
+        TYPE_LABEL      IMAKEFILE
+}
+DATA_CRITERIA IMAKEFILE1
+{
+        DATA_ATTRIBUTES_NAME IMAKEFILE
+        MODE            f
+        NAME_PATTERN    [Ii]makefile*
+}
+ACTION Make
+{
+        LABEL           Make
+        TYPE            COMMAND
+        ARG_TYPE        IMAKEFILE
+        WINDOW_TYPE     PERM_TERMINAL
+        EXEC_STRING     sh -c ' \
+            make Makefile 2>&1 | \${PAGER:-more}; \
+            echo "\\n*** Select Close or Exit from the window menu to close this window ***"'
+        DESCRIPTION     The Make command for Imakefile files uses the Unix \
+                        'make' command to make the associated Makefile.
+}
+
+###############################################################################
+###############################################################################
+#
+# Actions
+#
+###############################################################################
+
+ACTION Nm
+{
+        LABEL           Symbols List
+        TYPE            COMMAND
+        WINDOW_TYPE     PERM_TERMINAL
+        EXEC_STRING     sh -c ' \
+             /usr/ccs/bin/nm "%(File)Arg_1"Filename:"%" 2>&1 | \${PAGER:-more}; \
+             echo "\\n*** Select Close or Exit from the window menu to close this window ***"'
+        DESCRIPTION     The Symbols List (Nm) action lists the symbol \
+                        table of an object file or library file.  It uses \
+                        the 'nm' command.
+}
+
+ACTION PrintNm
+{
+        LABEL           Print Symbol List
+        TYPE            COMMAND
+        WINDOW_TYPE     NO_STDIO
+        EXEC_STRING     /bin/sh -c ' \
+                        /usr/ccs/bin/nm "%(File)Arg_1%" | \
+                        /usr/dt/bin/dtlp -u "Symbols List"'
+        DESCRIPTION     The Print Symbol List (PrintNm) action prints \
+                        the output from the 'nm' command on the default printer.
+}
+
+
+
+ACTION Make
+{
+        LABEL           Make
+        TYPE            COMMAND
+        ARG_COUNT       0
+        WINDOW_TYPE     PERM_TERMINAL
+        EXEC_STRING     \
+          sh -c ' \
+            make -f "%(File)Arg_1"Makefile:"%" %"Target to Make:"% 2>&1 | \
+              \${PAGER:-more}; \
+            echo "\\n*** Select Close or Exit from the window menu to close this window ***"'
+        DESCRIPTION     The Make action for no arguments prompts for \
+                        a Makefile and target, and then uses the Unix \
+                        'make' command to make it.
+}
+########################### EOF ##############################################

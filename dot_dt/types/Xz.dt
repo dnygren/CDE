@@ -1,0 +1,24 @@
+# xz compress and uncompress  - Dan Nygren 
+
+ACTION Xz
+{
+     LABEL         Xz Compress
+     TYPE          COMMAND
+     EXEC_STRING   /pkg/local/bin/xz -9 %Arg_1"Filename:"%
+     ICON          gziped
+     WINDOW_TYPE   NO_STDIO
+     DESCRIPTION   Compress a given file with xz.  This action \
+     accepts files via drag and drop.  If double-clicked, will ask \
+     for a filename to compress.
+}
+
+ACTION UnXz
+{
+     LABEL         Xz Uncompress
+     TYPE          COMMAND
+     EXEC_STRING   /pkg/local/bin/xz -d %Arg_1"Filename:"%
+     ICON          gziped
+     WINDOW_TYPE   NO_STDIO
+     DESCRIPTION   This action will uncompress a file using the \
+     xz utility.
+}

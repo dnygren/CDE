@@ -1,0 +1,51 @@
+########################################################
+
+DATA_ATTRIBUTES TIFF
+{
+        ACTIONS         Open, GIMP
+        ICON            Dttif
+        NAME_TEMPLATE	%s.tif
+        MIME_TYPE	image/tiff
+        SUNV3_TYPE	tiff-file
+        DESCRIPTION     This file contains a graphics image in TIFF format. \
+                        Its data type is named TIFF.  TIFF files have \
+                        names ending with '.TIFF', '.TIF', '.tiff', or '.tif'.
+        TYPE_LABEL      TIFF
+}
+DATA_CRITERIA TIFF1
+{
+        DATA_ATTRIBUTES_NAME TIFF
+        MODE            f
+        NAME_PATTERN    *.[Tt][Ii][Ff]|*.[Tt][Ii][Ff][Ff]
+}
+DATA_CRITERIA TIFF5
+{
+	DATA_ATTRIBUTES_NAME TIFF
+	CONTENT    0 byte 0115 0115|0 byte 0111 0111
+	MODE            f
+}
+ACTION Open
+{
+	LABEL		Open
+    ARG_TYPE        TIFF
+    TYPE            COMMAND
+	WINDOW_TYPE     NO_STDIO
+	EXEC_STRING     display "%(File)Arg_1%"
+	#EXEC_STRING     gimp "%(File)Arg_1%"
+}
+ACTION GIMP
+{
+	LABEL		GIMP
+    ARG_TYPE        TIFF
+    TYPE            COMMAND
+	WINDOW_TYPE     NO_STDIO
+	#EXEC_STRING     display "%(File)Arg_1%"
+	EXEC_STRING     gimp --no-splash "%(File)Arg_1%"
+}
+ACTION Print
+{
+        LABEL           Print
+        ARG_TYPE        TIFF
+        TYPE            MAP
+        MAP_ACTION	NoPrint
+}

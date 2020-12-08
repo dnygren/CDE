@@ -1,0 +1,343 @@
+######################################################################
+# text.dt $Revision$ : dt type file to override default text file behavior
+# Release $Name$ (Only defined if part of a specified release)
+#
+# by Dan Nygren $Date$
+#
+#	This file overides the default dtpad editor text file behavior that 
+# is in /usr/dt/appconfig/types/C/dtpad.dt "TEXTFILES". See the dtdtsfile 
+# manpage. Execute the dttypes command to see current settings.
+#
+# CALLING SEQUENCE	N/A
+#
+# EXAMPLE		N/A
+#
+# TARGET SYSTEM		Solaris 2.7, CDE1.3
+#
+# DEVELOPMENT SYSTEM	Solaris 2.7, CDE1.3
+#
+# CALLS			None
+#
+# CALLED BY		(List of modules that call this one)
+#
+# INPUTS		(Parameters used but not modified, include global and static data)
+#
+# OUTPUTS		(Parameters modified, include global and static data)
+#
+# RETURNS		(Type and meaning of return value, if any)
+#
+# ERROR HANDLING	(Describe how errors are handled)
+#
+# WARNINGS		Action name in DATA_ATTRIBUTES must match ACTION name
+#
+######################################################################
+######################################################################
+#               REVISIONS
+#
+# $Log$
+######################################################################
+
+###################################################################
+#
+# Data Attributes
+#
+###################################################################
+DATA_ATTRIBUTES TEXTFILE
+{
+	# Don't put spaces between action names, as then these spaces 
+	# get put in the pull down menus and look ugly.
+        ACTIONS         Open,Edit,Touch,Spell,Correct_Spelling,Gzip,Print_One_Up,Print_Two_Up,Print_Landscape,Process_Gutenberg
+	#Default Icon
+        ICON		text.s.bm
+        #If there is an icon with the same name as the suffix, use it instead
+        INSTANCE_ICON	%suffix%.xpm
+        NAME_TEMPLATE	%s.txt
+        MIME_TYPE	text/plain
+        IS_TEXT		true
+        DESCRIPTION     This file contains text.
+}
+
+###################################################################
+#
+# Data Criteria (.txt, .TXT, .tex, .redx, .src, .vim, .faq, .m4,
+# .text, .lis, .sh, .sed, cgi, .xml, .cfg, .log, .sa, .c, .h, 
+# .patch, .diff, .csv files)
+#
+###################################################################
+DATA_CRITERIA TEXTFILE
+{
+        DATA_ATTRIBUTES_NAME TEXTFILE
+        # Mode "f" matches any file
+        MODE            f
+        NAME_PATTERN    *.txt
+}
+DATA_CRITERIA TEXTFILE2
+{
+        DATA_ATTRIBUTES_NAME TEXTFILE
+        # Mode "f" matches any file
+        MODE            f
+        NAME_PATTERN    *.TXT
+}
+
+DATA_CRITERIA TEXTFILE4
+{
+        DATA_ATTRIBUTES_NAME TEXTFILE
+        # Mode "f" matches any file
+        MODE            f
+        NAME_PATTERN    *.vim
+}
+
+DATA_CRITERIA TEXTFILE5
+{
+        DATA_ATTRIBUTES_NAME TEXTFILE
+        # Mode "f" matches any file
+        MODE            f
+        NAME_PATTERN    *.src
+}
+
+DATA_CRITERIA TEXTFILE6
+{
+        DATA_ATTRIBUTES_NAME TEXTFILE
+        # Mode "f" matches any file
+        MODE            f
+        NAME_PATTERN    *.redx
+}
+
+DATA_CRITERIA TEXTFILE7
+{
+        DATA_ATTRIBUTES_NAME TEXTFILE
+        # Mode "f" matches any file
+        MODE            f
+        NAME_PATTERN    *.m4
+}
+
+DATA_CRITERIA TEXTFILE8
+{
+        DATA_ATTRIBUTES_NAME TEXTFILE
+        # Mode "f" matches any file
+        MODE            f
+        NAME_PATTERN    *.faq
+}
+
+# For dtmail to identify the system textfile data attribute
+DATA_CRITERIA TEXTFILE9
+{
+        DATA_ATTRIBUTES_NAME TEXTFILE
+        # Mode for "files and not executable"
+        MODE            f&!x
+        NAME_PATTERN    text
+}
+
+DATA_CRITERIA TEXTFILE10
+{
+        DATA_ATTRIBUTES_NAME TEXTFILE
+        # Mode for "files and not executable"
+        MODE            f
+        NAME_PATTERN    *.lis
+}
+DATA_CRITERIA TEXTFILE11
+{
+        DATA_ATTRIBUTES_NAME TEXTFILE
+        # Mode for "files and not executable"
+        MODE            f
+        NAME_PATTERN    *.sh
+}
+DATA_CRITERIA TEXTFILE12
+{
+        DATA_ATTRIBUTES_NAME TEXTFILE
+        # Mode for "files and not executable"
+        MODE            f
+        NAME_PATTERN    *.sed
+}
+DATA_CRITERIA TEXTFILE13
+{
+        DATA_ATTRIBUTES_NAME TEXTFILE
+        # Mode for "files and not executable"
+        MODE            f
+        NAME_PATTERN    *.cgi
+}
+DATA_CRITERIA TEXTFILE14
+{
+        DATA_ATTRIBUTES_NAME TEXTFILE
+        # Mode for "files and not executable"
+        MODE            f
+        NAME_PATTERN    *.xml
+}
+DATA_CRITERIA TEXTFILE15
+{
+        DATA_ATTRIBUTES_NAME TEXTFILE
+        # Mode for "files and not executable"
+        MODE            f
+        NAME_PATTERN    *.cfg
+}
+DATA_CRITERIA TEXTFILE16
+{
+        DATA_ATTRIBUTES_NAME TEXTFILE
+        # Mode for "files and not executable"
+        MODE            f
+        NAME_PATTERN    *.rpt
+}
+DATA_CRITERIA TEXTFILE17
+{
+        DATA_ATTRIBUTES_NAME TEXTFILE
+        # Mode for "files and not executable"
+        MODE            f
+        NAME_PATTERN    *.log
+}
+DATA_CRITERIA TEXTFILE18
+{
+        DATA_ATTRIBUTES_NAME TEXTFILE
+        # Mode for "files and not executable"
+        MODE            f
+        NAME_PATTERN    *.sa
+}
+DATA_CRITERIA TEXTFILE19
+{
+        DATA_ATTRIBUTES_NAME TEXTFILE
+        # Mode for "files and not executable"
+        MODE            f
+        NAME_PATTERN    *.c
+}
+DATA_CRITERIA TEXTFILE20
+{
+        DATA_ATTRIBUTES_NAME TEXTFILE
+        # Mode for "files and not executable"
+        MODE            f
+        NAME_PATTERN    *.h
+}
+DATA_CRITERIA TEXTFILE21
+{
+        DATA_ATTRIBUTES_NAME TEXTFILE
+        # Mode for "files and not executable"
+        MODE            f
+        NAME_PATTERN    *.patch
+}
+DATA_CRITERIA TEXTFILE22
+{
+        DATA_ATTRIBUTES_NAME TEXTFILE
+        # Mode for "files and not executable"
+        MODE            f
+        NAME_PATTERN    *.diff
+}
+DATA_CRITERIA TEXTFILE23
+{
+        DATA_ATTRIBUTES_NAME TEXTFILE
+        # Mode for "files and not executable"
+        MODE            f
+        NAME_PATTERN    *.csv
+}
+###################################################################
+#
+# Actions
+#
+###################################################################
+ACTION Open
+{
+	LABEL	    	Open
+	ARG_TYPE        TEXTFILE
+	TYPE            COMMAND  
+	#WINDOW_TYPE     TERMINAL
+	WINDOW_TYPE     NO_STDIO
+	# gvim -R is a readonly GUI version of Vim (Vi improved)
+	# The :w! command forces a write. No swap file is created.
+	EXEC_STRING     gvim -R -geom 132x40+100+10 "%(File)Arg_1%"
+}
+
+#ACTION Open
+#{
+#	# An example of how to use vi. Note the Window type; vi
+#	# needs this since it doesn't have its own window
+#	LABEL		Open
+#	ARG_TYPE        TEXTFILE
+#	TYPE            COMMAND  
+#	WINDOW_TYPE     TERMINAL
+#	EXEC_STRING     vi "%(File)Arg_1%"
+#}
+
+ACTION Edit
+{
+	LABEL		    Edit
+	ARG_TYPE        TEXTFILE
+	TYPE            COMMAND  
+	#WINDOW_TYPE     TERMINAL
+	WINDOW_TYPE     NO_STDIO
+	# gvim is a GUI version of Vim (Vi improved)
+	EXEC_STRING     gvim -geom 132x40+100+10 "%(File)Arg_1%"
+}
+
+# Touch is already defined in solaris.dt
+#ACTION Touch
+#{
+#	LABEL           Touch
+#	ARG_TYPE        TEXTFILE
+#	TYPE            COMMAND  
+#	WINDOW_TYPE     NO_STDIO
+#	EXEC_STRING     touch "%(File)Arg_1%"
+#}
+
+ACTION Correct_Spelling
+{
+	LABEL		Correct Spelling
+	ARG_TYPE        TEXTFILE
+	TYPE            COMMAND  
+	WINDOW_TYPE     TERMINAL
+	EXEC_STRING     ispell "%(File)Arg_1%"
+}
+
+# Gzip is already defined in Gzip.dt
+#ACTION Gzip
+#{
+#	LABEL         Gzip
+#	ARG_TYPE      TEXTFILE
+#	TYPE          COMMAND
+#	WINDOW_TYPE   NO_STDIO
+#	EXEC_STRING   gzip -9 "%(File)Arg_1%"
+#}
+
+ACTION Print_One_Up
+{
+	# Optional Left Click (Button 3) Label
+	LABEL		Print One Column
+        ARG_TYPE        TEXTFILE
+        TYPE            COMMAND  
+        WINDOW_TYPE     NO_STDIO
+        #EXEC_STRING     lp -c "%(File)Arg_1%" 	
+	#onepage is a GNU enscript alias in my .kshrc-user
+	#EXEC_STRING    onepage "%(File)Arg_1%" #Alias doesn't work
+	EXEC_STRING    /pkg/gnu/bin/enscript -G --pretty-print --font=Courier9 --header='$NAME' "%(File)Arg_1%"
+	
+}
+
+ACTION Print_Two_Up
+{
+	# Optional Left Click (Button 3) Label
+	LABEL		Print Two Columns
+	ARG_TYPE        TEXTFILE
+    TYPE            COMMAND  
+    WINDOW_TYPE     NO_STDIO
+    #twopage is a GNU enscript alias in my .kshrc-user
+	#EXEC_STRING    twopage "%(File)Arg_1%" #Alias doesn't work
+	EXEC_STRING     /pkg/gnu/bin/enscript -2rlG --pretty-print --header='$NAME' "%(File)Arg_1%"
+}
+
+ACTION Print_Landscape
+{
+	# Optional Left Click (Button 3) Label
+	LABEL		Print Landscape
+    ARG_TYPE        TEXTFILE
+    TYPE            COMMAND  
+    WINDOW_TYPE     NO_STDIO
+    EXEC_STRING     /pkg/gnu/bin/enscript -G --pretty-print --font=Courier7 --landscape --header='$NAME' "%(File)Arg_1%"	
+}
+
+ACTION Process_Gutenberg
+{
+	# Optional Left Click (Button 3) Label
+	LABEL		Process Gutenberg
+	ARG_TYPE        TEXTFILE
+    TYPE            COMMAND  
+    WINDOW_TYPE     NO_STDIO
+	EXEC_STRING     /pkg/gnu/bin/enscript -2 --landscape --borders --header='$n Page $% of $=' --filter="fmt -w 80 %s" --font=NewCenturySchlbk-Roman9 "%(File)Arg_1%" --output  "%(File)Arg_1%".ps
+
+# --encoding=dos --page-label-format=short  --filter="dos2unix -ascii < %s | fmt -w 72" --font=Times-Roman12
+}

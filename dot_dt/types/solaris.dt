@@ -1,0 +1,1548 @@
+
+set DtDbVersion=1.0
+###############################################################################
+#
+#    solaris.dt
+#
+#    (c) Copyright 1997 Sun Microsystems, Inc.
+#
+###############################################################################
+
+###############################################################################
+#
+# WARNING:  This file may be overwritten in subsequent installations of
+#     the Common Desktop Environment (CDE).  Consequently, any system wide
+#     changes should be made to an equivalent database file in
+#     /etc/dt/appconfig/types/<locale> and not in this file.
+#
+###############################################################################
+
+ACTION Xkill
+{
+	LABEL		Kill X11 Client
+	ARG_COUNT	0
+	ICON		Dtcore
+	TYPE		COMMAND
+	EXEC_STRING	xkill
+	WINDOW_TYPE	NO_STDIO
+	DESCRIPTION	Kill an X11 client via xkill(1).
+}
+
+ACTION Xhost+
+{
+	LABEL		Disable Access Control
+	ARG_COUNT	0
+	ICON		SDtKey
+	TYPE		COMMAND
+	EXEC_STRING	xhost +
+	WINDOW_TYPE	NO_STDIO
+	DESCRIPTION	Disable access control via xhost(1) +.
+}
+
+ACTION Xhost-
+{
+	LABEL		Enable Access Control
+	ARG_COUNT	0
+	ICON		Fplock
+	TYPE		COMMAND
+	EXEC_STRING	xhost -
+	WINDOW_TYPE	NO_STDIO
+	DESCRIPTION	Enable access control via xhost(1) -.
+}
+
+ACTION Record
+{
+	LABEL		Voice Note
+	ICON		SDtNoteRecorder
+	TYPE		COMMAND
+	WINDOW_TYPE	NO_STDIO
+	EXEC_STRING	sh -c 'fname="Noted_`date +\"%a_%I:%M:%S\"`"; \
+			file="\$HOME/\$fname"; \
+			sdtaudio -r "\$file"; \
+			if [ -f "\$file" ]; then \
+				exec dtaction PutOnWorkspace "\$file"; \
+			fi'
+	DESCRIPTION	The Voice Note (Record) action records a voice note\
+			and puts it on the workspace.
+}
+
+ACTION Note
+{
+	LABEL		Text Note
+	ICON		SDtNoteEditor
+	TYPE		COMMAND
+	WINDOW_TYPE	NO_STDIO
+	EXEC_STRING	sh -c ' \
+	fname="Noted `date +\"%a_%H:%M:%S\"`"; \
+	file="\$HOME/\$fname"; \
+	dtpad -noNameChange -geometry 40x5 "\$file"; \
+	if [ -f "\$file" ]; then \
+		echo >> "\$file"; \
+		firstN="`head -1 \\"\$file\\" | cut -b1-20 | sed s,/,:,g`"; \
+                if [ -f "\$file%" ]; then \
+                        rm "\$file%"; \
+                fi; \
+		if [ -n "\$firstN" -a ! -f "\$HOME/\$firstN" ]; then \
+			mv "\$file" "\$HOME/\$firstN"; \
+			file="\$HOME/\$firstN"; \
+		fi; \
+		exec dtaction PutOnWorkspace "\$file"; \
+	fi'
+	DESCRIPTION	The Text Note (Note) action createas a text note\
+			and puts it on the workspace.
+}
+
+ACTION SDtFind
+{
+	LABEL		Find File
+	ICON		SDtFindFile
+	ARG_COUNT	<2
+	TYPE		COMMAND
+	WINDOW_TYPE	NO_STDIO
+	EXEC_STRING	sdtfind "%Arg_1%"
+	DESCRIPTION	The Find File (SDtFind) action invokes sdtfind.
+}
+
+ACTION SDtPerfmeterFrontPanel
+{
+        LABEL           Performance Meter
+	ICON		SDtPerf
+	ARG_COUNT	0
+	TYPE		COMMAND
+	WINDOW_TYPE	NO_STDIO
+	EXEC_STRING     ksh -c 'MeterUp="`ps -fe | grep sdtperfmeter | grep -v grep | grep -- -f`";\
+			if [ "$MeterUp" != "" ]; then \
+				sdtperfmeter; \
+			else \
+				sdtperfmeter -f -H -t cpu -t disk -s 1 -name fpperfmeter; \
+			fi'
+        DESCRIPTION     The Performance Meter (SDtPerfmeter) action invokes sdtperfmeter.
+}
+
+ACTION SDtPerfmeter
+{
+	LABEL		Performance Meter
+	ICON		SDtPerf
+        ARG_COUNT       0
+        TYPE            COMMAND
+        WINDOW_TYPE     NO_STDIO
+        EXEC_STRING     sdtperfmeter
+	DESCRIPTION	The Performance Meter (SDtPerfmeter) action invokes sdtperfmeter.
+}
+ACTION SDtPerfmeter
+{
+	LABEL		Performance Meter
+        ARG_COUNT	1
+	ICON		SDtPerf
+        ARG_TYPE	HOST,WSMENU_This_Host
+	TYPE		COMMAND
+	WINDOW_TYPE	NO_STDIO
+	EXEC_STRING	ksh -c 'host="`cat \\"%Arg_1%\\"`"; \
+			exec sdtperfmeter \${host#@}'
+	DESCRIPTION	The Performance Meter (SDtPerfmeter) action invokes sdtperfmeter.
+}
+ACTION OWperfmeter
+{
+	LABEL           OW Performance Meter
+	ICON            OWperf
+        ARG_COUNT	1
+        ARG_TYPE	HOST,WSMENU_This_Host
+	TYPE		COMMAND
+	WINDOW_TYPE	NO_STDIO
+	EXEC_STRING	ksh -c 'host="`cat \\"%Arg_1%\\"`"; \
+			exec perfmeter \${host#@}'
+}
+
+ACTION SDtHotkey
+{
+	LABEL           Hotkey Editor
+	ARG_COUNT       0
+	ICON            SDtHotkey
+
+	TYPE            COMMAND
+	WINDOW_TYPE     NO_STDIO
+	EXEC_STRING     sdthotkey
+}
+ACTION SDtHotkey
+{
+	LABEL           Hotkey Editor
+	ARG_COUNT       1
+	ICON            SDtHotkey
+
+	TYPE			TT_MSG
+	TT_CLASS		TT_REQUEST
+	TT_SCOPE		TT_SESSION
+	TT_OPERATION	SDtHotkey_Target
+	TT_FILE			%Arg_1%
+	DESCRIPTION     The Hotkey Editor (SDtHotkey) action run sdthotkey.
+}
+
+ACTION SDtWsinfo
+{
+	LABEL		Workstation Info
+	ICON		SDtsysinfo
+	ARG_COUNT	0
+	TYPE		COMMAND
+	WINDOW_TYPE	NO_STDIO
+	EXEC_STRING	sdtwsinfo
+	DESCRIPTION	The Workstation Info (SDtWsinfo) action invokes sdtwsinfo.
+}
+ACTION SDtWsinfo
+{
+	LABEL		Workstation Info
+	ICON		SDtsysinfo
+	ARG_TYPE	HOST,WSMENU_This_Host
+	ARG_COUNT	1
+	TYPE		COMMAND
+	WINDOW_TYPE	NO_STDIO
+	EXEC_STRING	ksh -c 'host="`cat \\"%Arg_1%\\"`"; \
+			dtaction -execHost \${host#@} SDtWsinfo'
+	DESCRIPTION	The Workstation Info (SDtWsinfo) action invokes sdtwsinfo.
+}
+ACTION OWwsinfo
+{
+	LABEL           OW Workstation Info
+	ARG_TYPE	HOST
+	ARG_COUNT	1
+	TYPE		COMMAND
+	WINDOW_TYPE	NO_STDIO
+	EXEC_STRING	ksh -c 'host="`cat \\"%Arg_1%\\"`"; \
+			dtaction -execHost \${host#@} OWwsinfo'
+}
+
+DATA_ATTRIBUTES PATHNAME
+{
+        ACTIONS         Open,OpenParent,PathProperties,TextEditor,Print
+        ICON            SDturlfile
+        IS_TEXT         true
+        MIME_TYPE	text/plain
+        SUNV3_TYPE      text
+        MEDIA           C_STRING
+        DESCRIPTION     This file contains a string that specifies a file or folder.\
+			Its data type is named PATHNAME.
+}
+
+DATA_CRITERIA PATHNAME1
+{
+        DATA_ATTRIBUTES_NAME PATHNAME
+	# Try to exclude binary files
+	CONTENT		!0 byte 000&!1 byte 000&!2 byte 000&!3 byte 000\
+&!4 byte 000&!5 byte 000&!6 byte 000&!7 byte 000&!8 byte 000&!9 byte 000\
+&!10 byte 000&!11 byte 000&!12 byte 000&!13 byte 000&!14 byte 000\
+&!15 byte 000&!16 byte 000&!17 byte 000&!18 byte 000&!19 byte 000
+	CONTENT		\
+0 string /|0 string ~|0 string \$HOME/|0 string ./|0 string ../
+	# Exclude *roff, C, C++ comments
+	CONTENT		!0 string ~~&!0 string ./"&!0 string /*&!0 string //
+}
+
+ACTION Open
+{
+	ARG_TYPE	PATHNAME
+	TYPE		MAP
+	MAP_ACTION	OpenPathname
+}
+
+ACTION OpenPathname
+{
+	LABEL		Open Pathname
+	ARG_COUNT	1
+	TYPE		COMMAND
+	WINDOW_TYPE	NO_STDIO
+	# eval echo trick resolves ~, environment variables, etc.
+	# XXX eval echo trick works in ksh, not in sh!
+	EXEC_STRING	ksh -c 'FILE="`head -1 \\"%Arg_1%\\"`"; \
+				FILE="`eval echo \\"\\\\"\$FILE\\\\"\\"`"; \
+				while [ 1 ] ; do \
+					TYPE=`dttypes -type \$FILE | grep "=====" | cut -d\" \" -f2`; \
+					if [ \$TYPE = "PATHNAME" ] ; then \
+						NEWFILE="`head -1 \$FILE`"; \
+						NEWFILE="`eval echo \\"\\\\"\$NEWFILE\\\\"\\"`"; \
+						if [ \$FILE = \$NEWFILE ] ; then \
+							dterror.ds "Unable to open. Recursive pathname $FILE encountered." "Open Pathname" "OK"; \
+							exit 1; \
+						fi; \
+						FILE=\$NEWFILE; \
+					else \
+						dtaction "" "\$FILE"; \
+						exit 0; \
+					fi; \
+				done; \'
+}
+
+ACTION PathProperties
+{
+	LABEL		Path Properties
+	ARG_TYPE	PATHNAME
+	ARG_COUNT	1
+	TYPE		COMMAND
+	WINDOW_TYPE	NO_STDIO
+	# eval echo trick resolves ~, environment variables, etc.
+	# XXX eval echo trick works in ksh, not in sh!
+	EXEC_STRING	ksh -c 'FILE="`head -1 \\"%Arg_1%\\"`"; \
+				FILE="`eval echo \\"\\\\"\$FILE\\\\"\\"`"; \
+				dtaction FileProperties "\$FILE"'
+}
+
+ACTION File
+{
+	LABEL		Type File
+	ARG_TYPE	PATHNAME
+	ARG_COUNT	1
+	TYPE		COMMAND
+	WINDOW_TYPE	NO_STDIO
+	# eval echo trick resolves ~, environment variables, etc.
+	# XXX eval echo trick works in ksh, not in sh!
+	EXEC_STRING	ksh -c 'FILE="`head -1 \\"%Arg_1%\\"`"; \
+				FILE="`eval echo \\"\\\\"\$FILE\\\\"\\"`"; \
+				dtaction File "\$FILE"'
+	DESCRIPTION	The Type File (File) action determines the \
+                        type of a file using the file command.  This is \
+                        not the same as the desktop data type for the \
+                        file.  To determine the desktop data type of a \
+                        file, select the file and choose the menu command \
+                        Selected->Change Permissions... from a File Manager view.
+}
+
+ACTION OpenParent
+{
+	LABEL		Open Parent
+	ARG_TYPE	PATHNAME
+	ARG_COUNT	1
+	TYPE		COMMAND
+	WINDOW_TYPE	NO_STDIO
+	# eval echo trick resolves ~, environment variables, etc.
+	# XXX eval echo trick works in ksh, not in sh!
+	EXEC_STRING	sh -c 'FILE="`head -1 \\"%Arg_1%\\"`"; \
+				FILE="`eval echo \\"\\\\"\$FILE\\\\"\\"`"; \
+				DIR="`dirname \\"\$FILE\\"`"; \
+				dtaction Open "\$DIR"'
+}
+
+ACTION OpenParent
+{
+	LABEL		Open Parent
+	ARG_COUNT	1
+	TYPE		COMMAND
+	# eval echo trick resolves ~, environment variables, etc.
+	# XXX eval echo trick works in ksh, not in sh!
+	WINDOW_TYPE	NO_STDIO
+	EXEC_STRING	sh -c 'FILE="`dirname \\"%Arg_1%\\"`"; \
+				FILE="`eval echo \\"\\\\"\$FILE\\\\"\\"`"; \
+				dtaction Open "\$FILE"'
+}
+
+DATA_ATTRIBUTES CRYPTED
+{
+	ACTIONS		DeCrypt
+	ICON 		Dtkey
+	NAME_TEMPLATE	%s.crypt
+	MIME_TYPE	text/plain
+	DESCRIPTION	This file is encrypted and uuencoded.
+}
+DATA_CRITERIA CRYPTED1
+{
+        DATA_ATTRIBUTES_NAME CRYPTED
+        CONTENT		0 string uudecode -p <<"endCrypt"
+        MODE            !d
+}
+
+
+ACTION Crypt
+{
+	LABEL		Encryption...
+	ICON		Dtkey
+	TYPE		MAP
+	MAP_ACTION	EnCrypt
+	DESCRIPTION	The Encryption... (Crypt) action Encrypts and Decrypts files.
+}
+ACTION Crypt
+{
+	ARG_TYPE	CRYPTED
+	TYPE		MAP
+	MAP_ACTION	DeCrypt
+}
+
+ACTION EnCrypt
+{
+	LABEL		EnCrypt...
+	ICON		Dtkey
+	TYPE		COMMAND
+	WINDOW_TYPE	NO_STDIO
+	EXEC_STRING	ksh -c '\
+        print "uudecode -p <<\\"endCrypt\\" | crypt \\"\\\$1\\"" \
+            >| /tmp/Crypt\$\$; \
+        crypt "%"Encryption key:"%" \
+            < "%Arg_1"File to crypt:"%" >| /tmp/Crypt\$\$.tmp; \
+        if [ $? -eq 0 ]; then \
+           uuencode Crypted < /tmp/Crypt\$\$.tmp >> /tmp/Crypt\$\$; \
+           if [ $? -eq 0 ]; then \
+              cp /tmp/Crypt\$\$ "%Arg_1%"; \
+           else \
+              dtaction DttermErrorlog; \
+           fi; \
+        else \
+           dtaction DttermErrorlog; \
+        fi; \
+        rm -f /tmp/Crypt\$\$ /tmp/Crypt\$\$.tmp'
+	DESCRIPTION	The EnCrypt... (EnCrypt) action encrypts and uuencodes a file.
+}
+
+ACTION DeCrypt
+{
+	LABEL		DeCrypt...
+	ICON		Dtkey
+	TYPE		COMMAND
+	WINDOW_TYPE	NO_STDIO
+	EXEC_STRING	ksh -c '\
+		sh "%Arg_1"File to decrypt:"%" \
+			"%"Decryption key:"%" \
+			>> /tmp/Crypt\$\$; \
+        if [ $? -eq 0 ]; then \
+            cp /tmp/Crypt\$\$ "%Arg_1%"; \
+        else \
+            dtaction DttermErrorlog; \
+        fi; \
+        rm -f /tmp/Crypt\$\$'
+	DESCRIPTION	The DeCrypt... (DeCrypt) action uudecodes and decrypts a file.
+}
+
+ACTION Date
+{
+	LABEL		Date
+	ICON		Dtclock
+	ARG_COUNT	0
+	TYPE		COMMAND
+	WINDOW_TYPE	NO_STDIO
+	EXEC_STRING	sh -c '\
+		time="%"Time ([mmdd]HHMM):"%"; \
+		case "`id`" in \
+			uid=0\\(root*) \
+				exec date \$time;; \
+			*) \
+				dtaction -user root DateDo \$time;; \
+		esac
+}
+
+ACTION DateDo
+{
+	LABEL		DateDo
+	TYPE		COMMAND
+	EXEC_STRING	date %(String)Arg_1"Time ([mmdd]HHMM):"%
+	WINDOW_TYPE	NO_STDIO
+}
+
+ACTION Date
+{
+	LABEL		Date
+	ICON		Dtclock
+        ARG_COUNT	1
+        ARG_TYPE	HOST
+	TYPE		COMMAND
+	WINDOW_TYPE	NO_STDIO
+	EXEC_STRING	ksh -c 'host="`cat \\"%Arg_1%\\"`"; \
+			exec dtaction -execHost \${host#@} -user root DateDo'
+}
+
+ACTION Applix
+{
+	ARG_COUNT	<2
+	TYPE		COMMAND
+	WINDOW_TYPE	NO_STDIO
+	EXEC_STRING	sh -c 'applix "%Arg_1%"; sleep 500'
+}
+
+ACTION Open
+{
+	ARG_TYPE	APPLIX_WORDS,APPLIX_SPREADSHEET,APPLIX_GRAPHICS
+	TYPE		MAP
+	MAP_ACTION	Applix
+}
+
+DATA_ATTRIBUTES APPLIX_WORDS
+{
+	ACTIONS		Open
+	ICON		Dtmime
+	IS_TEXT		false
+	MIME_TYPE	application/octet-stream
+	NAME_TEMPLATE	%s.aw
+}
+
+DATA_CRITERIA APPLIX_WORDS0
+{
+	DATA_ATTRIBUTES_NAME APPLIX_WORDS
+	CONTENT		0 string *BEGIN WORDS VERSION=
+	MODE		f
+	NAME_PATTERN    *.aw
+}
+
+DATA_ATTRIBUTES APPLIX_SPREADSHEET
+{
+	ACTIONS		Open
+	ICON		Dtsprds
+	IS_TEXT		false
+	MIME_TYPE	application/octet-stream
+	NAME_TEMPLATE	%s.as
+}
+
+DATA_CRITERIA APPLIX_SPREADSHEET0
+{
+	DATA_ATTRIBUTES_NAME APPLIX_SPREADSHEET
+	CONTENT		0 string *BEGIN SPREADSHEETS VERSION=
+	MODE		f
+	NAME_PATTERN    *.as
+}
+
+DATA_ATTRIBUTES APPLIX_GRAPHICS
+{
+	ACTIONS		Open
+	ICON		Dtimage
+	IS_TEXT		false
+	MIME_TYPE	application/octet-stream
+	NAME_TEMPLATE	%s.ag
+}
+
+DATA_CRITERIA APPLIX_GRAPHICS0
+{
+	DATA_ATTRIBUTES_NAME APPLIX_GRAPHICS
+	CONTENT		0 string *BEGIN GRAPHICS VERSION=
+	MODE		f
+	NAME_PATTERN    *.ag
+}
+
+DATA_ATTRIBUTES AUTOPLAN_SCHEDULE
+{
+	ACTIONS		Open
+	ICON	        DtCM
+	IS_TEXT		false
+	NAME_TEMPLATE	%s.DTT
+}
+
+DATA_CRITERIA AUTOPLAN_SCHEDULE0
+{
+	DATA_ATTRIBUTES_NAME AUTOPLAN_SCHEDULE
+	NAME_PATTERN	*.DTT
+}
+
+ACTION Open
+{
+	ARG_TYPE	AUTOPLAN_SCHEDULE
+	ARG_COUNT	>0
+	TYPE		MAP
+	MAP_ACTION	AutoPLAN
+}
+
+ACTION AutoPLAN
+{
+	TYPE		COMMAND
+	WINDOW_TYPE	NO_STDIO
+	EXEC_STRING	aplan2 "%Arg_1%"
+}
+
+
+ACTION DbxStack
+{
+	LABEL		Show Stack Using dbx
+	ARG_TYPE	CORE
+	ARG_COUNT	1
+        TYPE            COMMAND
+        WINDOW_TYPE     PERM_TERMINAL
+        EXEC_STRING     sh -c ' \
+		( \
+			WHOSE=`file "%(File)Arg_1%" | sed -e "s/.*from .//" -e "s/.\$//"`; \
+			WHICH=`which \$WHOSE`; \
+			echo "dbxenv stack_verbose off; where; quit" | dbx \$WHICH "%(File)Arg_1%"; \
+		)| \${PAGER:-more}'
+}
+
+ACTION AdbStack
+{
+	LABEL		Show Stack Using adb
+	ARG_TYPE	CORE
+	ARG_COUNT	1
+        TYPE            COMMAND
+        WINDOW_TYPE     PERM_TERMINAL
+        EXEC_STRING     sh -c ' \
+		( \
+			WHOSE=`file "%(File)Arg_1%" | sed -e "s/.*from .//" -e "s/.\$//"`; \
+			WHICH=`which \$WHOSE`; \
+			echo "\\\$c" | adb \$WHICH "%(File)Arg_1%"; \
+		)| \${PAGER:-more}'
+}
+
+ACTION Do
+{
+	LABEL		Go...
+	ICON		SDtOpen
+	ARG_COUNT	0
+	TYPE		COMMAND
+	WINDOW_TYPE	NO_STDIO
+	EXEC_STRING	ksh -c '\
+			print -n "%"URL, ~/path, /path, addr@host, @host, etc:"%" \
+				>| \$HOME/.dt/tmp/String\$\$; \
+			dtaction "" \$HOME/.dt/tmp/String\$\$; \
+			rm -f \$HOME/.dt/tmp/String\$\$'
+	DESCRIPTION	Do the default action for an object You may \
+			enter a URL, PATHNAME, EMAIL_ADDRESS, HOST, etc.
+}
+
+ACTION Do
+{
+	LABEL		Go...
+	ICON		SDtOpen
+	ARG_COUNT	1
+	TYPE		COMMAND
+	WINDOW_TYPE	NO_STDIO
+	EXEC_STRING	dtaction "" "%Arg_1%"
+	DESCRIPTION	Do the default action for an object You may \
+			enter a URL, PATHNAME, EMAIL_ADDRESS, HOST, etc.
+}
+
+ACTION DoRemotely
+{
+	LABEL		Invoke On Host...
+	ARG_TYPE	HOST
+	ARG_COUNT	2
+	TYPE		COMMAND
+	WINDOW_TYPE	NO_STDIO
+	EXEC_STRING	ksh -c 'host="`cat \\"%Arg_1%\\"`"; \
+			dtaction -e "\${host#@}" "" "%Arg_2%"'
+}
+
+ACTION DoRemotely
+{
+	LABEL		Invoke On Host...
+	ARG_COUNT	1
+	TYPE		COMMAND
+	ICON		Dtexec
+	WINDOW_TYPE	NO_STDIO
+	EXEC_STRING	dtaction -e "%"Host:"%" "" "%Arg_1%"
+}
+
+DATA_ATTRIBUTES PDF
+{
+	ACTIONS		Open,Print
+	ICON		Dtmime
+	MIME_TYPE	application/pdf
+	NAME_TEMPLATE	%s.pdf
+}
+DATA_CRITERIA PDF0
+{
+	DATA_ATTRIBUTES_NAME PDF
+	MODE		f
+	CONTENT		0 string %PDF-
+}
+DATA_CRITERIA PDF1
+{
+        DATA_ATTRIBUTES_NAME PDF
+        MODE            f
+        NAME_PATTERN    *.pdf
+}
+DATA_CRITERIA PDF2
+{
+        DATA_ATTRIBUTES_NAME PDF
+        MODE            f
+        NAME_PATTERN    *.PDF
+}
+
+ACTION Open
+{
+	ARG_TYPE	PDF
+	TYPE		MAP
+	MAP_ACTION	AcroRead
+}
+
+ACTION Print
+{
+	ARG_TYPE	PDF
+	TYPE		MAP
+	MAP_ACTION	AcroReadPrint
+}
+
+ACTION AcroRead
+{
+	TYPE		COMMAND
+	WINDOW_TYPE	NO_STDIO
+	EXEC_STRING	acroread8 "%(File)Arg_1"Filename:"%"
+}
+
+ACTION AcroReadPrint
+{
+	TYPE		COMMAND
+	WINDOW_TYPE	NO_STDIO
+	EXEC_STRING	sh -c ' \
+		acroread8 -toPostScript -level2 < "%Arg_1"Filename:"%" | \
+		dtlp'
+}
+
+ACTION Df
+{
+	ARG_TYPE	HOST,WSMENU_This_Host
+	ARG_COUNT	1
+	ICON		SDtSpace
+	TYPE		COMMAND
+	WINDOW_TYPE	NO_STDIO
+	EXEC_STRING	ksh -c 'host="`cat \\"%Arg_1%\\"`"; \
+			dtaction -execHost \${host#@} Df'
+}
+
+ACTION Df
+{
+	ARG_COUNT	1
+	ICON		SDtSpace
+	TYPE		COMMAND
+	WINDOW_TYPE	PERM_TERMINAL
+	EXEC_STRING	ksh -c 'df -k "%Arg_1%" 2>&1 | \${PAGER:-more}; \
+			echo "\\n*** Select Close or Exit from the window menu to close this window ***"'
+}
+
+DATA_ATTRIBUTES WSMENU_FOLDER
+{
+        ACTIONS         UpdateWorkspaceMenu
+        ICON            SDtWsMenu
+        MEDIA           FILE_NAME
+        MOVE_TO_ACTION	FILESYSTEM_MOVE
+	COPY_TO_ACTION	FILESYSTEM_COPY
+	LINK_TO_ACTION	FILESYSTEM_LINK
+	DESCRIPTION	This is the workspace menu items holder. \
+                        Its data type is named WSMENU_FOLDER.
+        LABEL           Workspace Menu
+}
+
+DATA_CRITERIA WSMENU_FOLDER1
+{
+        DATA_ATTRIBUTES_NAME  WSMENU_FOLDER
+        MODE                  d
+	PATH_PATTERN	      $HOME/.dt/wsmenu
+}
+
+DATA_ATTRIBUTES WSMENU_APPLICATIONS
+{
+        ACTIONS         OpenInPlace,OpenNewView,Print
+        ICON            DtdirB
+        MEDIA           FILE_NAME
+        MOVE_TO_ACTION  FILESYSTEM_MOVE
+        COPY_TO_ACTION  FILESYSTEM_COPY
+        LINK_TO_ACTION  FILESYSTEM_LINK
+        LABEL           Applications
+	DESCRIPTION	This is the label of the Applications submenu
+}
+DATA_CRITERIA WSMENU_APPLICATIONS1
+{
+        DATA_ATTRIBUTES_NAME WSMENU_APPLICATIONS
+        MODE            d
+        PATH_PATTERN    */wsmenu/Applications
+}
+
+DATA_ATTRIBUTES WSMENU_Cards
+{
+        ACTIONS         OpenInPlace,OpenNewView,Print
+        ICON            DtdirB
+        MEDIA           FILE_NAME
+        MOVE_TO_ACTION  FILESYSTEM_MOVE
+        COPY_TO_ACTION  FILESYSTEM_COPY
+        LINK_TO_ACTION  FILESYSTEM_LINK
+        LABEL           Cards
+	DESCRIPTION	This is the label of the Cards submenu in the workspace menu
+}
+DATA_CRITERIA WSMENU_Cards1
+{
+        DATA_ATTRIBUTES_NAME WSMENU_Cards
+        MODE            d
+        PATH_PATTERN    */wsmenu/Cards
+}
+
+DATA_ATTRIBUTES WSMENU_Files
+{
+        ACTIONS         OpenInPlace,OpenNewView,Print
+        ICON            DtdirB
+        MEDIA           FILE_NAME
+        MOVE_TO_ACTION  FILESYSTEM_MOVE
+        COPY_TO_ACTION  FILESYSTEM_COPY
+        LINK_TO_ACTION  FILESYSTEM_LINK
+        LABEL           Files
+	DESCRIPTION	This is the label of the Files submenu in the workspace menu
+}
+DATA_CRITERIA WSMENU_Files1
+{
+        DATA_ATTRIBUTES_NAME WSMENU_Files
+        MODE            d
+        PATH_PATTERN    */wsmenu/Files
+}
+
+DATA_ATTRIBUTES WSMENU_Folders
+{
+        ACTIONS         OpenInPlace,OpenNewView,Print
+        ICON            DtdirB
+        MEDIA           FILE_NAME
+        MOVE_TO_ACTION  FILESYSTEM_MOVE
+        COPY_TO_ACTION  FILESYSTEM_COPY
+        LINK_TO_ACTION  FILESYSTEM_LINK
+        LABEL           Folders
+	DESCRIPTION	This is the label of the Folders submenu in the workspace menu
+}
+DATA_CRITERIA WSMENU_Folders1
+{
+        DATA_ATTRIBUTES_NAME WSMENU_Folders
+        MODE            d
+        PATH_PATTERN    */wsmenu/Folders
+}
+
+DATA_ATTRIBUTES WSMENU_Help
+{
+        ACTIONS         OpenInPlace,OpenNewView,Print
+        ICON            DtdirB
+        MEDIA           FILE_NAME
+        MOVE_TO_ACTION  FILESYSTEM_MOVE
+        COPY_TO_ACTION  FILESYSTEM_COPY
+        LINK_TO_ACTION  FILESYSTEM_LINK
+        LABEL           Help
+	DESCRIPTION	This is the label of the Help submenu in the workspace menu
+}
+DATA_CRITERIA WSMENU_Help1
+{
+        DATA_ATTRIBUTES_NAME WSMENU_Help
+        MODE            d
+        PATH_PATTERN    */wsmenu/Help
+}
+
+DATA_ATTRIBUTES WSMENU_Hosts
+{
+        ACTIONS         OpenInPlace,OpenNewView,Print
+        ICON            DtdirB
+        MEDIA           FILE_NAME
+        MOVE_TO_ACTION  FILESYSTEM_MOVE
+        COPY_TO_ACTION  FILESYSTEM_COPY
+        LINK_TO_ACTION  FILESYSTEM_LINK
+        LABEL           Hosts
+	DESCRIPTION	This is the label of the Hosts submenu in the workspace menu
+}
+DATA_CRITERIA WSMENU_Hosts1
+{
+        DATA_ATTRIBUTES_NAME WSMENU_Hosts
+        MODE            d
+        PATH_PATTERN    */wsmenu/Hosts
+}
+
+DATA_ATTRIBUTES WSMENU_Links
+{
+        ACTIONS         OpenInPlace,OpenNewView,Print
+        ICON            DtdirB
+        MEDIA           FILE_NAME
+        MOVE_TO_ACTION  FILESYSTEM_MOVE
+        COPY_TO_ACTION  FILESYSTEM_COPY
+        LINK_TO_ACTION  FILESYSTEM_LINK
+        LABEL           Links
+	DESCRIPTION	This is the label of the Links submenu in the workspace menu
+}
+DATA_CRITERIA WSMENU_Links1
+{
+        DATA_ATTRIBUTES_NAME WSMENU_Links
+        MODE            d
+        PATH_PATTERN    */wsmenu/Links
+}
+
+DATA_ATTRIBUTES WSMENU_Personal_Bookmarks
+{
+        ACTIONS         OpenInPlace,OpenNewView,Print
+        ICON            DtdirB
+        MEDIA           FILE_NAME
+        MOVE_TO_ACTION  FILESYSTEM_MOVE
+        COPY_TO_ACTION  FILESYSTEM_COPY
+        LINK_TO_ACTION  FILESYSTEM_LINK
+        LABEL           Personal Bookmarks
+	DESCRIPTION	This is the label of the Personal Bookmarks submenu in the workspace menu
+}
+DATA_CRITERIA WSMENU_Personal_Bookmarks1
+{
+        DATA_ATTRIBUTES_NAME WSMENU_Personal_Bookmarks
+        MODE            d
+        PATH_PATTERN    */wsmenu/Links/Personal_Bookmarks|*/.dt/wsmenu/Links/../../bookmarks
+}
+
+DATA_ATTRIBUTES WSMENU_Mail
+{
+        ACTIONS         OpenInPlace,OpenNewView,Print
+        ICON            DtdirB
+        MEDIA           FILE_NAME
+        MOVE_TO_ACTION  FILESYSTEM_MOVE
+        COPY_TO_ACTION  FILESYSTEM_COPY
+        LINK_TO_ACTION  FILESYSTEM_LINK
+        LABEL           Mail
+	DESCRIPTION	This is the label of the Mail submenu in the workspace menu
+}
+DATA_CRITERIA WSMENU_Mail1
+{
+        DATA_ATTRIBUTES_NAME WSMENU_Mail
+        MODE            d
+        PATH_PATTERN    */wsmenu/Mail
+}
+
+DATA_ATTRIBUTES WSMENU_Tools
+{
+        ACTIONS         OpenInPlace,OpenNewView,Print
+        ICON            DtdirB
+        MEDIA           FILE_NAME
+        MOVE_TO_ACTION  FILESYSTEM_MOVE
+        COPY_TO_ACTION  FILESYSTEM_COPY
+        LINK_TO_ACTION  FILESYSTEM_LINK
+        LABEL           Tools
+	DESCRIPTION	This is the label of the Tools submenu in the workspace menu
+}
+DATA_CRITERIA WSMENU_Tools1
+{
+        DATA_ATTRIBUTES_NAME WSMENU_Tools
+        MODE            d
+        PATH_PATTERN    */wsmenu/Tools
+}
+
+ACTION Open
+{
+        LABEL           Open
+        ARG_TYPE        WSMENU_Applications,WSMENU_Cards,WSMENU_Files,WSMENU_Folders,WSMENU_Help,WSMENU_Hosts,WSMENU_Links,WSMENU_Personal_Bookmarks,WSMENU_Mail,WSMENU_Tools
+        TYPE            MAP
+        MAP_ACTION      OpenFolder
+}
+ACTION Print
+{
+        LABEL           Print
+        ARG_TYPE        WSMENU_Applications,WSMENU_Cards,WSMENU_Files,WSMENU_Folders,WSMENU_Help,WSMENU_Hosts,WSMENU_Links,WSMENU_Personal_Bookmarks,WSMENU_Mail,WSMENU_Tools
+        TYPE            MAP
+        MAP_ACTION      PrintFolderList
+}
+
+DATA_ATTRIBUTES WSMENU_This_Host
+{
+	ACTIONS	Terminal,DttermRlogin,SDtProcess,SDtPerfmeter,SDtWsinfo,Df,DtPrintManager,SDTsuspend,Reboot,Halt,SDTadmintool,SDTadmintoolSu
+	ICON	SDtHost
+	LABEL	This Host
+	MOVE_TO_ACTION  DoRemotely
+	COPY_TO_ACTION  DoRemotely
+	DESCRIPTION	This is the label of wsmenu/Hosts/This_Host file
+}
+
+DATA_CRITERIA WSMENU_This_Host1
+{
+        DATA_ATTRIBUTES_NAME WSMENU_This_Host
+        MODE            f&x
+        PATH_PATTERN    */Hosts/This_Host
+}
+
+DATA_ATTRIBUTES WSMENU_Suggestion_Box
+{
+        ACTIONS         MailTo,WhoAre,Open,Print
+        ICON            SDtAddr
+	LABEL		Suggestion Box
+        IS_TEXT         true
+        MOVE_TO_ACTION  MailTo
+        COPY_TO_ACTION  MailTo
+        LINK_TO_ACTION  AppendTo
+        DESCRIPTION     This is the label of wsmenu/Mail/Suggestion_Box file
+
+}
+
+DATA_CRITERIA WSMENU_Suggestion_Box1
+{
+        DATA_ATTRIBUTES_NAME WSMENU_Suggestion_Box
+        MODE            f
+        PATH_PATTERN    */Mail/Suggestion_Box
+}
+
+DATA_ATTRIBUTES WSMENU_Find_Web_Page
+{
+        ACTIONS         Open,Browse,Edit,Print
+        IS_TEXT         true
+        ICON            SDturlweb
+	LABEL		Find Web Page
+	DESCRIPTION	This is the label of wsmenu/Links/Find_Web_Page file
+}
+
+DATA_CRITERIA WSMENU_Find_Web_Page1
+{
+        DATA_ATTRIBUTES_NAME WSMENU_Find_Web_Page
+        MODE            f
+        PATH_PATTERN    */Links/Find_Web_Page
+}
+
+DATA_ATTRIBUTES WSMENU_SunSolve_Online
+{
+        ACTIONS         Open,Browse,Edit,Print
+        IS_TEXT         true
+        ICON            SDturlweb
+        LABEL           SunSolve Online
+        DESCRIPTION     This is the label of wsmenu/Help/SunSolve_Online file
+}
+
+DATA_CRITERIA WSMENU_SunSolve_Online1
+{
+        DATA_ATTRIBUTES_NAME WSMENU_SunSolve_Online
+        MODE            f
+        PATH_PATTERN    */Help/SunSolve_Online
+}
+
+DATA_ATTRIBUTES WSMENU_Solaris_Support
+{
+        ACTIONS         Open,Browse,Edit,Print
+        IS_TEXT         true
+        ICON            SDturlweb
+        LABEL           Solaris Support
+        DESCRIPTION     This is the label of wsmenu/Help/Solaris_Support file
+}
+
+DATA_CRITERIA WSMENU_Solaris_Support1
+{
+        DATA_ATTRIBUTES_NAME WSMENU_Solaris_Support
+        MODE            f
+        PATH_PATTERN    */Help/Solaris_Support
+}
+
+
+DATA_ATTRIBUTES	JAVA
+{
+	ACTIONS		Open,Compile,Print
+	ICON		SDtjava
+	NAME_TEMPLATE	%s.java
+}
+
+DATA_CRITERIA	JAVA1
+{
+	DATA_ATTRIBUTES_NAME	JAVA
+	MODE			!d
+	NAME_PATTERN		*.java
+}
+
+ACTION	Open
+{
+	ARG_TYPE	JAVA
+	TYPE		MAP
+	MAP_ACTION	TextEditor
+}
+
+ACTION	Compile
+{
+	ARG_TYPE	JAVA
+	WINDOW_TYPE	PERM_TERMINAL
+	EXEC_STRING	sh -c ' \
+			javac "%(File)Arg_1%" 2>&1 | \${PAGER:-more}; \
+			echo "\\n*** Select Close or Exit from the window menu to close this window ***"'
+}
+
+DATA_ATTRIBUTES	JAVA_BYTE_CODE
+{
+	ACTIONS		Open
+	ICON		SDthjava
+	NAME_TEMPLATE	%s.class
+}
+
+DATA_CRITERIA	JAVA_BYTE_CODE1
+{
+	DATA_ATTRIBUTES_NAME	JAVA_BYTE_CODE
+	MODE			!d
+	NAME_PATTERN		*.class
+}
+
+DATA_CRITERIA	JAVA_BYTE_CODE2
+{
+	DATA_ATTRIBUTES_NAME	JAVA_BYTE_CODE
+	MODE			!d
+        CONTENT         	0 string Êþº¾
+}
+
+ACTION	Open
+{
+	ARG_TYPE	JAVA_BYTE_CODE
+	WINDOW_TYPE	PERM_TERMINAL
+	EXEC_STRING	sh -c ' \
+			echo "\\n*** Executing Java program... ***\\n"; \
+			java `basename "%(File)Arg_1%" .class` 2>&1 | \ 	
+			\${PAGER:-more}; echo "\\n*** Select Close or Exit from the window menu to close this window ***"'
+}
+
+DATA_ATTRIBUTES BZIPPED
+{
+	ACTIONS		Uncompress
+	ICON		Dtcmprs
+	NAME_TEMPLATE	%s.bz2
+	MIME_TYPE	application/octet-stream
+	SUNV3_TYPE      compress
+}
+
+DATA_CRITERIA BZIPPED1
+{
+	DATA_ATTRIBUTES_NAME BZIPPED
+	MODE		f
+	NAME_PATTERN    *.bz2
+}
+
+DATA_CRITERIA BZIPPED2
+{
+	DATA_ATTRIBUTES_NAME BZIPPED
+	MODE		f
+	NAME_PATTERN    *.tbz2
+}
+
+DATA_ATTRIBUTES GZIPPED
+{
+	ACTIONS		Uncompress
+	ICON		Dtcmprs
+	NAME_TEMPLATE	%s.gz
+	MIME_TYPE	application/octet-stream
+	SUNV3_TYPE      compress
+}
+
+DATA_CRITERIA GZIPPED1
+{
+	DATA_ATTRIBUTES_NAME GZIPPED
+	MODE		f
+	NAME_PATTERN    *.gz
+}
+
+DATA_CRITERIA GZIPPED2
+{
+	DATA_ATTRIBUTES_NAME GZIPPED
+	MODE		f
+	NAME_PATTERN    *.tgz
+}
+
+DATA_ATTRIBUTES XZIPPED
+{
+	ACTIONS		Uncompress
+	ICON		Dtcmprs
+	NAME_TEMPLATE	%s.xz
+	MIME_TYPE	application/octet-stream
+	SUNV3_TYPE      compress
+}
+
+DATA_CRITERIA XZIPPED1
+{
+	DATA_ATTRIBUTES_NAME XZIPPED
+	MODE		f
+	NAME_PATTERN    *.xz
+}
+
+DATA_CRITERIA XZIPPED2
+{
+	DATA_ATTRIBUTES_NAME XZIPPED
+	MODE		f
+	NAME_PATTERN    *.txz
+}
+
+
+ACTION Uncompress
+{
+	ARG_TYPE	BZIPPED
+	TYPE		MAP
+	MAP_ACTION	Bunzip
+}
+
+ACTION Uncompress
+{
+	ARG_TYPE	XZIPPED
+	TYPE		MAP
+	MAP_ACTION	UnXz
+}
+
+ACTION Uncompress
+{
+	ARG_TYPE	GZIPPED
+	TYPE		MAP
+	MAP_ACTION	Gunzip
+}
+
+ACTION Gunzip
+{
+        ICON		Dtcmprs
+	TYPE	    	COMMAND
+	WINDOW_TYPE     NO_STDIO
+	EXEC_STRING     gunzip "%(File)Arg_1"File to unzip:"%" %(File)Args%
+}
+
+ACTION Bunzip
+{
+        ICON		Dtcmprs
+	TYPE	    	COMMAND
+	WINDOW_TYPE     NO_STDIO
+	EXEC_STRING     bzip2 -d "%(File)Arg_1"File to unzip:"%" %(File)Args%
+}
+
+ACTION UnXz
+{
+    ICON		Dtcmprs
+	TYPE	    	COMMAND
+	WINDOW_TYPE     NO_STDIO
+	EXEC_STRING     xz -d "%(File)Arg_1"File to unzip:"%" %(File)Args%
+}
+DATA_ATTRIBUTES ZIPPED
+{
+        ACTIONS         Unzip
+        ICON		Dtcmprs
+        NAME_TEMPLATE	%s.zip
+        MIME_TYPE	application/octet-stream
+}
+DATA_CRITERIA ZIPPED1
+{
+	DATA_ATTRIBUTES_NAME ZIPPED
+        MODE            f
+        NAME_PATTERN    *.zip
+}
+DATA_CRITERIA ZIPPED2
+{
+	DATA_ATTRIBUTES_NAME ZIPPED
+        MODE            f
+        NAME_PATTERN    *.cdsz
+}
+
+ACTION Unzip
+{
+        ICON		Dtcmprs
+        TYPE            COMMAND
+        WINDOW_TYPE     PERM_TERMINAL
+        EXEC_STRING     sh -c ' \
+	                unzip "%(File)Arg_1"File to unzip:"%" %(File)Args% 2>&1 ; \
+	    echo "\\n*** Select Close or Exit from the window menu to close this window ***"'
+}
+
+ACTION Open
+{
+	ARG_TYPE	ZIPPED
+        ICON		Dtcmprs
+        TYPE            COMMAND
+        WINDOW_TYPE     PERM_TERMINAL
+        EXEC_STRING     sh -c ' \
+	                unzip -v "%(File)Arg_1"File to unzip:"%" %(File)Args% 2>&1 ; \
+	    echo "\\n*** Select Close or Exit from the window menu to close this window ***"'
+}
+
+DATA_ATTRIBUTES WINGZ
+{
+	ACTIONS		Open,Print
+	ICON		Dtsprds
+	NAME_TEMPLATE	%s.wks
+}
+
+DATA_CRITERIA WINGZ1
+{
+	DATA_ATTRIBUTES_NAME WINGZ
+	MODE		f
+	NAME_PATTERN	*.wks
+}
+
+
+DATA_CRITERIA WINGZ2
+{
+	DATA_ATTRIBUTES_NAME WINGZ
+	CONTENT		0 string WNGZWZSS
+}
+
+ACTION Open
+{
+	ARG_TYPE	WINGZ
+	TYPE		MAP
+	MAP_ACTION	Wingz
+}
+
+ACTION Wingz
+{
+	TYPE		COMMAND
+	WINDOW_TYPE	NO_STDIO
+	EXEC_STRING	wingz %Args%
+}
+
+DATA_ATTRIBUTES MAGTAPE
+{
+        ACTIONS         Open,TarUnpack,Tar,Rewind,Truncate
+	COPY_TO_ACTION	Tar
+	MOVE_TO_ACTION	Tar
+	LINK_TO_ACTION	TarUnpack
+        ICON		Dtmagtp
+        NAME_TEMPLATE	%s.tar
+        MIME_TYPE	application/octet-stream
+}
+
+DATA_CRITERIA MAGTAPE1
+{
+	DATA_ATTRIBUTES_NAME MAGTAPE
+	LINK_NAME	st@?,?:
+}
+
+ACTION Open
+{
+        ARG_TYPE        MAGTAPE
+        TYPE            MAP
+        MAP_ACTION      TarList
+}
+
+ACTION Truncate
+{
+	LABEL		Truncate Tape
+	ARG_TYPE	MAGTAPE
+	ARG_COUNT	1
+	TYPE		COMMAND
+	WINDOW_TYPE	NO_STDIO
+	EXEC_STRING	sh -c 'mt -f "%Arg_1%" rewind; mt -f "%Arg_1%" eof'
+}
+
+ACTION Rewind
+{
+	ARG_TYPE	MAGTAPE
+	ARG_COUNT	1
+	TYPE		COMMAND
+	WINDOW_TYPE	NO_STDIO
+	EXEC_STRING	mt -f "%Arg_1%" rewind
+}
+
+ACTION Retension
+{
+	ARG_TYPE	MAGTAPE
+	ARG_COUNT	1
+	TYPE		COMMAND
+	WINDOW_TYPE	NO_STDIO
+	EXEC_STRING	mt -f "%Arg_1%" retension
+}
+
+ACTION OpenAsCommand
+{
+	TYPE		COMMAND
+	WINDOW_TYPE	NO_STDIO
+	EXEC_STRING	ksh -c 'cmd="`head -1 \\"%Arg_1%\\"`"; \
+			path="`whence -p \\"\$cmd\\"`"; \
+			if [ -f "\$path" ]; then \
+				exec dtaction Open "\$path"; \
+			else \
+				exec dterror.ds "Command: \$cmd" \
+					"Not Found" OK; \
+			fi'
+}
+
+ACTION OpenAsCommand
+{
+	ARG_COUNT	0
+	TYPE		COMMAND
+	WINDOW_TYPE	NO_STDIO
+	EXEC_STRING	ksh -c '\
+			print -n "%"Command:"%" \
+				>| \$HOME/.dt/tmp/String\$\$; \
+			dtaction OpenAsCommand \$HOME/.dt/tmp/String\$\$; \
+			rm -f \$HOME/.dt/tmp/String\$\$'
+}
+
+ACTION OpenAsAction
+{
+	TYPE		COMMAND
+	WINDOW_TYPE	PERM_TERMINAL
+	EXEC_STRING	ksh -c 'action="`head -1 \\"%Arg_1%\\"`"; \
+			dttypes -db ACTION -w rec_name "\$action"; \
+		print "\\n[1m*** Select [4mClose[24m or [4mExit[24m from the window menu to close this window ***[22m"'
+}
+
+ACTION OpenAsAction
+{
+	ARG_COUNT	0
+	TYPE		COMMAND
+	WINDOW_TYPE	NO_STDIO
+	EXEC_STRING	ksh -c '\
+			print -n "%"Action name:"%" \
+				>| \$HOME/.dt/tmp/String\$\$; \
+			dtaction OpenAsAction \$HOME/.dt/tmp/String\$\$; \
+			rm -f \$HOME/.dt/tmp/String\$\$'
+}
+
+ACTION OpenAsActionLabel
+{
+	TYPE		COMMAND
+	WINDOW_TYPE	PERM_TERMINAL
+	EXEC_STRING	ksh -c 'label="`head -1 \\"%Arg_1%\\"`"; \
+			dttypes -db ACTION -w fld_name LABEL \
+				fld_value "\$label"; \
+		print "\\n[1m*** Select [4mClose[24m or [4mExit[24m from the window menu to close this window ***[22m"'
+}
+
+ACTION OpenAsActionLabel
+{
+	ARG_COUNT	0
+	TYPE		COMMAND
+	WINDOW_TYPE	NO_STDIO
+	EXEC_STRING	ksh -c '\
+			print -n "%"Action label:"%" \
+				>| \$HOME/.dt/tmp/String\$\$; \
+			dtaction OpenAsActionLabel \$HOME/.dt/tmp/String\$\$; \
+			rm -f \$HOME/.dt/tmp/String\$\$'
+}
+
+ACTION OpenAsType
+{
+	TYPE		COMMAND
+	WINDOW_TYPE	PERM_TERMINAL
+	EXEC_STRING	ksh -c 'type="`head -1 \\"%Arg_1%\\"`"; \
+			dttypes -db DATA_ATTRIBUTES -w rec_name "\$type"; \
+		print "\\n[1m*** Select [4mClose[24m or [4mExit[24m from the window menu to close this window ***[22m"'
+}
+
+ACTION OpenAsType
+{
+	ARG_COUNT	0
+	TYPE		COMMAND
+	WINDOW_TYPE	NO_STDIO
+	EXEC_STRING	ksh -c '\
+			print -n "%"Type name:"%" \
+				>| \$HOME/.dt/tmp/String\$\$; \
+			dtaction OpenAsType \$HOME/.dt/tmp/String\$\$; \
+			rm -f \$HOME/.dt/tmp/String\$\$'
+}
+
+ACTION Apropos
+{
+	ARG_COUNT	0
+	TYPE		COMMAND
+	WINDOW_TYPE	NO_STDIO
+	EXEC_STRING	ksh -c '\
+			print -n "%"Keyword:"%" \
+				>| \$HOME/.dt/tmp/String\$\$; \
+			dtaction Apropos \$HOME/.dt/tmp/String\$\$; \
+			rm -f \$HOME/.dt/tmp/String\$\$'
+}
+
+ACTION Apropos
+{
+	ARG_COUNT	1
+	TYPE		COMMAND
+	WINDOW_TYPE	PERM_TERMINAL
+	EXEC_STRING	ksh -c '\
+		word="`head -1 \\"%Arg_1%\\"`"; \
+		( \
+			echo "\\\$ whence \$word"; whence "\$word"; \
+			echo \\\$ whence -p "\$word"; whence -p "\$word"; \
+			echo % which "\$word"; \
+			which "\$word" | grep -v "^no "; \
+			echo; echo % apropos "\$word"; \
+			apropos "\$word" 2>/dev/null; \
+			echo; echo % man -l "\$word"; \
+			man -l "\$word" 2>/dev/null; \
+			echo; echo % ls "\\\$PATH/*\${word}*"; \
+			for dir in `echo \$PATH | sed "s/:/ /"g`; do \
+				ls \$dir/*"\$word"* 2>/dev/null; \
+			done; \
+			echo; echo % dttypes -db ACTION...; \
+			dttypes -db ACTION -l rec_name | grep -i "\$word" \
+				 | uniq | sort; \
+			dttypes -db ACTION -l fld_name | grep -i "\$word" \
+				 | grep -v "=====" | uniq | sort; \
+			echo; echo % dttypes -db DATA_ATTRIBUTES...; \
+			dttypes -db DATA_ATTRIBUTES -l rec_name | \
+				grep -i "\$word" | uniq | sort; \
+		)| \${PAGER:-more}; \
+		print "\\n*** Select Close or Exit from the window menu to close this window ***"'
+}
+
+DATA_ATTRIBUTES EMPTY
+{
+	ACTIONS		Open
+	COPY_TO_ACTION	Append
+	MOVE_TO_ACTION	Append
+	LINK_TO_ACTION	Link
+	ICON		SDtempty
+	IS_TEXT		true
+	MIME_TYPE	text/plain
+	SUNV3_TYPE	text
+	MEDIA		C_STRING
+}
+
+DATA_CRITERIA EMPTY1
+{
+	DATA_ATTRIBUTES_NAME EMPTY
+	MODE		fr&!x
+	CONTENT		\
+ !0 byte 0x0&!0 byte 0x1&!0 byte 0x2&!0 byte 0x3&!0 byte 0x4&!0 byte 0x5\
+&!0 byte 0x6&!0 byte 0x7&!0 byte 0x8&!0 byte 0x9&!0 byte 0xa&!0 byte 0xb\
+&!0 byte 0xc&!0 byte 0xd&!0 byte 0xe&!0 byte 0xf\
+&!0 byte 0x10&!0 byte 0x11&!0 byte 0x12&!0 byte 0x13&!0 byte 0x14&!0 byte 0x15\
+&!0 byte 0x16&!0 byte 0x17&!0 byte 0x18&!0 byte 0x19&!0 byte 0x1a&!0 byte 0x1b\
+&!0 byte 0x1c&!0 byte 0x1d&!0 byte 0x1e&!0 byte 0x1f\
+&!0 byte 0x20&!0 byte 0x21&!0 byte 0x22&!0 byte 0x23&!0 byte 0x24&!0 byte 0x25\
+&!0 byte 0x26&!0 byte 0x27&!0 byte 0x28&!0 byte 0x29&!0 byte 0x2a&!0 byte 0x2b\
+&!0 byte 0x2c&!0 byte 0x2d&!0 byte 0x2e&!0 byte 0x2f
+	CONTENT		\
+ !0 byte 0x30&!0 byte 0x31&!0 byte 0x32&!0 byte 0x33&!0 byte 0x34&!0 byte 0x35\
+&!0 byte 0x36&!0 byte 0x37&!0 byte 0x38&!0 byte 0x39&!0 byte 0x3a&!0 byte 0x3b\
+&!0 byte 0x3c&!0 byte 0x3d&!0 byte 0x3e&!0 byte 0x3f\
+&!0 byte 0x40&!0 byte 0x41&!0 byte 0x42&!0 byte 0x43&!0 byte 0x44&!0 byte 0x45\
+&!0 byte 0x46&!0 byte 0x47&!0 byte 0x48&!0 byte 0x49&!0 byte 0x4a&!0 byte 0x4b\
+&!0 byte 0x4c&!0 byte 0x4d&!0 byte 0x4e&!0 byte 0x4f\
+&!0 byte 0x50&!0 byte 0x51&!0 byte 0x52&!0 byte 0x53&!0 byte 0x54&!0 byte 0x55\
+&!0 byte 0x56&!0 byte 0x57&!0 byte 0x58&!0 byte 0x59&!0 byte 0x5a&!0 byte 0x5b\
+&!0 byte 0x5c&!0 byte 0x5d&!0 byte 0x5e&!0 byte 0x5f
+	CONTENT		\
+ !0 byte 0x60&!0 byte 0x61&!0 byte 0x62&!0 byte 0x63&!0 byte 0x64&!0 byte 0x65\
+&!0 byte 0x66&!0 byte 0x67&!0 byte 0x68&!0 byte 0x69&!0 byte 0x6a&!0 byte 0x6b\
+&!0 byte 0x6c&!0 byte 0x6d&!0 byte 0x6e&!0 byte 0x6f\
+&!0 byte 0x70&!0 byte 0x71&!0 byte 0x72&!0 byte 0x73&!0 byte 0x74&!0 byte 0x75\
+&!0 byte 0x76&!0 byte 0x77&!0 byte 0x78&!0 byte 0x79&!0 byte 0x7a&!0 byte 0x7b\
+&!0 byte 0x7c&!0 byte 0x7d&!0 byte 0x7e&!0 byte 0x7f\
+&!0 byte 0x80&!0 byte 0x81&!0 byte 0x82&!0 byte 0x83&!0 byte 0x84&!0 byte 0x85\
+&!0 byte 0x86&!0 byte 0x87&!0 byte 0x88&!0 byte 0x89&!0 byte 0x8a&!0 byte 0x8b\
+&!0 byte 0x8c&!0 byte 0x8d&!0 byte 0x8e&!0 byte 0x8f
+	CONTENT		\
+ !0 byte 0x90&!0 byte 0x91&!0 byte 0x92&!0 byte 0x93&!0 byte 0x94&!0 byte 0x95\
+&!0 byte 0x96&!0 byte 0x97&!0 byte 0x98&!0 byte 0x99&!0 byte 0x9a&!0 byte 0x9b\
+&!0 byte 0x9c&!0 byte 0x9d&!0 byte 0x9e&!0 byte 0x9f\
+&!0 byte 0xa0&!0 byte 0xa1&!0 byte 0xa2&!0 byte 0xa3&!0 byte 0xa4&!0 byte 0xa5\
+&!0 byte 0xa6&!0 byte 0xa7&!0 byte 0xa8&!0 byte 0xa9&!0 byte 0xaa&!0 byte 0xab\
+&!0 byte 0xac&!0 byte 0xad&!0 byte 0xae&!0 byte 0xaf\
+&!0 byte 0xb0&!0 byte 0xb1&!0 byte 0xb2&!0 byte 0xb3&!0 byte 0xb4&!0 byte 0xb5\
+&!0 byte 0xb6&!0 byte 0xb7&!0 byte 0xb8&!0 byte 0xb9&!0 byte 0xba&!0 byte 0xbb\
+&!0 byte 0xbc&!0 byte 0xbd&!0 byte 0xbe&!0 byte 0xbf
+	CONTENT		\
+ !0 byte 0xc0&!0 byte 0xc1&!0 byte 0xc2&!0 byte 0xc3&!0 byte 0xc4&!0 byte 0xc5\
+&!0 byte 0xc6&!0 byte 0xc7&!0 byte 0xc8&!0 byte 0xc9&!0 byte 0xca&!0 byte 0xcb\
+&!0 byte 0xcc&!0 byte 0xcd&!0 byte 0xce&!0 byte 0xcf\
+&!0 byte 0xd0&!0 byte 0xd1&!0 byte 0xd2&!0 byte 0xd3&!0 byte 0xd4&!0 byte 0xd5\
+&!0 byte 0xd6&!0 byte 0xd7&!0 byte 0xd8&!0 byte 0xd9&!0 byte 0xda&!0 byte 0xdb\
+&!0 byte 0xdc&!0 byte 0xdd&!0 byte 0xde&!0 byte 0xdf\
+&!0 byte 0xe0&!0 byte 0xe1&!0 byte 0xe2&!0 byte 0xe3&!0 byte 0xe4&!0 byte 0xe5\
+&!0 byte 0xe6&!0 byte 0xe7&!0 byte 0xe8&!0 byte 0xe9&!0 byte 0xea&!0 byte 0xeb\
+&!0 byte 0xec&!0 byte 0xed&!0 byte 0xee&!0 byte 0xef
+	CONTENT		\
+ !0 byte 0xf0&!0 byte 0xf1&!0 byte 0xf2&!0 byte 0xf3&!0 byte 0xf4&!0 byte 0xf5\
+&!0 byte 0xf6&!0 byte 0xf7&!0 byte 0xf8&!0 byte 0xf9&!0 byte 0xfa&!0 byte 0xfb\
+&!0 byte 0xfc&!0 byte 0xfd&!0 byte 0xfe&!0 byte 0xff
+}
+
+ACTION Truncate
+{
+	LABEL		Truncate File
+	TYPE		COMMAND
+	WINDOW_TYPE	NO_STDIO
+	EXEC_STRING	cp /dev/null "%Arg_1%"
+}
+
+ACTION Append
+{
+	TYPE		COMMAND
+	WINDOW_TYPE	NO_STDIO
+	EXEC_STRING     sh -c 'cat "%(File)Arg_2%" >> "%(File)Arg_1%"'
+}
+
+ACTION Link
+{
+	TYPE		COMMAND
+	WINDOW_TYPE	NO_STDIO
+	EXEC_STRING     ksh -c 'print -n file:"%(File)Arg_2%" >> "%(File)Arg_1%"'
+}
+
+ACTION Touch
+{
+	ARG_CLASS	FILE
+	TYPE		COMMAND
+	WINDOW_TYPE	NO_STDIO
+	EXEC_STRING	touch %"mmddhhmm[yy] (OK for now):"% "%Arg_1%" %Args%
+}
+
+ACTION Split
+{
+	ARG_CLASS	FILE
+	TYPE		COMMAND
+	WINDOW_TYPE	NO_STDIO
+	EXEC_STRING	sh -c 'file="%Arg_1"File to split:"%"; \
+			size="%"Piece size (kilobytes):"%"; \
+			split -b "\$size"k "\$file" "\$file"'
+}

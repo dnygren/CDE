@@ -1,0 +1,31 @@
+################################################################
+
+#   Actions and Datatypes for Printer "usca18a101dbl"
+
+#   Common Desktop Environment 1.0
+
+#   This file was created by the "dtprintinfo" program.
+
+#   Date of creation: Fri Aug  2 11:37:58 2013
+
+################################################################
+
+ACTION usca18a101dbl_Print
+{
+        ARG_TYPE                *
+        LABEL                   usca18a101dbl
+        ICON                    Fpprnt
+        TYPE                    COMMAND
+        WINDOW_TYPE             NO_STDIO
+        EXEC_STRING             env LPDEST=usca18a101dbl \
+				/usr/dt/bin/dtaction Print %(File)Arg_1%
+        DESCRIPTION             This is the usca18a101dbl printer queue.
+}
+
+ACTION usca18a101dbl_Print
+{
+        ARG_COUNT               0
+        TYPE                    COMMAND
+        WINDOW_TYPE             NO_STDIO
+        EXEC_STRING             /usr/dt/bin/dtaction Dtprintinfo usca18a101dbl
+}

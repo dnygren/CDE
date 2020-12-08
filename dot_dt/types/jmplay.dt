@@ -1,0 +1,226 @@
+######################################################################
+#
+#       jmplay.dt (was sdtjmplay.dt)
+#
+# !!!!	I changed this to call /usr/bin/jmplay Dan Nygren 21 Feb 2006 !!!!
+#
+# The Desktop Java Media player, /usr/dt/bin/sdtjmplay, that is
+# based on the Java Media Framework 1.1, is no longer supported in
+# Solaris. Users should migrate to /usr/bin/jmplay, the Java Media
+# Player that is based on the newer Java Media Framework 2.1.1 release.
+#
+######################################################################
+set DtDbVersion=1.0
+
+###############################################################################
+#
+# WARNING:  This file may be overwritten in subsequent installations of
+#     the Common Desktop Environment (CDE).  Consequently, any system wide
+#     changes should be made to an equivalent database file in
+#     /etc/dt/types and not in this file.
+#
+###############################################################################
+
+######################################################################
+#
+#       jmplay command Actions
+#
+######################################################################
+
+DATA_ATTRIBUTES AVI
+{
+        ACTIONS         Play
+        ICON            SDtjmplay
+        NAME_TEMPLATE   %s.avi
+        DESCRIPTION     This file contains audio or video data.
+}
+
+ACTION Play
+{
+     LABEL         Play
+     ARG_TYPE      AVI
+     TYPE          MAP
+     MAP_ACTION    MediaPlayer
+}
+
+ACTION jmplay
+{
+     LABEL         Audio and Video
+     ICON          SDtjmplay
+     TYPE          COMMAND
+     WINDOW_TYPE   NO_STDIO
+     EXEC_STRING   /bin/sh -c '\
+          	   /usr/bin/jmplay "%Arg_1%"'
+     EXEC_HOST     %DisplayHost%
+     DESCRIPTION   The Audio and Video (jmplay) action \
+			starts the desktop audio and video application in order to play media files.
+}
+
+DATA_CRITERIA AU1
+{
+        DATA_ATTRIBUTES_NAME    AVI
+        MODE                    f
+        NAME_PATTERN            *.AU
+}
+
+DATA_CRITERIA au1
+{
+        DATA_ATTRIBUTES_NAME    AVI
+        MODE                    f
+        NAME_PATTERN            *.au
+}
+
+DATA_CRITERIA AIFF1
+{
+        DATA_ATTRIBUTES_NAME    AVI
+        MODE                    f
+        NAME_PATTERN            *.AIFF
+}
+
+DATA_CRITERIA aiff1
+{
+        DATA_ATTRIBUTES_NAME    AVI
+        MODE                    f
+        NAME_PATTERN            *.aiff
+}
+
+DATA_CRITERIA AVI1
+{
+        DATA_ATTRIBUTES_NAME    AVI
+        MODE                    f
+        NAME_PATTERN            *.AVI
+}
+
+DATA_CRITERIA avi1
+{
+        DATA_ATTRIBUTES_NAME    AVI
+        MODE                    f
+        NAME_PATTERN            *.avi
+}
+
+DATA_CRITERIA WAV1
+{
+        DATA_ATTRIBUTES_NAME    AVI
+        MODE                    f
+        NAME_PATTERN            *.WAV
+}
+
+DATA_CRITERIA wav1
+{
+        DATA_ATTRIBUTES_NAME    AVI
+        MODE                    f
+        NAME_PATTERN            *.wav
+}
+
+DATA_CRITERIA GSM1
+{
+        DATA_ATTRIBUTES_NAME    AVI
+        MODE                    f
+        NAME_PATTERN            *.GSM
+}
+
+DATA_CRITERIA gsm1
+{
+        DATA_ATTRIBUTES_NAME    AVI
+        MODE                    f
+        NAME_PATTERN            *.gsm
+}
+
+
+DATA_CRITERIA MID1
+{
+        DATA_ATTRIBUTES_NAME    AVI
+        MODE                    f
+        NAME_PATTERN            *.MID
+}
+
+DATA_CRITERIA mid1
+{
+        DATA_ATTRIBUTES_NAME    AVI
+        MODE                    f
+        NAME_PATTERN            *.mid
+}
+
+DATA_CRITERIA MIDI1
+{
+        DATA_ATTRIBUTES_NAME    AVI
+        MODE                    f
+        NAME_PATTERN            *.MIDI
+}
+
+DATA_CRITERIA midi1
+{
+        DATA_ATTRIBUTES_NAME    AVI
+        MODE                    f
+        NAME_PATTERN            *.midi
+}
+
+DATA_CRITERIA MP2
+{
+        DATA_ATTRIBUTES_NAME    AVI
+        MODE                    f
+        NAME_PATTERN            *.MP2
+}
+
+DATA_CRITERIA mp2
+{
+        DATA_ATTRIBUTES_NAME    AVI
+        MODE                    f
+        NAME_PATTERN            *.mp2
+}
+
+DATA_CRITERIA RMF1
+{
+        DATA_ATTRIBUTES_NAME    AVI
+        MODE                    f
+        NAME_PATTERN            *.RMF
+}
+
+DATA_CRITERIA rmf1
+{
+        DATA_ATTRIBUTES_NAME    AVI
+        MODE                    f
+        NAME_PATTERN            *.rmf
+}
+
+DATA_CRITERIA MPG1
+{
+        DATA_ATTRIBUTES_NAME    AVI
+        MODE                    f
+        NAME_PATTERN            *.MPG
+}
+
+DATA_CRITERIA mpg1
+{
+        DATA_ATTRIBUTES_NAME    AVI
+        MODE                    f
+        NAME_PATTERN            *.mpg
+}
+
+DATA_CRITERIA VIV1
+{
+        DATA_ATTRIBUTES_NAME    AVI
+        MODE                    f
+        NAME_PATTERN            *.VIV
+}
+
+DATA_CRITERIA viv1
+{
+        DATA_ATTRIBUTES_NAME    AVI
+        MODE                    f
+        NAME_PATTERN            *.viv
+}
+
+DATA_CRITERIA MOV1
+{
+        DATA_ATTRIBUTES_NAME    AVI
+        MODE                    f
+        NAME_PATTERN            *.MOV
+}
+
+DATA_CRITERIA mov1
+{
+        DATA_ATTRIBUTES_NAME    AVI
+        MODE                    f
+        NAME_PATTERN            *.mov
+}

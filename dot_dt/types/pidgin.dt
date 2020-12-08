@@ -1,0 +1,53 @@
+######################################################################
+# pidgin.dt $Revision$ CDE action file for the Pidgin Instant Messenger
+# Release $Name:  $ (Only defined if part of a specified release)
+#
+# by Dan Nygren $Date$
+#
+#	This CDE action file is meant to work with the Firefox front panel file.
+#
+# CALLING SEQUENCE	Install pidgin.dt in ~/.dt/types directory
+#
+# EXAMPLE           N/A
+#
+# TARGET SYSTEM         Solaris 9, CDE1.5.7
+#
+# DEVELOPMENT SYSTEM    Solaris 9, CDE1.5.7
+#
+# CALLS		pidgin
+#			~/.dt/icons/dynamite.pm
+#
+# CALLED BY	~/.dt/types/pidgin.fp
+#
+######################################################################
+######################################################################
+#               REVISIONS
+#
+# $Log$
+######################################################################
+
+# For use with pidgin.fp front panel file
+
+ACTION pidginKill
+{
+	LABEL       Kill Pidgin
+    ICON        dynamite
+    TYPE        COMMAND
+	WINDOW_TYPE PERM_TERMINAL
+    EXEC_STRING sh -c ' \
+    echo "Killing Pidgin\\n"; \
+	pgrep -U $USER pidgin; \
+	pkill -U $USER pidgin; \
+	pkill -9 -U $USER pidgin; \
+	echo "\\n*** Select Close or Exit from the window menu to close this window ***"'
+}
+
+ACTION Pidgin
+{
+    LABEL           Pidgin
+    ICON            pidgin
+	TYPE            COMMAND  
+	WINDOW_TYPE     NO_STDIO
+	#EXEC_STRING     /opt/csw/bin/pidgin -setenv LD_LIBRARY_PATH=/opt/csw/lib
+	EXEC_STRING     /opt/csw/bin/pidgin 
+}

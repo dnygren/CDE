@@ -1,0 +1,128 @@
+######################################################################
+# projmgr.dt $Revision: 1.1 $ : dt type file for Cadence HDL Project Manager 
+# Release $Name:  $ (Only defined if part of a specified release)
+#
+# by Dan Nygren $Date: 2003/03/21 17:54:01 $
+#
+#	This file, when installed in ~/.dt/types along with the icon
+# cpm.xpm in ~/.dt/icons, lets the .cpm file act as a trigger to run the 
+# Cadence Project Manager. When a .cpm file is double clicked, this
+# starts projmgr for this particular design. An action is also
+# provided to archive the entire directory as a gzipped tar file
+# for distribution/archival. 
+#	See dtdtsfile(4) for details. Execute the dttypes command
+# to see current settings.
+# 	
+# 	
+#
+# CALLING SEQUENCE	N/A
+#
+# EXAMPLE		N/A
+#
+# TARGET SYSTEM		Solaris 2.8, CDE1.4
+#
+# DEVELOPMENT SYSTEM	Solaris 2.8, CDE1.4
+#
+# CALLS			projmgr
+#
+# CALLED BY		N/A
+#
+# INPUTS		*.cpm file
+#
+# OUTPUTS		N/A
+#
+# RETURNS		N/A
+#
+# ERROR HANDLING	See ~/.dt/errorlog
+#
+# WARNINGS		1) Action name in DATA_ATTRIBUTES must exactly match ACTION name
+#
+######################################################################
+######################################################################
+#               REVISIONS
+#
+# $Log: projmgr.dt,v $
+# Revision 1.1  2003/03/21 17:54:01  nygren
+# Initial revision
+#
+######################################################################
+
+###################################################################
+#
+# Data Attributes
+#
+###################################################################
+DATA_ATTRIBUTES CPM_FILE
+{
+        ACTIONS         Projmgr,Connmgr,CheckPlusUI,Open,Print,TGZ,TGZDAT
+	#Default Icon
+        ICON		cpm.xpm
+        NAME_TEMPLATE	%s.cpm
+        MIME_TYPE	text
+        IS_TEXT		true
+        DESCRIPTION     A file used to run Cadence Project Manager.
+}
+
+###################################################################
+#
+# Data Criteria (.cpm files)
+#
+###################################################################
+DATA_CRITERIA CPM_FILE
+{
+        DATA_ATTRIBUTES_NAME CPM_FILE
+        # Mode "f" matches any file
+        MODE            f
+        NAME_PATTERN    *.cpm
+}
+
+###################################################################
+#
+# Actions
+#
+###################################################################
+
+ACTION Projmgr
+{
+	LABEL		Projmgr
+	ARG_TYPE        CPM_FILE
+	TYPE            COMMAND  
+	WINDOW_TYPE     NO_STDIO
+	EXEC_STRING     projmgr "%Arg_1%"
+}
+
+ACTION Connmgr
+{
+	LABEL           Connmgr
+	ARG_TYPE        CPM_FILE
+	TYPE            COMMAND  
+	WINDOW_TYPE     NO_STDIO
+	EXEC_STRING     scm "%Arg_1%"
+}
+
+ACTION CheckPlusUI
+{
+	LABEL           CheckPlusUI
+	ARG_TYPE        CPM_FILE
+	TYPE            COMMAND  
+	WINDOW_TYPE     NO_STDIO
+	EXEC_STRING     checkplusui -proj "%Arg_1%"
+}
+
+ACTION TGZ
+{
+	LABEL		Tar & Gzip Directory
+	ARG_TYPE        CPM_FILE
+	TYPE            COMMAND  
+	WINDOW_TYPE     PERM_TERMINAL
+	EXEC_STRING     dtksh -c 'tar cvf $(/bin/basename $(pwd)).tar . ; gzip $(/bin/basename $(pwd)).tar; echo " *** Select Close or Exit from the window menu to close this window ***' 
+}
+
+ACTION TGZDAT
+{
+	LABEL		Tar & Gzip .dat files
+	ARG_TYPE        CPM_FILE
+	TYPE            COMMAND  
+	WINDOW_TYPE     PERM_TERMINAL
+	EXEC_STRING     dtksh -c 'find . -name "*.dat" | xargs tar cvf $(/bin/basename $(pwd)).dat.tar *.dat ; gzip $(/bin/basename $(pwd)).dat.tar; echo " *** Select Close or Exit from the window menu to close this window ***' 
+}

@@ -1,0 +1,117 @@
+######################################################################
+# seamonkey.dt $Revision$ CDE action file for the Seamonkey browser
+# Release $Name:  $ (Only defined if part of a specified release)
+#
+# by Dan Nygren $Date$
+#
+#	This CDE action file is meant to replace invoking Netscape 4.79
+# with Seamonkey. It also works with the Seamonkey front panel file.
+#
+# CALLING SEQUENCE	Install seamonkey.dt in ~/.dt/types directory
+#
+# EXAMPLE		N/A
+#
+# TARGET SYSTEM		Solaris 9, CDE1.5.7
+#
+# DEVELOPMENT SYSTEM	Solaris 9, CDE1.5.7
+#
+# CALLS			seamonkey
+#			~/.dt/icons/dynamite.pm
+#			/usr/dt/appconfig/icons/C/SDtwebbr.*.pm
+#
+# CALLED BY		~/.dt/types/seamonkey.fp
+#
+######################################################################
+######################################################################
+#               REVISIONS
+#
+# $Log$
+######################################################################
+
+# For use with seamonkey.fp front panel file
+
+ACTION seamonkeyKill
+{
+	LABEL		Kill Seamonkey
+    ICON		dynamite
+    TYPE            COMMAND
+	WINDOW_TYPE     PERM_TERMINAL
+    EXEC_STRING    	sh -c ' \
+                    echo "Killing Seamonkey \\n"; \
+	        		pgrep seamonkey; \
+			        pkill seamonkey; \
+			        pkill -9 seamonkey; \
+			        echo "\\n*** Select Close or Exit from the window menu to close this window ***"'
+}
+
+
+# The default web browser for Common Desktop Environment (CDE) is SDWebClient.
+# Make Seamonkey the default by overriding /usr/dt/appconfig/types/C/user-prefs.dt
+
+#ACTION WebBrowser
+#{
+#       LABEL           Web Browser
+#       ICON		SDtwebbr
+#	TYPE		MAP
+#	MAP_ACTION	SDtWebClient
+#       DESCRIPTION	The WebBrowser action runs the user preferred \
+#web browser client.
+#}
+
+set sdtwebclient_patherr=dterror.ds "Web Browser unavailable.\\n\\nNo web browser command found in your PATH.\\nLooked for seamonkey commands" "Web Client: Path Error" "OK"
+
+ACTION MailBrowser
+{
+    LABEL           Mail/Browser
+    ICON		    seamonkey
+	TYPE            COMMAND  
+	WINDOW_TYPE     NO_STDIO
+	#EXEC_STRING     /pkg/isv/bin/seamonkey "%(File)Arg_1%"
+	#EXEC_STRING     /opt/csw/mozilla/seamonkey/bin/seamonkey "%(File)Arg_1%"
+
+# If the local browser exists, is a regular file, and is executable, run it.
+# Otherwise use the version on /pkg
+#   EXEC_STRING	dtksh -c 'LOCAL_BROWSER=/opt/csw/mozilla/seamonkey/bin/seamonkey ; \
+#   EXEC_STRING	dtksh -c 'LOCAL_BROWSER=/opt/seamonkey/seamonkey/seamonkey ; \
+#    			PKG_BROWSER=/pkg/isv/bin/seamonkey ; \
+#        		if [[ -f $LOCAL_BROWSER && -x $LOCAL_BROWSER ]] ; \
+#	    		    then	$LOCAL_BROWSER ; \
+#	    	    else 	$PKG_BROWSER ; \
+#			    fi ' 
+
+# If the /pkg browser exists, is a regular file, and is executable, run it.
+# Otherwise use the local version
+    EXEC_STRING	dtksh -c 'LOCAL_BROWSER=/opt/csw/mozilla/seamonkey/bin/seamonkey ; \
+			PKG_BROWSER=/pkg/isv/bin/seamonkey ; \
+    		if [[ -f $PKG_BROWSER && -x $PKG_BROWSER ]] ; \
+			    then	$PKG_BROWSER ; \
+			else 	$LOCAL_BROWSER ; \
+			fi ' 
+		
+}
+
+#ACTION PkgIsvBrowser
+#{
+#    LABEL           Mail/Browser
+#    ICON		seamonkey
+#	TYPE            COMMAND  
+#	WINDOW_TYPE     NO_STDIO
+#	EXEC_STRING     /opt/csw/mozilla/seamonkey/bin/seamonkey "%(File)Arg_1%"
+#	#EXEC_STRING     /pkg/isv/bin/seamonkey "%(File)Arg_1%"
+#}
+
+#ACTION MailBrowser
+#{
+#	LABEL		Mail/Browser
+#	ICON		seamonkey
+#	ARG_TYPE	WEB_URL,FILE_URL,MAILTO_URL,RLOGIN_URL,WSMENU_SunSolve_Online,WSMENU_Find_Web_Page,WSMENU_Solaris_Support
+#	ARG_COUNT	1
+#	TYPE		COMMAND
+#	WINDOW_TYPE	NO_STDIO
+#    EXEC_STRING     sh -c '\
+#	URL=`/bin/head -1 "%Arg_1%"` ; \
+#	seamonkey "\$URL" || \{ \
+#	$sdtwebclient_patherr ; \
+#	\}'
+#	DESCRIPTION	The WebClient action invokes a WebBrowser on a Uniform Resource Location (URL) file. 
+#}

@@ -1,0 +1,102 @@
+######################################################################
+# concept.dt $Revision$ : dt type file for Cadence Concept files
+# Release $Name$ (Only defined if part of a specified release)
+#
+# by Dan Nygren $Date$
+#
+#	This file lets the startup.concept file act as a trigger to 
+# find and run Cadence Concept. When a .concept file is double clicked,
+# this action searches for a directory with a logic.1.1 file in it.
+# If it finds it executes "concept name_of_that_directory".
+# See the dtdtsfile. Execute the dttypes command to see current settings.
+#
+# CALLING SEQUENCE	N/A
+#
+# EXAMPLE		N/A
+#
+# TARGET SYSTEM		Solaris 2.7, CDE1.3
+#
+# DEVELOPMENT SYSTEM	Solaris 2.7, CDE1.3
+#
+# CALLS			ConceptPrint
+#
+# CALLED BY		(List of modules that call this one)
+#
+# INPUTS		(Parameters used but not modified, include global and static data)
+#
+# OUTPUTS		(Parameters modified, include global and static data)
+#
+# RETURNS		(Type and meaning of return value, if any)
+#
+# ERROR HANDLING	(Describe how errors are handled)
+#
+# WARNINGS		1) Action name in DATA_ATTRIBUTES must exactly match ACTION name
+#			2) This file will put an icon on startup.concept and run Cadence
+#			Concept if a logic.1.1 file is found anywhere.
+#			3) Does not have to be startup.concept . Works on any .concept file.
+#
+######################################################################
+######################################################################
+#               REVISIONS
+#
+# $Log$
+######################################################################
+
+###################################################################
+#
+# Data Attributes
+#
+###################################################################
+DATA_ATTRIBUTES CONCEPT_FILE
+{
+        ACTIONS         Concept,ConceptPrint,Open,Print
+	#Default Icon
+        ICON		concept.xpm
+        #If there is an icon with the same name as the suffix, use it instead
+        INSTANCE_ICON	%suffix%.xpm
+        NAME_TEMPLATE	%s.concept
+        MIME_TYPE	text
+        IS_TEXT		true
+        DESCRIPTION     A file used to find a Cadence Concept schematic and run Cadence Concept if found.
+}
+
+###################################################################
+#
+# Data Criteria (.concept files)
+#
+###################################################################
+DATA_CRITERIA CONCEPT_FILE
+{
+        DATA_ATTRIBUTES_NAME CONCEPT_FILE
+        # Mode "f" matches any file
+        MODE            f
+        NAME_PATTERN    *.concept
+}
+
+###################################################################
+#
+# Actions
+#
+###################################################################
+
+ACTION Concept
+{
+	LABEL		Concept
+	ARG_TYPE        CONCEPT_FILE
+	TYPE            COMMAND  
+	WINDOW_TYPE     NO_STDIO
+	# If the first schematic page is present in an immediate subdirectory,
+	# execute "concept name_of_first_immediate_subdirectory_found".
+	EXEC_STRING     ksh -c concept $( dirname $( print */logic.1.1 | cut -f1 -d" " ) )
+}
+
+ACTION ConceptPrint
+{
+	LABEL		ConceptPrint
+	ARG_TYPE        CONCEPT_FILE
+	TYPE            COMMAND  
+	WINDOW_TYPE     PERM_TERMINAL
+	EXEC_STRING     sh -c 'concept_print 2>&1; echo " *** Select Close or Exit from the window menu to close this window ***"'
+  
+}
+

@@ -1,0 +1,13 @@
+CONTROL	xcat
+{
+   TYPE		file
+   FILE_NAME	/home/starcat
+   # There is a bug such that the icon doesn't appear if the directory exists
+   #FILE_NAME	/home/doesnt_exist
+   CONTAINER_NAME	Top
+   CONTAINER_TYPE	BOX
+   POSITION_HINTS	first
+   ICON		xfire
+   HELP_STRING	"This control display's the /home/starcat directory."
+   PUSH_ACTION	Open
+}

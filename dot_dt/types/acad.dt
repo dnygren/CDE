@@ -1,0 +1,84 @@
+######################################################################
+# acad.dt $Revision$ : dt type file for AutoCAD files
+# Release $Name$ (Only defined if part of a specified release)
+#
+# by Dan Nygren $Date$
+#
+#	This file gives the default behavior that AutoCAD files have.
+# See the dtdtsfile. Execute the dttypes command to see current settings.
+#
+# CALLING SEQUENCE	N/A
+#
+# EXAMPLE           N/A
+#
+# TARGET SYSTEM		Solaris 10, CDE1.3
+#
+# DEVELOPMENT SYSTEM	Solaris 10, CDE1.3
+#
+# CALLS			
+#
+# CALLED BY		(List of modules that call this one)
+#
+# INPUTS		(Parameters used but not modified, include global and static data)
+#
+# OUTPUTS		(Parameters modified, include global and static data)
+#
+# RETURNS		(Type and meaning of return value, if any)
+#
+# ERROR HANDLING(Describe how errors are handled)
+#
+# WARNINGS		Action name in DATA_ATTRIBUTES must exactly match ACTION name
+#
+######################################################################
+######################################################################
+#               REVISIONS
+#
+# $Log$
+######################################################################
+
+###################################################################
+#
+# Data Attributes
+#
+###################################################################
+DATA_ATTRIBUTES AUTOCAD_FILE
+{
+	# Don't put spaces between action names, as then these spaces 
+	# get put in the pull down menus and look ugly.
+        ACTIONS         Edit
+	#Default Icon
+        ICON            acad.xpm
+        #If there is an icon with the same name as the suffix, use it instead
+        #INSTANCE_ICON	%suffix%.xpm
+        NAME_TEMPLATE	%s.dwg
+        MIME_TYPE	    application/octet-stream
+        IS_TEXT		    false
+        DESCRIPTION     A Cadence PCB data file.
+}
+
+###################################################################
+#
+# Data Criteria (.dwg files)
+#
+###################################################################
+DATA_CRITERIA AUTOCAD_FILE
+{
+        DATA_ATTRIBUTES_NAME AUTOCAD_FILE
+        # Mode "f" matches any file
+        MODE            f
+        NAME_PATTERN    *.dwg
+}
+
+###################################################################
+#
+# Actions
+#
+###################################################################
+ACTION Edit
+{
+	LABEL           Edit
+	ARG_TYPE        AUTOCAD_FILE
+	TYPE            COMMAND  
+	WINDOW_TYPE     NO_STDIO
+	EXEC_STRING     acad "%(File)Arg_1%"
+}
